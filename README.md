@@ -50,7 +50,14 @@ source venv/bin/activate  # macOS/Linux
 pip install -r requirements.txt
 ```
 
-### 4. 環境変数の設定
+### 4. データベースの初期化
+以下のコマンドを実行して、データベース（`app.db`）を初期化し、管理者ユーザーを作成します。
+```bash
+python init_db.py
+```
+※既に `app.db` が存在する場合は、上書きの確認メッセージが表示されます。
+
+### 5. 環境変数の設定
 `.env` ファイルを作成し、必要な設定を記述します。
 ```bash
 cp .env.example .env  # .env.example がある場合
