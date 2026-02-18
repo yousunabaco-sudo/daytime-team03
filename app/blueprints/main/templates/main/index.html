@@ -1,0 +1,55 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<div class="space-y-12">
+    <!-- ヒーローセクション -->
+    <header class="text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">知見を共有し、共に歩む。</h1>
+        <p class="mt-4 text-xl text-slate-500">心理療法士の専門性を高め、交流を深めるための同好会プラットフォームです。</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- 最新のお知らせ/記事 -->
+        <section class="space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h2 class="text-2xl font-bold">新着トピック・エッセー</h2>
+                <a href="{{ url_for('main.essay_list') }}" class="text-brand hover:underline text-sm font-medium">すべて見る
+                    &rarr;</a>
+            </div>
+            <div class="space-y-4">
+                {% if posts %}
+                {% for post in posts %}
+                <article
+                    class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-2">
+                        {{ post.category.name if post.category else '未分類' }}
+                    </span>
+                    <h3 class="text-lg font-semibold mb-1 hover:text-brand cursor-pointer">{{ post.title }}</h3>
+                    <p class="text-slate-500 text-sm line-clamp-2 mb-3">{{ post.content[:150] }}...</p>
+                    <div class="text-slate-400 text-xs">{{ post.created_at.strftime('%Y年%m月%d日') }}</div>
+                </article>
+                {% endfor %}
+                {% else %}
+                <p class="text-slate-400 italic">まだ投稿はありません。</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- イベント・告知 -->
+        <section class="space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h2 class="text-2xl font-bold">直近のイベント予定</h2>
+                <a href="{{ url_for('main.event_list') }}" class="text-brand hover:underline text-sm font-medium">一覧はこちら
+                    &rarr;</a>
+            </div>
+            <div class="space-y-4">
+                <article
+                    class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 italic text-slate-400 text-center py-10">
+                    現在、予定されているイベントはありません。
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
