@@ -35,7 +35,7 @@
 ### 1. リポジトリのクローン
 ```bash
 git clone <repository-url>
-cd 106_AI
+cd daytime-team03
 ```
 
 ### 2. 仮想環境の作成と有効化
