@@ -24,4 +24,8 @@ def create_app():
     def admin_users():
         return render_template('admin_users.html')
 
+    @app.route('/admin/users/new')
+    def admin_user_new():
+        return render_template('admin_user_new.html')
+
     return app
