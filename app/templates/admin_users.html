@@ -100,33 +100,46 @@
 
 <body>
     <!-- SHELL -->
-    <div class="grid grid-rows-[64px_1fr] grid-cols-[240px_1fr] h-screen overflow-hidden">
+    <div class="grid grid-rows-[64px_1fr] md:grid-cols-[240px_1fr] min-h-screen relative w-full overflow-x-hidden">
 
         <!-- TOP BAR -->
-        <header class="col-span-2 bg-white border-b border-custom-border flex items-center px-6 sticky top-0 z-50">
+        <header
+            class="col-span-1 md:col-span-2 bg-white border-b border-custom-border flex items-center px-4 md:px-6 sticky top-0 z-50">
+            <!-- Mobile Menu Toggle -->
+            <button id="sidebar-toggle"
+                class="md:hidden p-2 -ml-2 mr-2 text-custom-text-secondary hover:bg-custom-surface-2 rounded-lg transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+
             <div class="font-header-sans font-bold text-lg text-custom-text-primary tracking-tight">
                 新潟心理療法同好会<span class="text-custom-accent">.</span>
             </div>
             <div
-                class="ml-3 px-2 py-0.5 bg-custom-surface-2 border border-custom-border rounded text-[10px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest">
+                class="ml-2 md:ml-3 px-2 py-0.5 bg-custom-surface-2 border border-custom-border rounded text-[10px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest">
                 Admin
             </div>
 
-            <div class="ml-auto flex items-center gap-4">
+            <div class="ml-auto flex items-center gap-2 md:gap-4">
                 <div
-                    class="flex items-center gap-2.5 px-3 py-1 bg-custom-surface-2 border border-custom-border rounded-full">
+                    class="hidden sm:flex items-center gap-2.5 px-3 py-1 bg-custom-surface-2 border border-custom-border rounded-full">
                     <div class="w-6 h-6 rounded-full bg-custom-wireframe-img border border-custom-border"></div>
                     <span class="text-xs font-medium text-custom-text-secondary">管理者</span>
                 </div>
                 <button
-                    class="text-[11px] font-mono-dm text-custom-text-muted border border-custom-border px-3 py-1.5 rounded-md bg-white hover:bg-custom-surface-2 transition-colors uppercase tracking-widest font-bold">
+                    class="text-[10px] md:text-[11px] font-mono-dm text-custom-text-muted border border-custom-border px-2.5 md:px-3 py-1.5 rounded-md bg-white hover:bg-custom-surface-2 transition-colors uppercase tracking-widest font-bold">
                     Logout
                 </button>
             </div>
         </header>
 
-        <!-- SIDEBAR -->
-        <aside class="bg-white border-r border-custom-border py-6 flex flex-col gap-1 overflow-y-auto">
+        <!-- SIDEBAR (Overlay on Mobile) -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/20 z-40 hidden md:hidden transition-opacity"></div>
+        <aside id="sidebar"
+            class="fixed md:static inset-y-0 left-0 w-[240px] bg-white border-r border-custom-border py-6 flex flex-col gap-1 overflow-y-auto z-50 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-custom md:shadow-none">
             <div class="px-5 mb-2 text-[9px] font-bold text-custom-text-muted uppercase tracking-[0.14em] font-mono-dm">
                 Menu</div>
 
@@ -167,10 +180,10 @@
         </aside>
 
         <!-- MAIN -->
-        <main class="p-8 overflow-y-auto flex flex-col gap-6">
+        <main class="p-4 md:p-8 flex flex-col gap-6 min-w-0">
 
             <!-- PAGE HEADER -->
-            <div class="flex items-end justify-between">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div class="flex flex-col gap-2">
                     <div
                         class="flex items-center gap-1.5 text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-wider">
@@ -180,19 +193,20 @@
                         <span class="opacity-40">/</span>
                         <span>List</span>
                     </div>
-                    <h1 class="text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">会員一覧</h1>
+                    <h1 class="text-2xl md:text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">
+                        会員一覧</h1>
                     <div class="text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest mt-0.5">Total
                         Members: 24</div>
                 </div>
-                <button class="btn-admin-primary">
+                <button class="btn-admin-primary w-full md:w-auto justify-center">
                     <span>＋</span> 新規会員登録
                 </button>
             </div>
 
             <!-- TOOLBAR -->
             <div
-                class="bg-white border border-custom-border rounded-custom p-4 shadow-custom-sm flex items-center gap-3">
-                <div class="relative flex-1 max-w-md">
+                class="bg-white border border-custom-border rounded-custom p-4 shadow-custom-sm flex flex-col sm:flex-row sm:items-center gap-3">
+                <div class="relative flex-1 w-full sm:max-w-md">
                     <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-custom-text-muted opacity-60">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
@@ -203,22 +217,25 @@
                     <input type="text" placeholder="名前・メールアドレスで検索"
                         class="w-full h-10 bg-custom-surface-2 border border-custom-border rounded-lg pl-10 pr-4 text-[13px] font-mono-dm placeholder:text-custom-text-muted focus:outline-none focus:border-custom-accent transition-all">
                 </div>
-                <div
-                    class="flex items-center gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
-                    ステータス <span class="text-[9px] opacity-40">▾</span>
+                <div class="flex gap-2">
+                    <div
+                        class="flex-1 sm:flex-none flex items-center justify-between gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
+                        ステータス <span class="text-[9px] opacity-40">▾</span>
+                    </div>
+                    <div
+                        class="flex-1 sm:flex-none flex items-center justify-between gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
+                        並び順 <span class="text-[9px] opacity-40">▾</span>
+                    </div>
                 </div>
                 <div
-                    class="flex items-center gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
-                    並び順 <span class="text-[9px] opacity-40">▾</span>
-                </div>
-                <div class="ml-auto text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest">
+                    class="hidden lg:block ml-auto text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest">
                     1–10 OF 24
                 </div>
             </div>
 
-            <!-- TABLE -->
-            <div class="bg-white border border-custom-border rounded-custom shadow-custom-sm">
-                <table class="w-full text-left border-collapse">
+            <!-- TABLE CONTAINER -->
+            <div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-x-auto w-full">
+                <table class="w-full text-left border-collapse min-w-[800px]">
                     <thead class="bg-custom-surface-2 border-b border-custom-border">
                         <tr>
                             <th
@@ -245,7 +262,7 @@
                                 <div class="font-bold text-custom-text-primary text-[13px]">山田 花子</div>
                                 <div class="text-[10px] font-mono-dm text-custom-text-muted">#001</div>
                             </td>
-                            <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary">
+                            <td class="px-4 py-4 textxs font-mono-dm text-custom-text-secondary lowercase">
                                 hanako.yamada@example.com</td>
                             <td class="px-4 py-4 text-[11px] font-mono-dm text-custom-text-muted">2024.10.01</td>
                             <td class="px-4 py-4 text-center">
@@ -265,7 +282,7 @@
                                 <div class="font-bold text-custom-text-primary text-[13px]">鈴木 一郎</div>
                                 <div class="text-[10px] font-mono-dm text-custom-text-muted">#002</div>
                             </td>
-                            <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary">
+                            <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary lowercase">
                                 ichiro.suzuki@example.com</td>
                             <td class="px-4 py-4 text-[11px] font-mono-dm text-custom-text-muted">2024.10.05</td>
                             <td class="px-4 py-4 text-center">
@@ -285,7 +302,7 @@
                                 <div class="font-bold text-[13px] opacity-60">田中 博志</div>
                                 <div class="text-[10px] font-mono-dm">#003</div>
                             </td>
-                            <td class="px-4 py-4 text-xs font-mono-dm">hiroshi.tanaka@example.com</td>
+                            <td class="px-4 py-4 text-xs font-mono-dm lowercase">hiroshi.tanaka@example.com</td>
                             <td class="px-4 py-4 text-[11px] font-mono-dm">2024.10.12</td>
                             <td class="px-4 py-4 text-center">
                                 <span class="status-badge-inactive"><span
@@ -298,13 +315,13 @@
                                 </div>
                             </td>
                         </tr>
-                        <!-- Add more mock rows for aesthetics -->
+                        <!-- More rows... -->
                         <tr class="hover:bg-custom-surface-2 transition-colors group">
                             <td class="px-4 py-4">
                                 <div class="font-bold text-custom-text-primary text-[13px]">佐藤 美咲</div>
                                 <div class="text-[10px] font-mono-dm text-custom-text-muted">#004</div>
                             </td>
-                            <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary">
+                            <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary lowercase">
                                 misaki.sato@example.com</td>
                             <td class="px-4 py-4 text-[11px] font-mono-dm text-custom-text-muted">2024.11.03</td>
                             <td class="px-4 py-4 text-center">
@@ -324,10 +341,11 @@
 
             <!-- PAGINATION -->
             <div
-                class="bg-white border border-custom-border rounded-custom p-4 shadow-custom-sm flex items-center justify-between">
-                <div class="text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest">SHOWING 1–10 OF
-                    24 RESULTS</div>
-                <div class="flex items-center gap-1.5">
+                class="bg-white border border-custom-border rounded-custom p-4 shadow-custom-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                <div
+                    class="text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest order-2 md:order-1">
+                    SHOWING 1–10 OF 24 RESULTS</div>
+                <div class="flex items-center gap-1.5 order-1 md:order-2">
                     <button
                         class="w-8 h-8 rounded-lg bg-custom-surface-2 border border-custom-border text-custom-text-muted opacity-40 cursor-not-allowed">←</button>
                     <button
@@ -346,13 +364,42 @@
 
         <!-- FOOTER -->
         <footer
-            class="col-span-2 h-10 bg-white border-t border-custom-border flex items-center justify-between px-6 text-[10px] text-custom-text-muted font-mono-dm shrink-0 sticky bottom-0 z-50">
+            class="md:col-span-2 h-10 bg-white border-t border-custom-border flex items-center justify-between px-6 text-[10px] text-custom-text-muted font-mono-dm shrink-0 sticky bottom-0 z-50">
             <span>© 2026 新潟心理療法同好会</span>
-            <div class="flex gap-4">
+            <div class="hidden sm:flex gap-4">
                 <span>ADMIN V1.0</span>
             </div>
         </footer>
     </div>
+
+    <!-- Sidebar Script -->
+    <script>
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Resize handler to ensure sidebar is visible on md+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            } else if (!sidebarOverlay.classList.contains('hidden')) {
+                // Keep mobile state if already open
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+    </script>
 </body>
 
 </html>
