@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <script>
         tailwind.config = {
@@ -37,7 +37,7 @@
                         'custom-annotation-bg': '#f3f1fc',
                     },
                     fontFamily: {
-                        'serif-display': ['"DM Serif Display"', 'serif'],
+                        'header-sans': ['"Noto Sans JP"', 'sans-serif'],
                         'sans-jp': ['"Noto Sans JP"', 'sans-serif'],
                         'mono-dm': ['"DM Mono"', 'monospace'],
                     },
@@ -69,29 +69,14 @@
                 content: '';
                 @apply flex-1 h-[1px] bg-gradient-to-r from-[#d4ceef] to-transparent;
             }
-            .ph-text {
-                @apply h-2.5 bg-custom-wireframe-dark rounded-sm opacity-55;
-            }
             .ph-tag {
                 @apply inline-block px-3 py-1 bg-custom-accent-light text-custom-accent rounded-md text-[11px] font-semibold tracking-wide font-mono-dm border border-custom-accent-mid;
-            }
-            .ph-tag-warm {
-                @apply inline-block px-3 py-1 bg-custom-accent-2-light text-custom-accent-2 rounded-md text-[11px] font-semibold tracking-wide font-mono-dm border border-[#f0c9a8];
             }
             .ph-btn-primary {
                 @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-custom-accent text-white rounded-md text-xs font-semibold tracking-wide;
             }
-            .ph-btn-ghost {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-border text-custom-text-secondary rounded-md text-xs font-semibold tracking-wide;
-            }
             .ph-btn-outline {
                 @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-accent text-custom-accent rounded-md text-xs font-semibold tracking-wide;
-            }
-            .notice-pill {
-                @apply inline-flex items-center gap-2 bg-custom-accent-2-light border border-[#f0c9a8] rounded-full px-3.5 py-1 text-[11px] text-custom-accent-2 font-mono-dm;
-            }
-            .notice-dot {
-                @apply w-1.5 h-1.5 bg-custom-accent-2 rounded-full animate-pulse;
             }
         }
     </style>
@@ -102,7 +87,7 @@
         <!-- NAVBAR -->
         <nav class="sticky top-0 z-[100] h-16 border-b border-custom-border bg-white/95 backdrop-blur-md">
             <div class="inner h-full flex items-center gap-1">
-                <div class="font-serif-display text-xl text-custom-text-primary mr-auto tracking-tight">
+                <div class="font-header-sans font-bold text-xl text-custom-text-primary mr-auto tracking-tight">
                     新潟心理療法同好会<span class="text-custom-accent">.</span>
                 </div>
                 <a href="/"
@@ -120,22 +105,18 @@
                 class="p-12 md:p-16 md:pl-20 flex flex-col justify-center gap-4 bg-gradient-to-br from-white via-white to-custom-accent-light">
                 <div class="text-[11px] font-semibold text-custom-accent tracking-[0.14em] uppercase font-mono-dm">
                     Psychology & Community</div>
-                <h2 class="font-serif-display text-3xl md:text-4xl leading-tight text-custom-text-primary">
+                <h2 class="font-header-sans font-bold text-3xl md:text-4xl leading-tight text-custom-text-primary">
                     心理と医療をつなぐ<br>専門家の交流の場
                 </h2>
                 <div class="flex flex-col gap-2">
-                    <div class="ph-text w-[88%]"></div>
-                    <div class="ph-text w-[60%]"></div>
+                    <div class="w-[88%]">テキストテキストテキストテキストテキストテキストテキスト</div>
+                    <div class="w-[60%]">テキストテキストテキストテキスト</div>
                 </div>
                 <div class="flex gap-3 mt-2">
                     <button class="ph-btn-primary">活動を見る →</button>
-                    <button class="ph-btn-ghost">ブログを読む</button>
                 </div>
+                <!--
                 <div class="flex gap-6 mt-4 pt-4 border-t border-custom-border-light">
-                    <div class="flex flex-col">
-                        <div class="font-mono-dm text-xl font-medium text-custom-accent">128</div>
-                        <div class="text-[10px] text-custom-text-muted tracking-wider">メンバー</div>
-                    </div>
                     <div class="flex flex-col">
                         <div class="font-mono-dm text-xl font-medium text-custom-accent">342</div>
                         <div class="text-[10px] text-custom-text-muted tracking-wider">記事</div>
@@ -145,6 +126,7 @@
                         <div class="text-[10px] text-custom-text-muted tracking-wider">コメント</div>
                     </div>
                 </div>
+                -->
             </div>
             <div
                 class="bg-white flex items-center justify-center border-l border-custom-border relative overflow-hidden">
@@ -158,8 +140,8 @@
                 <div class="section-label">トピックス / 注目記事</div>
                 <div class="flex items-end justify-between mb-6">
                     <div>
-                        <h3 class="font-serif-display text-2xl text-custom-text-primary">Topics</h3>
-                        <p class="text-xs text-custom-text-muted font-mono-dm">メンバーが注目するテーマ・話題</p>
+                        <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Topics</h3>
+                        <p class="text-xs text-custom-text-muted font-mono-dm mt-1">メンバーが注目するテーマ・話題</p>
                     </div>
                     <a href="#"
                         class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
@@ -169,49 +151,47 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Featured -->
                     <div
-                        class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm">
+                        class="md:h-60 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm">
                         <div
-                            class="h-52 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center text-3xl opacity-35 border-r border-custom-border">
-                            🖼</div>
+                            class="h-48 md:h-auto border-b md:border-b-0 md:border-r border-custom-border overflow-hidden flex">
+                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
+                                class="w-full h-full object-cover opacity-60">
+                        </div>
                         <div class="p-6 flex flex-col justify-center gap-3">
-                            <span class="ph-tag self-start">認知行動療法</span>
-                            <div class="flex flex-col gap-2">
-                                <div class="ph-text w-[90%] h-4 opacity-20"></div>
-                                <div class="ph-text w-[70%] h-4 opacity-20"></div>
+                            <div class="flex flex-row gap-2 items-center">
+                                <span class="ph-tag self-start">認知行動療法</span>
+                                <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.12</span>
                             </div>
-                            <div class="flex flex-col gap-1.5 mt-1">
-                                <div class="ph-text w-[88%]"></div>
-                                <div class="ph-text w-[60%]"></div>
+                            <div class="flex flex-col gap-2">
+                                <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
+                                <div class="">あああああ</div>
                             </div>
                             <div class="flex items-center gap-2.5 mt-1">
                                 <div
                                     class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
                                 </div>
-                                <div class="ph-text w-16 h-2"></div>
-                                <div class="ml-auto text-[10px] text-custom-text-muted font-mono-dm">💬 18</div>
                             </div>
-                            <button class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px] mt-1">続きを読む →</button>
+                            <div class="flex items-center justify-between mt-1">
+                                <button class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px]">続きを読む →</button>
+                                <div class="text-[10px] text-custom-text-muted font-mono-dm">💬 18</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Card 1 -->
                     <div
                         class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
-                        <div
-                            class="h-32 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center text-2xl opacity-30 border-b border-custom-border">
-                            🖼</div>
+                        <div class="h-32 border-b border-custom-border overflow-hidden">
+                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
+                                class="w-full h-full object-cover opacity-60">
+                        </div>
                         <div class="p-4 flex flex-col gap-2 flex-1">
                             <div class="flex items-center gap-2">
                                 <span class="ph-tag">マインドフルネス</span>
                                 <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.12</span>
                             </div>
-                            <div class="ph-text w-[85%] h-3.5 opacity-25"></div>
-                            <div class="ph-text w-[60%]"></div>
+                            <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
                             <div class="flex items-center gap-2.5 mt-1">
-                                <div
-                                    class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
-                                </div>
-                                <div class="ph-text w-12 h-2"></div>
                                 <div class="ml-auto text-[10px] text-custom-text-muted font-mono-dm">💬 7</div>
                             </div>
                         </div>
@@ -220,22 +200,18 @@
                     <!-- Card 2 -->
                     <div
                         class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
-                        <div
-                            class="h-32 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center text-2xl opacity-30 border-b border-custom-border">
-                            🖼</div>
+                        <div class="h-32 border-b border-custom-border overflow-hidden">
+                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
+                                class="w-full h-full object-cover opacity-60">
+                        </div>
                         <div class="p-4 flex flex-col gap-2 flex-1">
                             <div class="flex items-center gap-2">
                                 <span class="ph-tag">臨床心理</span>
                                 <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.10</span>
                             </div>
-                            <div class="ph-text w-[75%] h-3.5 opacity-25"></div>
-                            <div class="ph-text w-[88%]"></div>
+                            <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
                             <div class="flex items-center gap-2.5 mt-1">
-                                <div
-                                    class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
-                                </div>
-                                <div class="ph-text w-12 h-2"></div>
-                                <div class="ml-auto text-[10px] text-custom-text-muted font-mono-dm">💬 12</div>
+                                <div class="ml-auto text-[10px] text-custom-text-muted font-mono-dm">💬 7</div>
                             </div>
                         </div>
                     </div>
@@ -249,54 +225,44 @@
                 <div class="section-label">イベント情報</div>
                 <div class="flex items-end justify-between mb-6">
                     <div>
-                        <h3 class="font-serif-display text-2xl text-custom-text-primary">Events</h3>
-                        <p class="text-xs text-custom-text-muted font-mono-dm">勉強会・オンライン交流会などの予定</p>
+                        <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Events</h3>
+                        <p class="text-xs text-custom-text-muted font-mono-dm mt-1">勉強会・オンライン交流会などの予定</p>
                     </div>
                     <a href="#"
                         class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
                         →</a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
                     <!-- Event 1 -->
                     <div
-                        class="flex gap-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent">
+                        class="flex gap-4 py-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent">
                         <div
                             class="flex flex-col items-center bg-custom-accent-light px-3 py-2 min-w-[54px] rounded-lg border border-custom-accent-mid shrink-0">
                             <div class="text-[9px] text-custom-accent font-mono-dm font-semibold uppercase">Feb</div>
-                            <div class="font-serif-display text-2xl leading-none text-custom-text-primary">22</div>
+                            <div class="font-header-sans font-bold text-2xl leading-none text-custom-text-primary">22
+                            </div>
                         </div>
                         <div class="flex flex-col gap-2 flex-1">
                             <div class="text-[10px] font-semibold text-custom-accent font-mono-dm tracking-wider">
                                 オンライン勉強会</div>
-                            <div class="ph-text w-[85%] h-3.5 opacity-25"></div>
-                            <div class="ph-text w-[60%]"></div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <div class="ph-text w-16 h-2"></div>
-                                <span
-                                    class="bg-custom-annotation-bg text-custom-annotation text-[9px] px-1.5 py-0.5 rounded-full font-mono-dm">参加者募集中</span>
-                            </div>
+                            <div class="">テキストテキストテキスト</div>
                         </div>
                     </div>
 
                     <!-- Event 2 (Warm) -->
                     <div
-                        class="flex gap-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent-2">
+                        class="flex gap-4 py-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent-2">
                         <div
                             class="flex flex-col items-center bg-custom-accent-2-light px-3 py-2 min-w-[54px] rounded-lg border border-[#f0c9a8] shrink-0">
                             <div class="text-[9px] text-custom-accent-2 font-mono-dm font-semibold uppercase">Mar</div>
-                            <div class="font-serif-display text-2xl leading-none text-custom-text-primary">08</div>
+                            <div class="font-header-sans font-bold text-2xl leading-none text-custom-text-primary">08
+                            </div>
                         </div>
                         <div class="flex flex-col gap-2 flex-1">
                             <div class="text-[10px] font-semibold text-custom-accent-2 font-mono-dm tracking-wider">交流会
                             </div>
-                            <div class="ph-text w-[80%] h-3.5 opacity-25"></div>
-                            <div class="ph-text w-[88%]"></div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <div class="ph-text w-16 h-2"></div>
-                                <span
-                                    class="bg-custom-annotation-bg text-custom-annotation text-[9px] px-1.5 py-0.5 rounded-full font-mono-dm">定員間近</span>
-                            </div>
+                            <div class="">テキストテキストテキストテキストテキストテキストテキスト</div>
                         </div>
                     </div>
                 </div>
@@ -306,42 +272,37 @@
         <!-- FOOTER -->
         <footer class="bg-custom-text-primary text-white pt-12 pb-6">
             <div class="inner flex flex-col gap-6">
-                <div
-                    class="text-[10px] font-medium text-[#4a5068] uppercase tracking-widest font-mono-dm flex items-center gap-2">
-                    footer <span class="flex-1 h-[1px] bg-[#2e3248]"></span>
-                </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="md:col-span-2 flex flex-col gap-3">
-                        <div class="font-serif-display text-xl">新潟心理療法同好会<span class="text-custom-accent">.</span></div>
-                        <div class="ph-text w-full bg-[#2e3248] h-2.5"></div>
-                        <div class="ph-text w-[88%] bg-[#2e3248] h-2.5"></div>
-                        <div class="ph-text w-[60%] bg-[#2e3248] h-2.5"></div>
+                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会<span
+                                class="text-custom-accent">.</span>
+                        </div>
+                        <div class="h-2.5">テキストテキストテキストテキストテキストテキストテキストテキスト</div>
+                        <div class="h-2.5">テキストテキストテキストテキストテキストテキストテキストテキスト</div>
+                        <div class="h-2.5">テキストテキストテキストテキストテキストテキストテキストテキスト</div>
                     </div>
                     <div class="flex flex-col gap-4">
                         <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
                             Navigation</h4>
                         <div class="flex flex-col gap-2">
-                            <div class="ph-text w-1/2 bg-[#2e3248] h-2 cursor-pointer hover:bg-custom-accent"></div>
-                            <div class="ph-text w-2/3 bg-[#2e3248] h-2 cursor-pointer hover:bg-custom-accent"></div>
-                            <div class="ph-text w-1/3 bg-[#2e3248] h-2 cursor-pointer hover:bg-custom-accent"></div>
+                            <div class="">テキストテキスト</div>
+                            <div class="">テキストテキスト</div>
+                            <div class="">テキストテキスト</div>
                         </div>
                     </div>
                     <div class="flex flex-col gap-4">
                         <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
                             Contact</h4>
                         <div class="flex flex-col gap-2">
-                            <div class="ph-text w-2/3 bg-[#2e3248] h-2 cursor-pointer hover:bg-custom-accent"></div>
-                            <div class="ph-text w-1/2 bg-[#2e3248] h-2 cursor-pointer hover:bg-custom-accent"></div>
+                            <div class="">
+                                テキストテキスト
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div
                     class="border-t border-[#282d42] pt-4 flex justify-between items-center text-[10px] text-[#4a5068] font-mono-dm">
                     <span>© 2026 新潟心理療法同好会</span>
-                    <div class="flex gap-4">
-                        <span class="hover:text-custom-accent cursor-pointer">privacy policy</span>
-                        <span class="hover:text-custom-accent cursor-pointer">terms</span>
-                    </div>
                 </div>
             </div>
         </footer>
