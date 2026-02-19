@@ -11,8 +11,21 @@ def index():
 @admin_bp.route('/posts')
 @login_required
 def post_list():
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    return render_template('admin/post_list.html', title='記事管理', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    q = request.args.get('q', '')
+    
+    query = Post.query
+    if q:
+        query = query.filter(Post.title.contains(q))
+    
+    pagination = query.order_by(Post.created_at.desc()).paginate(page=page, per_page=10, error_out=False)
+    posts = pagination.items
+    
+    return render_template('admin/post_list.html', 
+                         title='記事管理', 
+                         posts=posts, 
+                         pagination=pagination, 
+                         q=q)
 
 @admin_bp.route('/posts/new', methods=['GET', 'POST'])
 @login_required
@@ -37,8 +50,21 @@ def create_post():
 @admin_bp.route('/users')
 @login_required
 def admin_users():
-    users = User.query.all()
-    return render_template('admin/admin_users.html', users=users, active_menu='user_list')
+    page = request.args.get('page', 1, type=int)
+    q = request.args.get('q', '')
+    
+    query = User.query
+    if q:
+        query = query.filter((User.name.contains(q)) | (User.email.contains(q)))
+    
+    pagination = query.order_by(User.created_at.desc()).paginate(page=page, per_page=10, error_out=False)
+    users = pagination.items
+    
+    return render_template('admin/admin_users.html', 
+                         users=users, 
+                         pagination=pagination, 
+                         q=q,
+                         active_menu='user_list')
 
 @admin_bp.route('/users/new')
 @login_required
