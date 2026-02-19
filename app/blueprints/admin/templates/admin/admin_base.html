@@ -133,14 +133,13 @@
 
             <div class="ml-auto flex items-center gap-2 md:gap-4">
                 <div
-                    class="hidden sm:flex items-center gap-2.5 px-3 py-1 bg-custom-surface-2 border border-custom-border rounded-full">
-                    <div class="w-6 h-6 rounded-full bg-custom-wireframe-img border border-custom-border"></div>
-                    <span class="text-xs font-medium text-custom-text-secondary">管理者</span>
+                    class="hidden sm:flex items-center px-4 py-1 bg-custom-surface-2 border border-custom-border rounded-full">
+                    <span class="text-xs font-medium text-custom-text-secondary">{{ current_user.name }}</span>
                 </div>
-                <button
+                <a href="{{ url_for('auth.logout') }}"
                     class="text-[10px] md:text-[11px] font-mono-dm text-custom-text-muted border border-custom-border px-2.5 md:px-3 py-1.5 rounded-md bg-white hover:bg-custom-surface-2 transition-colors uppercase tracking-widest font-bold">
                     Logout
-                </button>
+                </a>
             </div>
         </header>
 

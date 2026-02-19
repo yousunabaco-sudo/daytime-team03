@@ -3,6 +3,34 @@
 
 {% block title %}{{ title }}{% endblock %}
 
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/tinymce/tinymce.min.js') }}"></script>
+<script>
+    tinymce.init({
+        license_key: 'gpl',
+        selector: '#content',
+        language: 'ja',
+        height: 500,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+            'bold italic underline strikethrough | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'link image media | table | removeformat | help',
+        content_style: 'body { font-family: "Noto Sans JP", sans-serif; font-size:14px }',
+        branding: false,
+        promotion: false,
+        elementpath: false,
+        menubar: 'edit insert view format table tools help',
+        skin: 'oxide',
+        content_css: 'default'
+    });
+</script>
+{% endblock %}
+
 {% block main_content %}
 <!-- PAGE HEADER -->
 <div class="flex flex-col gap-2">

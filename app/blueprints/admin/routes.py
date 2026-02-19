@@ -89,7 +89,7 @@ def admin_user_new():
         password = request.form.get('password')
         password_confirm = request.form.get('password_confirm')
         role = request.form.get('role', 'member')
-        profile = request.form.get('bio') # Introducing field as bio in form
+        profile = request.form.get('bio')
         
         errors = {}
         if not name:
@@ -119,6 +119,52 @@ def admin_user_new():
         return redirect(url_for('admin.admin_users'))
         
     return render_template('admin/admin_user_new.html', active_menu='user_new')
+
+@admin_bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def admin_user_edit(id):
+    user = User.query.get_or_404(id)
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_confirm = request.form.get('password_confirm')
+        role = request.form.get('role', 'member')
+        profile = request.form.get('bio')
+        
+        errors = {}
+        if not name:
+            errors['name'] = '名前を入力してください。'
+        if not email:
+            errors['email'] = 'メールアドレスを入力してください。'
+        else:
+            existing_user = User.query.filter_by(email=email).first()
+            if existing_user and existing_user.id != user.id:
+                errors['email'] = 'このメールアドレスは既に他のユーザーに使用されています。'
+        
+        if password:
+            if password != password_confirm:
+                errors['password_confirm'] = 'パスワードが一致しません。'
+            
+        if errors:
+            return render_template('admin/admin_user_edit.html', 
+                                 active_menu='user_list',
+                                 user=user,
+                                 errors=errors,
+                                 values=request.form)
+        
+        user.name = name
+        user.email = email
+        user.role = role
+        user.profile = profile
+        if password:
+            user.set_password(password)
+        
+        db.session.commit()
+        flash(f'会員「{name}」の情報を更新しました。')
+        return redirect(url_for('admin.admin_users'))
+        
+    return render_template('admin/admin_user_edit.html', user=user, active_menu='user_list')
 
 # --- 記事編集・削除 ---
 
