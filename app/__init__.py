@@ -1,5 +1,6 @@
 from flask import Flask, render_template
-from .models import db
+from .models import db, User
+from flask_login import LoginManager
 
 def create_app():
     app = Flask(__name__)
@@ -7,25 +8,28 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+    
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
 
-    @app.route('/')
-    def index():
-        return render_template('index.html')
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
+    # Blueprint 登録
+    from app.blueprints.main import main_bp
+    app.register_blueprint(main_bp)
+
+    from app.blueprints.auth import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app.blueprints.admin import admin_bp
+    app.register_blueprint(admin_bp, url_prefix='/admin')
+
+    # 仮のトップレベルルート（必要に応じて Blueprint に集約）
     @app.route('/blog/detail')
     def blog_detail():
         return render_template('blog_detail.html')
-
-    @app.route('/admin')
-    def admin_login():
-        return render_template('admin_login.html')
-
-    @app.route('/admin/users')
-    def admin_users():
-        return render_template('admin_users.html')
-
-    @app.route('/admin/users/new')
-    def admin_user_new():
-        return render_template('admin_user_new.html')
 
     return app

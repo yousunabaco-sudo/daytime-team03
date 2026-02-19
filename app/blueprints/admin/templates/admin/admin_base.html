@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規会員登録 | 管理画面 | 新潟心理療法同好会</title>
+    <title>{% block title %}{% endblock %} | 管理画面 | 新潟心理療法同好会</title>
     <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -82,6 +82,19 @@
             .btn-admin-ghost {
                 @apply btn-admin bg-white border border-custom-border text-custom-text-secondary hover:bg-custom-surface-2;
             }
+            .btn-admin-danger {
+                @apply btn-admin bg-white border border-red-200 text-custom-danger hover:bg-custom-danger-light;
+            }
+            .status-badge {
+                @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold font-mono-dm border;
+            }
+            .status-badge-active {
+                @apply status-badge bg-custom-accent-light text-custom-accent border-custom-accent-mid;
+            }
+            .status-badge-inactive {
+                @apply status-badge bg-custom-surface-3 text-custom-text-muted border-custom-border;
+            }
+            /* Input for forms */
             .input-admin {
                 @apply w-full h-10 px-4 bg-custom-surface-2 border border-custom-border rounded-lg text-[13px] font-mono-dm placeholder:text-custom-text-muted focus:outline-none focus:border-custom-accent transition-all hover:bg-custom-surface-3;
             }
@@ -90,6 +103,7 @@
             }
         }
     </style>
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
@@ -153,8 +167,10 @@
                     class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
             </div>
             <div class="flex flex-col">
-                <div class="sidebar-sub-item">投稿一覧</div>
-                <div class="sidebar-sub-item">新規登録</div>
+                <a href="{{ url_for('admin.post_list') }}"
+                    class="sidebar-sub-item {% if active_menu == 'post_list' %}active{% endif %}">投稿一覧</a>
+                <a href="{{ url_for('admin.create_post') }}"
+                    class="sidebar-sub-item {% if active_menu == 'post_new' %}active{% endif %}">新規登録</a>
             </div>
 
             <div
@@ -173,98 +189,16 @@
                     class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
             </div>
             <div class="flex flex-col">
-                <div class="sidebar-sub-item">会員一覧</div>
-                <div class="sidebar-sub-item active">新規登録</div>
+                <a href="{{ url_for('admin.admin_users') }}"
+                    class="sidebar-sub-item {% if active_menu == 'user_list' %}active{% endif %}">会員一覧</a>
+                <a href="{{ url_for('admin.admin_user_new') }}"
+                    class="sidebar-sub-item {% if active_menu == 'user_new' %}active{% endif %}">新規登録</a>
             </div>
         </aside>
 
         <!-- MAIN -->
         <main class="p-4 md:p-8 flex flex-col gap-6 min-w-0">
-
-            <!-- PAGE HEADER -->
-            <div class="flex flex-col gap-2">
-                <div
-                    class="flex items-center gap-1.5 text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-wider">
-                    <span class="text-custom-accent font-bold">Admin</span>
-                    <span class="opacity-40">/</span>
-                    <span class="text-custom-accent font-bold">Members</span>
-                    <span class="opacity-40">/</span>
-                    <span>New Member</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="/admin/users" class="text-custom-text-muted hover:text-custom-accent transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                        </svg>
-                    </a>
-                    <h1 class="text-2xl md:text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">
-                        新規会員登録</h1>
-                </div>
-            </div>
-
-            <!-- FORM CARD -->
-            <div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden">
-                <form action="#" method="POST" class="p-6 md:p-8 flex flex-col gap-6">
-                    <!-- 名前 -->
-                    <div>
-                        <label for="name" class="label-admin">名前</label>
-                        <input type="text" id="name" name="name" placeholder="例：山田 花子" class="input-admin" required>
-                    </div>
-
-                    <!-- メールアドレス -->
-                    <div>
-                        <label for="email" class="label-admin">メールアドレス</label>
-                        <input type="email" id="email" name="email" placeholder="example@niigata-psy.jp"
-                            class="input-admin" required>
-                    </div>
-
-                    <!-- パスワード -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="password" class="label-admin">パスワード</label>
-                            <input type="password" id="password" name="password" class="input-admin" required>
-                        </div>
-                        <div>
-                            <label for="password_confirm" class="label-admin">パスワード（確認）</label>
-                            <input type="password" id="password_confirm" name="password_confirm" class="input-admin"
-                                required>
-                        </div>
-                    </div>
-
-                    <!-- 権限 -->
-                    <div>
-                        <label for="role" class="label-admin">権限</label>
-                        <div class="relative">
-                            <select id="role" name="role" class="input-admin appearance-none cursor-pointer pr-10">
-                                <option value="member">一般会員</option>
-                                <option value="active_member">正会員</option>
-                                <option value="admin">管理者</option>
-                            </select>
-                            <span
-                                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-custom-text-muted pointer-events-none">▼</span>
-                        </div>
-                    </div>
-
-                    <!-- 紹介文 -->
-                    <div>
-                        <label for="bio" class="label-admin">紹介文</label>
-                        <textarea id="bio" name="bio" rows="4" placeholder="会員プロフィールに表示される紹介文を入力してください。"
-                            class="input-admin h-auto py-3 resize-none"></textarea>
-                    </div>
-
-                    <!-- ACTIONS -->
-                    <div class="flex items-center justify-end gap-4 pt-4 border-t border-custom-border-light">
-                        <a href="/admin/users"
-                            class="text-xs font-bold text-custom-text-muted hover:text-custom-text-secondary transition-colors uppercase tracking-widest font-mono-dm">Cancel</a>
-                        <button type="submit" class="btn-admin-primary px-8 py-2.5 text-sm">
-                            登録する
-                        </button>
-                    </div>
-                </form>
-            </div>
-
+            {% block main_content %}{% endblock %}
         </main>
 
         <!-- FOOTER -->
@@ -292,17 +226,20 @@
         sidebarToggle.addEventListener('click', toggleSidebar);
         sidebarOverlay.addEventListener('click', toggleSidebar);
 
+        // Resize handler to ensure sidebar is visible on md+
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768) {
                 sidebar.classList.remove('-translate-x-full');
                 sidebarOverlay.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
             } else if (!sidebarOverlay.classList.contains('hidden')) {
+                // Keep mobile state if already open
             } else {
                 sidebar.classList.add('-translate-x-full');
             }
         });
     </script>
+    {% block extra_js %}{% endblock %}
 </body>
 
 </html>
