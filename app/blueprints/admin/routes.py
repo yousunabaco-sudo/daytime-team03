@@ -4,13 +4,9 @@ from flask_login import login_required, current_user
 from app.models import Post, Category, User, db
 
 @admin_bp.route('/')
-@admin_bp.route('/dashboard')
 @login_required
-def dashboard():
-    posts = Post.query.order_by(Post.created_at.desc()).limit(10).all()
-    post_count = Post.query.count()
-    user_count = User.query.count()
-    return render_template('admin/dashboard.html', title='管理画面', posts=posts, post_count=post_count, user_count=user_count)
+def index():
+    return redirect(url_for('admin.post_list'))
 
 @admin_bp.route('/posts')
 @login_required
