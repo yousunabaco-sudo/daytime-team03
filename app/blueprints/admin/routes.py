@@ -52,18 +52,32 @@ def create_post():
 def admin_users():
     page = request.args.get('page', 1, type=int)
     q = request.args.get('q', '')
+    role = request.args.get('role', '')
+    sort = request.args.get('sort', 'newest')
     
     query = User.query
     if q:
         query = query.filter((User.name.contains(q)) | (User.email.contains(q)))
     
-    pagination = query.order_by(User.created_at.desc()).paginate(page=page, per_page=10, error_out=False)
+    if role:
+        query = query.filter(User.role == role)
+    
+    if sort == 'name_asc':
+        query = query.order_by(User.name.asc())
+    elif sort == 'name_desc':
+        query = query.order_by(User.name.desc())
+    else:
+        query = query.order_by(User.created_at.desc())
+        
+    pagination = query.paginate(page=page, per_page=10, error_out=False)
     users = pagination.items
     
     return render_template('admin/admin_users.html', 
                          users=users, 
                          pagination=pagination, 
                          q=q,
+                         role=role,
+                         sort=sort,
                          active_menu='user_list')
 
 @admin_bp.route('/users/new')

@@ -27,27 +27,34 @@
 <!-- TOOLBAR -->
 <div
     class="bg-white border border-custom-border rounded-custom p-4 shadow-custom-sm flex flex-col sm:flex-row sm:items-center gap-3">
-    <form action="{{ url_for('admin.admin_users') }}" method="GET" class="relative flex-1 w-full sm:max-w-md">
-        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-custom-text-muted opacity-60">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-        </span>
-        <input type="text" name="q" value="{{ q }}" placeholder="名前・メールアドレスで検索"
-            class="w-full h-10 bg-custom-surface-2 border border-custom-border rounded-lg pl-10 pr-4 text-[13px] font-mono-dm placeholder:text-custom-text-muted focus:outline-none focus:border-custom-accent transition-all">
+    <form action="{{ url_for('admin.admin_users') }}" method="GET"
+        class="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
+        <div class="relative flex-1 w-full sm:max-w-md">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-custom-text-muted opacity-60">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span>
+            <input type="text" name="q" value="{{ q }}" placeholder="名前・メールアドレスで検索"
+                class="w-full h-10 bg-custom-surface-2 border border-custom-border rounded-lg pl-10 pr-4 text-[13px] font-mono-dm placeholder:text-custom-text-muted focus:outline-none focus:border-custom-accent transition-all">
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto">
+            <select name="role" onchange="this.form.submit()"
+                class="flex-1 sm:flex-none px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors appearance-none">
+                <option value="">権限: 全て</option>
+                <option value="admin" {{ 'selected' if role=='admin' }}>権限: 管理者</option>
+                <option value="user" {{ 'selected' if role=='user' }}>権限: 会員</option>
+            </select>
+            <select name="sort" onchange="this.form.submit()"
+                class="flex-1 sm:flex-none px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors appearance-none">
+                <option value="newest" {{ 'selected' if sort=='newest' }}>登録日 (降順)</option>
+                <option value="name_asc" {{ 'selected' if sort=='name_asc' }}>名前 (昇順)</option>
+                <option value="name_desc" {{ 'selected' if sort=='name_desc' }}>名前 (降順)</option>
+            </select>
+        </div>
     </form>
-    <div class="flex gap-2">
-        <div
-            class="flex-1 sm:flex-none flex items-center justify-between gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
-            ステータス <span class="text-[9px] opacity-40">▾</span>
-        </div>
-        <div
-            class="flex-1 sm:flex-none flex items-center justify-between gap-2 px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors">
-            並び順 <span class="text-[9px] opacity-40">▾</span>
-        </div>
-    </div>
     <div class="hidden lg:block ml-auto text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest">
         {{ pagination.first }}–{{ pagination.last }} OF {{ pagination.total }}
     </div>
@@ -68,7 +75,7 @@
                     登録日 <span class="text-[9px]">↓</span></th>
                 <th
                     class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest text-center">
-                    ステータス</th>
+                    権限</th>
                 <th
                     class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest text-right">
                     操作</th>
