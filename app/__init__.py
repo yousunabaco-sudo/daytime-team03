@@ -12,4 +12,8 @@ def create_app():
     def index():
         return render_template('index.html')
 
+    @app.route('/blog/detail')
+    def blog_detail():
+        return render_template('blog_detail.html')
+
     return app
