@@ -80,9 +80,44 @@ def admin_users():
                          sort=sort,
                          active_menu='user_list')
 
-@admin_bp.route('/users/new')
+@admin_bp.route('/users/new', methods=['GET', 'POST'])
 @login_required
 def admin_user_new():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_confirm = request.form.get('password_confirm')
+        role = request.form.get('role', 'member')
+        profile = request.form.get('bio') # Introducing field as bio in form
+        
+        errors = {}
+        if not name:
+            errors['name'] = '名前を入力してください。'
+        if not email:
+            errors['email'] = 'メールアドレスを入力してください。'
+        elif User.query.filter_by(email=email).first():
+            errors['email'] = 'このメールアドレスは既に登録されています。'
+        
+        if not password:
+            errors['password'] = 'パスワードを入力してください。'
+        elif password != password_confirm:
+            errors['password_confirm'] = 'パスワードが一致しません。'
+            
+        if errors:
+            return render_template('admin/admin_user_new.html', 
+                                 active_menu='user_new',
+                                 errors=errors,
+                                 values=request.form)
+        
+        user = User(name=name, email=email, role=role, profile=profile)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        
+        flash(f'会員「{name}」を登録しました。')
+        return redirect(url_for('admin.admin_users'))
+        
     return render_template('admin/admin_user_new.html', active_menu='user_new')
 
 # --- 記事編集・削除 ---

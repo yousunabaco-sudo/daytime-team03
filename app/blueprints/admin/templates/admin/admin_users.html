@@ -45,7 +45,7 @@
                 class="flex-1 sm:flex-none px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors appearance-none">
                 <option value="">権限: 全て</option>
                 <option value="admin" {{ 'selected' if role=='admin' }}>権限: 管理者</option>
-                <option value="user" {{ 'selected' if role=='user' }}>権限: 会員</option>
+                <option value="member" {{ 'selected' if role=='member' }}>権限: 一般会員</option>
             </select>
             <select name="sort" onchange="this.form.submit()"
                 class="flex-1 sm:flex-none px-3.5 h-10 bg-custom-surface-2 border border-custom-border rounded-lg text-[12px] font-mono-dm text-custom-text-secondary cursor-pointer hover:bg-custom-surface-3 transition-colors appearance-none">
@@ -95,7 +95,7 @@
                 <td class="px-4 py-4 text-center">
                     <span class="status-badge-active">
                         <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                        {{ '管理者' if user.role == 'admin' else '会員' }}
+                        {{ '管理者' if user.role == 'admin' else '一般会員' }}
                     </span>
                 </td>
                 <td class="px-4 py-4">
