@@ -27,40 +27,55 @@
 
 <!-- FORM CARD -->
 <div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden">
-    <form action="#" method="POST" class="p-6 md:p-8 flex flex-col gap-6">
+    <form action="{{ url_for('admin.admin_user_new') }}" method="POST" class="p-6 md:p-8 flex flex-col gap-6">
         <!-- 名前 -->
         <div>
-            <label for="name" class="label-admin">名前</label>
-            <input type="text" id="name" name="name" placeholder="例：山田 花子" class="input-admin" required>
+            <label for="name" class="label-admin">名前 <span class="text-red-500">*</span></label>
+            <input type="text" id="name" name="name" value="{{ values.name if values else '' }}" placeholder="例：山田 花子"
+                class="input-admin {{ 'border-red-500' if errors and errors.name else '' }}" required>
+            {% if errors and errors.name %}
+            <p class="text-red-500 text-[11px] mt-1">{{ errors.name }}</p>
+            {% endif %}
         </div>
 
         <!-- メールアドレス -->
         <div>
-            <label for="email" class="label-admin">メールアドレス</label>
-            <input type="email" id="email" name="email" placeholder="example@niigata-psy.jp" class="input-admin"
-                required>
+            <label for="email" class="label-admin">メールアドレス <span class="text-red-500">*</span></label>
+            <input type="email" id="email" name="email" value="{{ values.email if values else '' }}"
+                placeholder="example@niigata-psy.jp"
+                class="input-admin {{ 'border-red-500' if errors and errors.email else '' }}" required>
+            {% if errors and errors.email %}
+            <p class="text-red-500 text-[11px] mt-1">{{ errors.email }}</p>
+            {% endif %}
         </div>
 
         <!-- パスワード -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="password" class="label-admin">パスワード</label>
-                <input type="password" id="password" name="password" class="input-admin" required>
+                <label for="password" class="label-admin">パスワード <span class="text-red-500">*</span></label>
+                <input type="password" id="password" name="password"
+                    class="input-admin {{ 'border-red-500' if errors and errors.password else '' }}" required>
+                {% if errors and errors.password %}
+                <p class="text-red-500 text-[11px] mt-1">{{ errors.password }}</p>
+                {% endif %}
             </div>
             <div>
-                <label for="password_confirm" class="label-admin">パスワード（確認）</label>
-                <input type="password" id="password_confirm" name="password_confirm" class="input-admin" required>
+                <label for="password_confirm" class="label-admin">パスワード（確認） <span class="text-red-500">*</span></label>
+                <input type="password" id="password_confirm" name="password_confirm"
+                    class="input-admin {{ 'border-red-500' if errors and errors.password_confirm else '' }}" required>
+                {% if errors and errors.password_confirm %}
+                <p class="text-red-500 text-[11px] mt-1">{{ errors.password_confirm }}</p>
+                {% endif %}
             </div>
         </div>
 
         <!-- 権限 -->
         <div>
-            <label for="role" class="label-admin">権限</label>
+            <label for="role" class="label-admin">権限 <span class="text-red-500">*</span></label>
             <div class="relative">
                 <select id="role" name="role" class="input-admin appearance-none cursor-pointer pr-10">
-                    <option value="member">一般会員</option>
-                    <option value="active_member">正会員</option>
-                    <option value="admin">管理者</option>
+                    <option value="member" {{ 'selected' if values and values.role=='member' }}>一般会員</option>
+                    <option value="admin" {{ 'selected' if values and values.role=='admin' }}>管理者</option>
                 </select>
                 <span
                     class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-custom-text-muted pointer-events-none">▼</span>
@@ -71,7 +86,7 @@
         <div>
             <label for="bio" class="label-admin">紹介文</label>
             <textarea id="bio" name="bio" rows="4" placeholder="会員プロフィールに表示される紹介文を入力してください。"
-                class="input-admin h-auto py-3 resize-none"></textarea>
+                class="input-admin h-auto py-3 resize-none">{{ values.bio if values else '' }}</textarea>
         </div>
 
         <!-- ACTIONS -->

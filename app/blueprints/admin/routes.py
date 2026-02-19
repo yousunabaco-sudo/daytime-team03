@@ -4,19 +4,28 @@ from flask_login import login_required, current_user
 from app.models import Post, Category, User, db
 
 @admin_bp.route('/')
-@admin_bp.route('/dashboard')
 @login_required
-def dashboard():
-    posts = Post.query.order_by(Post.created_at.desc()).limit(10).all()
-    post_count = Post.query.count()
-    user_count = User.query.count()
-    return render_template('admin/dashboard.html', title='管理画面', posts=posts, post_count=post_count, user_count=user_count)
+def index():
+    return redirect(url_for('admin.post_list'))
 
 @admin_bp.route('/posts')
 @login_required
 def post_list():
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    return render_template('admin/post_list.html', title='記事管理', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    q = request.args.get('q', '')
+    
+    query = Post.query
+    if q:
+        query = query.filter(Post.title.contains(q))
+    
+    pagination = query.order_by(Post.created_at.desc()).paginate(page=page, per_page=10, error_out=False)
+    posts = pagination.items
+    
+    return render_template('admin/post_list.html', 
+                         title='記事管理', 
+                         posts=posts, 
+                         pagination=pagination, 
+                         q=q)
 
 @admin_bp.route('/posts/new', methods=['GET', 'POST'])
 @login_required
@@ -41,12 +50,74 @@ def create_post():
 @admin_bp.route('/users')
 @login_required
 def admin_users():
-    users = User.query.all()
-    return render_template('admin/admin_users.html', users=users, active_menu='user_list')
+    page = request.args.get('page', 1, type=int)
+    q = request.args.get('q', '')
+    role = request.args.get('role', '')
+    sort = request.args.get('sort', 'newest')
+    
+    query = User.query
+    if q:
+        query = query.filter((User.name.contains(q)) | (User.email.contains(q)))
+    
+    if role:
+        query = query.filter(User.role == role)
+    
+    if sort == 'name_asc':
+        query = query.order_by(User.name.asc())
+    elif sort == 'name_desc':
+        query = query.order_by(User.name.desc())
+    else:
+        query = query.order_by(User.created_at.desc())
+        
+    pagination = query.paginate(page=page, per_page=10, error_out=False)
+    users = pagination.items
+    
+    return render_template('admin/admin_users.html', 
+                         users=users, 
+                         pagination=pagination, 
+                         q=q,
+                         role=role,
+                         sort=sort,
+                         active_menu='user_list')
 
-@admin_bp.route('/users/new')
+@admin_bp.route('/users/new', methods=['GET', 'POST'])
 @login_required
 def admin_user_new():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        password_confirm = request.form.get('password_confirm')
+        role = request.form.get('role', 'member')
+        profile = request.form.get('bio') # Introducing field as bio in form
+        
+        errors = {}
+        if not name:
+            errors['name'] = '名前を入力してください。'
+        if not email:
+            errors['email'] = 'メールアドレスを入力してください。'
+        elif User.query.filter_by(email=email).first():
+            errors['email'] = 'このメールアドレスは既に登録されています。'
+        
+        if not password:
+            errors['password'] = 'パスワードを入力してください。'
+        elif password != password_confirm:
+            errors['password_confirm'] = 'パスワードが一致しません。'
+            
+        if errors:
+            return render_template('admin/admin_user_new.html', 
+                                 active_menu='user_new',
+                                 errors=errors,
+                                 values=request.form)
+        
+        user = User(name=name, email=email, role=role, profile=profile)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        
+        flash(f'会員「{name}」を登録しました。')
+        return redirect(url_for('admin.admin_users'))
+        
     return render_template('admin/admin_user_new.html', active_menu='user_new')
 
 # --- 記事編集・削除 ---
