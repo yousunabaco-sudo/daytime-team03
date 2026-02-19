@@ -16,4 +16,16 @@ def create_app():
     def blog_detail():
         return render_template('blog_detail.html')
 
+    @app.route('/admin')
+    def admin_login():
+        return render_template('admin_login.html')
+
+    @app.route('/admin/users')
+    def admin_users():
+        return render_template('admin_users.html')
+
+    @app.route('/admin/users/new')
+    def admin_user_new():
+        return render_template('admin_user_new.html')
+
     return app
