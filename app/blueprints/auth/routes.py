@@ -21,7 +21,7 @@ def login():
             next_page = url_for('admin.dashboard')
         return redirect(next_page)
         
-    return render_template('auth/login.html', title='ログイン')
+    return render_template('auth/admin_login.html', title='ログイン')
 
 @auth_bp.route('/logout')
 def logout():

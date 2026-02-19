@@ -8,6 +8,10 @@ def index():
     posts = Post.query.filter_by(status='published').order_by(Post.created_at.desc()).limit(5).all()
     return render_template('main/index.html', title='ホーム', posts=posts)
 
+@main_bp.route('/blog/detail')
+def blog_detail():
+    return render_template('main/blog_detail.html')
+
 @main_bp.route('/essay')
 def essay_list():
     return render_template('main/essay_list.html', title='エッセー・書評')

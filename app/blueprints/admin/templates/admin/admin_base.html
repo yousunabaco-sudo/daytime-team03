@@ -167,8 +167,10 @@
                     class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
             </div>
             <div class="flex flex-col">
-                <div class="sidebar-sub-item {% if active_menu == 'post_list' %}active{% endif %}">投稿一覧</div>
-                <div class="sidebar-sub-item {% if active_menu == 'post_new' %}active{% endif %}">新規登録</div>
+                <a href="{{ url_for('admin.post_list') }}"
+                    class="sidebar-sub-item {% if active_menu == 'post_list' %}active{% endif %}">投稿一覧</a>
+                <a href="{{ url_for('admin.create_post') }}"
+                    class="sidebar-sub-item {% if active_menu == 'post_new' %}active{% endif %}">新規登録</a>
             </div>
 
             <div
@@ -187,9 +189,9 @@
                     class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
             </div>
             <div class="flex flex-col">
-                <a href="/admin/users"
+                <a href="{{ url_for('admin.admin_users') }}"
                     class="sidebar-sub-item {% if active_menu == 'user_list' %}active{% endif %}">会員一覧</a>
-                <a href="/admin/users/new"
+                <a href="{{ url_for('admin.admin_user_new') }}"
                     class="sidebar-sub-item {% if active_menu == 'user_new' %}active{% endif %}">新規登録</a>
             </div>
         </aside>
