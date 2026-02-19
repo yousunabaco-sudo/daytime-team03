@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from .models import db
 
 def create_app():
@@ -10,6 +10,6 @@ def create_app():
 
     @app.route('/')
     def index():
-        return "Hello, World! (Project Reset)"
+        return render_template('index.html')
 
     return app
