@@ -1,308 +1,86 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "admin_base.html" %}
+{% set active_menu = 'user_new' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規会員登録 | 管理画面 | 新潟心理療法同好会</title>
-    <!-- Tailwind Play CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'custom-bg': '#f7f8fc',
-                        'custom-surface': '#ffffff',
-                        'custom-surface-2': '#f2f4f9',
-                        'custom-surface-3': '#e8ebf4',
-                        'custom-border': '#e0e4f0',
-                        'custom-border-light': '#eceef8',
-                        'custom-text-primary': '#1a1d2e',
-                        'custom-text-secondary': '#5a607a',
-                        'custom-text-muted': '#9ba3bf',
-                        'custom-accent': '#4f7c6e',
-                        'custom-accent-light': '#eaf3f0',
-                        'custom-accent-mid': '#c6dfd9',
-                        'custom-accent-2': '#b87a52',
-                        'custom-accent-2-light': '#fdf0e8',
-                        'custom-wireframe-fill': '#eef0f8',
-                        'custom-wireframe-img': '#dde1ef',
-                        'custom-wireframe-dark': '#c8cedf',
-                        'custom-annotation': '#7b6fbd',
-                        'custom-annotation-bg': '#f3f1fc',
-                        'custom-danger': '#c0392b',
-                        'custom-danger-light': '#fdf0ee',
-                    },
-                    fontFamily: {
-                        'header-sans': ['"Noto Sans JP"', 'sans-serif'],
-                        'sans-jp': ['"Noto Sans JP"', 'sans-serif'],
-                        'mono-dm': ['"DM Mono"', 'monospace'],
-                    },
-                    borderRadius: {
-                        'custom': '12px',
-                    },
-                    boxShadow: {
-                        'custom-sm': '0 2px 8px rgba(26, 29, 46, 0.06)',
-                        'custom': '0 8px 32px rgba(26, 29, 46, 0.09)',
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-custom-surface-2 text-custom-text-primary font-sans-jp text-sm leading-relaxed;
-            }
-        }
-        @layer components {
-            .sidebar-item {
-                @apply flex items-center gap-2.5 px-5 py-2.5 text-[13px] font-medium text-custom-text-secondary border-l-[3px] border-transparent hover:bg-custom-surface-2 transition-all cursor-pointer;
-            }
-            .sidebar-item.active {
-                @apply text-custom-accent bg-custom-accent-light border-custom-accent font-semibold;
-            }
-            .sidebar-sub-item {
-                @apply flex items-center gap-2 px-11 py-2 text-[12px] text-custom-text-secondary border-l-[3px] border-transparent hover:bg-custom-surface-2 transition-all cursor-pointer;
-            }
-            .sidebar-sub-item.active {
-                @apply text-custom-accent bg-custom-accent-light border-custom-accent font-semibold;
-            }
-            .btn-admin {
-                @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer;
-            }
-            .btn-admin-primary {
-                @apply btn-admin bg-custom-accent text-white shadow-lg shadow-custom-accent/20 hover:bg-opacity-90;
-            }
-            .btn-admin-ghost {
-                @apply btn-admin bg-white border border-custom-border text-custom-text-secondary hover:bg-custom-surface-2;
-            }
-            .input-admin {
-                @apply w-full h-10 px-4 bg-custom-surface-2 border border-custom-border rounded-lg text-[13px] font-mono-dm placeholder:text-custom-text-muted focus:outline-none focus:border-custom-accent transition-all hover:bg-custom-surface-3;
-            }
-            .label-admin {
-                @apply text-[11px] font-bold text-custom-text-muted uppercase tracking-widest mb-1.5 block;
-            }
-        }
-    </style>
-</head>
+{% block title %}新規会員登録{% endblock %}
 
-<body>
-    <!-- SHELL -->
-    <div class="grid grid-rows-[64px_1fr] md:grid-cols-[240px_1fr] min-h-screen relative w-full overflow-x-hidden">
-
-        <!-- TOP BAR -->
-        <header
-            class="col-span-1 md:col-span-2 bg-white border-b border-custom-border flex items-center px-4 md:px-6 sticky top-0 z-50">
-            <!-- Mobile Menu Toggle -->
-            <button id="sidebar-toggle"
-                class="md:hidden p-2 -ml-2 mr-2 text-custom-text-secondary hover:bg-custom-surface-2 rounded-lg transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-            </button>
-
-            <div class="font-header-sans font-bold text-lg text-custom-text-primary tracking-tight">
-                新潟心理療法同好会<span class="text-custom-accent">.</span>
-            </div>
-            <div
-                class="ml-2 md:ml-3 px-2 py-0.5 bg-custom-surface-2 border border-custom-border rounded text-[10px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest">
-                Admin
-            </div>
-
-            <div class="ml-auto flex items-center gap-2 md:gap-4">
-                <div
-                    class="hidden sm:flex items-center gap-2.5 px-3 py-1 bg-custom-surface-2 border border-custom-border rounded-full">
-                    <div class="w-6 h-6 rounded-full bg-custom-wireframe-img border border-custom-border"></div>
-                    <span class="text-xs font-medium text-custom-text-secondary">管理者</span>
-                </div>
-                <button
-                    class="text-[10px] md:text-[11px] font-mono-dm text-custom-text-muted border border-custom-border px-2.5 md:px-3 py-1.5 rounded-md bg-white hover:bg-custom-surface-2 transition-colors uppercase tracking-widest font-bold">
-                    Logout
-                </button>
-            </div>
-        </header>
-
-        <!-- SIDEBAR (Overlay on Mobile) -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-black/20 z-40 hidden md:hidden transition-opacity"></div>
-        <aside id="sidebar"
-            class="fixed md:static inset-y-0 left-0 w-[240px] bg-white border-r border-custom-border py-6 flex flex-col gap-1 overflow-y-auto z-50 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-custom md:shadow-none">
-            <div class="px-5 mb-2 text-[9px] font-bold text-custom-text-muted uppercase tracking-[0.14em] font-mono-dm">
-                Menu</div>
-
-            <div
-                class="sidebar-item font-semibold text-custom-text-primary flex justify-between items-center group mt-2">
-                <div class="flex items-center gap-2.5">
-                    <span class="text-custom-text-muted group-hover:text-custom-accent transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                        </svg>
-                    </span>
-                    <span>投稿管理</span>
-                </div>
-                <span
-                    class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
-            </div>
-            <div class="flex flex-col">
-                <div class="sidebar-sub-item">投稿一覧</div>
-                <div class="sidebar-sub-item">新規登録</div>
-            </div>
-
-            <div
-                class="sidebar-item font-semibold text-custom-text-primary flex justify-between items-center group mt-2">
-                <div class="flex items-center gap-2.5">
-                    <span class="text-custom-text-muted group-hover:text-custom-accent transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                        </svg>
-                    </span>
-                    <span>会員管理</span>
-                </div>
-                <span
-                    class="text-[10px] text-custom-text-muted group-hover:text-custom-text-primary transition-colors">▾</span>
-            </div>
-            <div class="flex flex-col">
-                <div class="sidebar-sub-item">会員一覧</div>
-                <div class="sidebar-sub-item active">新規登録</div>
-            </div>
-        </aside>
-
-        <!-- MAIN -->
-        <main class="p-4 md:p-8 flex flex-col gap-6 min-w-0">
-
-            <!-- PAGE HEADER -->
-            <div class="flex flex-col gap-2">
-                <div
-                    class="flex items-center gap-1.5 text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-wider">
-                    <span class="text-custom-accent font-bold">Admin</span>
-                    <span class="opacity-40">/</span>
-                    <span class="text-custom-accent font-bold">Members</span>
-                    <span class="opacity-40">/</span>
-                    <span>New Member</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="/admin/users" class="text-custom-text-muted hover:text-custom-accent transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                        </svg>
-                    </a>
-                    <h1 class="text-2xl md:text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">
-                        新規会員登録</h1>
-                </div>
-            </div>
-
-            <!-- FORM CARD -->
-            <div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden">
-                <form action="#" method="POST" class="p-6 md:p-8 flex flex-col gap-6">
-                    <!-- 名前 -->
-                    <div>
-                        <label for="name" class="label-admin">名前</label>
-                        <input type="text" id="name" name="name" placeholder="例：山田 花子" class="input-admin" required>
-                    </div>
-
-                    <!-- メールアドレス -->
-                    <div>
-                        <label for="email" class="label-admin">メールアドレス</label>
-                        <input type="email" id="email" name="email" placeholder="example@niigata-psy.jp"
-                            class="input-admin" required>
-                    </div>
-
-                    <!-- パスワード -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="password" class="label-admin">パスワード</label>
-                            <input type="password" id="password" name="password" class="input-admin" required>
-                        </div>
-                        <div>
-                            <label for="password_confirm" class="label-admin">パスワード（確認）</label>
-                            <input type="password" id="password_confirm" name="password_confirm" class="input-admin"
-                                required>
-                        </div>
-                    </div>
-
-                    <!-- 権限 -->
-                    <div>
-                        <label for="role" class="label-admin">権限</label>
-                        <div class="relative">
-                            <select id="role" name="role" class="input-admin appearance-none cursor-pointer pr-10">
-                                <option value="member">一般会員</option>
-                                <option value="active_member">正会員</option>
-                                <option value="admin">管理者</option>
-                            </select>
-                            <span
-                                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-custom-text-muted pointer-events-none">▼</span>
-                        </div>
-                    </div>
-
-                    <!-- 紹介文 -->
-                    <div>
-                        <label for="bio" class="label-admin">紹介文</label>
-                        <textarea id="bio" name="bio" rows="4" placeholder="会員プロフィールに表示される紹介文を入力してください。"
-                            class="input-admin h-auto py-3 resize-none"></textarea>
-                    </div>
-
-                    <!-- ACTIONS -->
-                    <div class="flex items-center justify-end gap-4 pt-4 border-t border-custom-border-light">
-                        <a href="/admin/users"
-                            class="text-xs font-bold text-custom-text-muted hover:text-custom-text-secondary transition-colors uppercase tracking-widest font-mono-dm">Cancel</a>
-                        <button type="submit" class="btn-admin-primary px-8 py-2.5 text-sm">
-                            登録する
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-        </main>
-
-        <!-- FOOTER -->
-        <footer
-            class="md:col-span-2 h-10 bg-white border-t border-custom-border flex items-center justify-between px-6 text-[10px] text-custom-text-muted font-mono-dm shrink-0 sticky bottom-0 z-50">
-            <span>© 2026 新潟心理療法同好会</span>
-            <div class="hidden sm:flex gap-4">
-                <span>ADMIN V1.0</span>
-            </div>
-        </footer>
+{% block main_content %}
+<!-- PAGE HEADER -->
+<div class="flex flex-col gap-2">
+    <div class="flex items-center gap-1.5 text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-wider">
+        <span class="text-custom-accent font-bold">Admin</span>
+        <span class="opacity-40">/</span>
+        <span class="text-custom-accent font-bold">Members</span>
+        <span class="opacity-40">/</span>
+        <span>New Member</span>
     </div>
+    <div class="flex items-center gap-4">
+        <a href="/admin/users" class="text-custom-text-muted hover:text-custom-accent transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+        <h1 class="text-2xl md:text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">新規会員登録</h1>
+    </div>
+</div>
 
-    <!-- Sidebar Script -->
-    <script>
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
+<!-- FORM CARD -->
+<div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden">
+    <form action="#" method="POST" class="p-6 md:p-8 flex flex-col gap-6">
+        <!-- 名前 -->
+        <div>
+            <label for="name" class="label-admin">名前</label>
+            <input type="text" id="name" name="name" placeholder="例：山田 花子" class="input-admin" required>
+        </div>
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
-        }
+        <!-- メールアドレス -->
+        <div>
+            <label for="email" class="label-admin">メールアドレス</label>
+            <input type="email" id="email" name="email" placeholder="example@niigata-psy.jp" class="input-admin"
+                required>
+        </div>
 
-        sidebarToggle.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
+        <!-- パスワード -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="password" class="label-admin">パスワード</label>
+                <input type="password" id="password" name="password" class="input-admin" required>
+            </div>
+            <div>
+                <label for="password_confirm" class="label-admin">パスワード（確認）</label>
+                <input type="password" id="password_confirm" name="password_confirm" class="input-admin" required>
+            </div>
+        </div>
 
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                sidebar.classList.remove('-translate-x-full');
-                sidebarOverlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            } else if (!sidebarOverlay.classList.contains('hidden')) {
-            } else {
-                sidebar.classList.add('-translate-x-full');
-            }
-        });
-    </script>
-</body>
+        <!-- 権限 -->
+        <div>
+            <label for="role" class="label-admin">権限</label>
+            <div class="relative">
+                <select id="role" name="role" class="input-admin appearance-none cursor-pointer pr-10">
+                    <option value="member">一般会員</option>
+                    <option value="active_member">正会員</option>
+                    <option value="admin">管理者</option>
+                </select>
+                <span
+                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-custom-text-muted pointer-events-none">▼</span>
+            </div>
+        </div>
 
-</html>
+        <!-- 紹介文 -->
+        <div>
+            <label for="bio" class="label-admin">紹介文</label>
+            <textarea id="bio" name="bio" rows="4" placeholder="会員プロフィールに表示される紹介文を入力してください。"
+                class="input-admin h-auto py-3 resize-none"></textarea>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex items-center justify-end gap-4 pt-4 border-t border-custom-border-light">
+            <a href="/admin/users"
+                class="text-xs font-bold text-custom-text-muted hover:text-custom-text-secondary transition-colors uppercase tracking-widest font-mono-dm">Cancel</a>
+            <button type="submit" class="btn-admin-primary px-8 py-2.5 text-sm">
+                登録する
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
