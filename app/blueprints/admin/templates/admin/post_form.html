@@ -53,6 +53,36 @@
             reader.readAsDataURL(file);
         }
     });
+
+    // カテゴリー変更時のイベント開催日必須チェック
+    const categorySelect = document.getElementById('category_id');
+    const eventDateInput = document.getElementById('event_date');
+    const eventDateLabel = document.querySelector('label[for="event_date"]');
+
+    function updateEventDateRequirement() {
+        if (!categorySelect) return;
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        const slug = selectedOption.getAttribute('data-slug');
+
+        if (slug === 'event') {
+            eventDateInput.required = true;
+            if (!eventDateLabel.querySelector('.required-mark')) {
+                const mark = document.createElement('span');
+                mark.className = 'text-red-500 ml-1 required-mark';
+                mark.innerText = '*';
+                eventDateLabel.appendChild(mark);
+            }
+        } else {
+            eventDateInput.required = false;
+            const mark = eventDateLabel.querySelector('.required-mark');
+            if (mark) mark.remove();
+        }
+    }
+
+    if (categorySelect) {
+        categorySelect.addEventListener('change', updateEventDateRequirement);
+        updateEventDateRequirement(); // 初期表示時にも実行
+    }
 </script>
 {% endblock %}
 
@@ -94,11 +124,29 @@
             <div>
                 <label for="category_id" class="label-admin">カテゴリー</label>
                 <div class="relative">
-                    <select id="category_id" name="category_id"
-                        class="input-admin appearance-none cursor-pointer pr-10">
+                    <select id="category_id" name="category_id" class="input-admin appearance-none cursor-pointer pr-10"
+                        required>
                         {% for category in categories %}
-                        <option value="{{ category.id }}" {{ 'selected' if post and post.category_id==category.id
-                            else '' }}>{{ category.name }}</option>
+                        <option value="{{ category.id }}" data-slug="{{ category.slug }}" {{ 'selected' if post and
+                            post.category_id==category.id else '' }}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <span
+                        class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-custom-text-muted pointer-events-none">▼</span>
+                </div>
+            </div>
+
+            <!-- 投稿者 (Author) -->
+            <div>
+                <label for="user_id" class="label-admin">投稿者</label>
+                <div class="relative">
+                    <select id="user_id" name="user_id" class="input-admin appearance-none cursor-pointer pr-10"
+                        required>
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {{ 'selected' if (post and post.user_id==user.id) or (not post and
+                            current_user.id==user.id) else '' }}>
+                            {{ user.name }}
+                        </option>
                         {% endfor %}
                     </select>
                     <span

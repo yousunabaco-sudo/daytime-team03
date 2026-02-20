@@ -36,6 +36,7 @@ def post_list():
 @login_required
 def create_post():
     categories = Category.query.all()
+    users = User.query.all()
     if request.method == 'POST':
         title = request.form.get('title')
         content = request.form.get('content')
@@ -60,14 +61,35 @@ def create_post():
             file.save(os.path.join(upload_path, new_filename))
             eyecatch_img = new_filename
         
+        # バリデーション
+        errors = []
+        if not title:
+            errors.append('見出しを入力してください。')
+        if not content:
+            errors.append('本文を入力してください。')
+        if not category_id:
+            errors.append('カテゴリーを選択してください。')
+        if not published_at:
+            errors.append('公開日時を入力してください。')
+            
+        # イベントカテゴリの場合、開催日は必須
+        category = Category.query.get(category_id)
+        if category and category.slug == 'event' and not event_date:
+            errors.append('カテゴリーが「イベント」の場合は、イベント開催日を入力してください。')
+            
+        if errors:
+            for error in errors:
+                flash(error, 'error')
+            return render_template('admin/post_form.html', title='新規記事投稿', categories=categories, users=users, post=None, values=request.form)
+
         post = Post(title=title, content=content, category_id=category_id, 
-                    published_at=published_at, event_date=event_date, eyecatch_img=eyecatch_img, author=current_user)
+                    published_at=published_at, event_date=event_date, eyecatch_img=eyecatch_img, author=author)
         db.session.add(post)
         db.session.commit()
         flash('記事を投稿しました。')
         return redirect(url_for('admin.post_list'))
         
-    return render_template('admin/post_form.html', title='新規記事投稿', categories=categories)
+    return render_template('admin/post_form.html', title='新規記事投稿', categories=categories, users=users)
 
 # --- 会員管理 ---
 
@@ -197,10 +219,15 @@ def admin_user_edit(id):
 def edit_post(id):
     post = Post.query.get_or_404(id)
     categories = Category.query.all()
+    users = User.query.all()
     if request.method == 'POST':
         post.title = request.form.get('title')
         post.content = request.form.get('content')
         post.category_id = request.form.get('category_id')
+        
+        user_id = request.form.get('user_id')
+        if user_id:
+            post.user_id = user_id
         
         published_at_str = request.form.get('published_at')
         if published_at_str:
@@ -226,11 +253,30 @@ def edit_post(id):
             # 古い画像があれば削除（オプションですが、今回はシンプルに上書き扱いでカラム更新のみ）
             post.eyecatch_img = new_filename
         
+        # バリデーション
+        errors = []
+        if not post.title:
+            errors.append('見出しを入力してください。')
+        if not post.content:
+            errors.append('本文を入力してください。')
+        if not post.category_id:
+            errors.append('カテゴリーを選択してください。')
+        
+        # イベントカテゴリの場合、開催日は必須
+        category = Category.query.get(post.category_id)
+        if category and category.slug == 'event' and not post.event_date:
+            errors.append('カテゴリーが「イベント」の場合は、イベント開催日を入力してください。')
+            
+        if errors:
+            for error in errors:
+                flash(error, 'error')
+            return render_template('admin/post_form.html', title='記事編集', post=post, categories=categories, users=users)
+
         db.session.commit()
         flash('記事を更新しました。')
         return redirect(url_for('admin.post_list'))
         
-    return render_template('admin/post_form.html', title='記事編集', post=post, categories=categories)
+    return render_template('admin/post_form.html', title='記事編集', post=post, categories=categories, users=users)
 
 @admin_bp.route('/posts/<int:id>/delete', methods=['POST'])
 @login_required
