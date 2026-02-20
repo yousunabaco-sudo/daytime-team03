@@ -35,7 +35,7 @@ def index():
         event_posts = Post.query.filter(
             Post.category_id == event_category.id,
             Post.published_at <= now_jst
-        ).order_by(Post.published_at.desc()).limit(2).all()
+        ).order_by(Post.published_at.desc()).limit(4).all()
 
     return render_template('main/index.html', title='ホーム', 
                          posts=topics_posts, # Backward compatibility for base.html if needed, or primarily for topics section
