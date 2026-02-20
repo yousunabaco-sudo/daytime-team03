@@ -1,7 +1,11 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from app.blueprints.admin import admin_bp
 from flask_login import login_required, current_user
 from app.models import Post, Category, User, db
+from datetime import datetime
+import os
+import uuid
+from werkzeug.utils import secure_filename
 
 @admin_bp.route('/')
 @login_required
@@ -18,14 +22,15 @@ def post_list():
     if q:
         query = query.filter(Post.title.contains(q))
     
-    pagination = query.order_by(Post.created_at.desc()).paginate(page=page, per_page=10, error_out=False)
+    pagination = query.order_by(Post.published_at.desc()).paginate(page=page, per_page=10, error_out=False)
     posts = pagination.items
     
     return render_template('admin/post_list.html', 
                          title='記事管理', 
                          posts=posts, 
                          pagination=pagination, 
-                         q=q)
+                         q=q,
+                         now=datetime.utcnow())
 
 @admin_bp.route('/posts/new', methods=['GET', 'POST'])
 @login_required
@@ -35,9 +40,28 @@ def create_post():
         title = request.form.get('title')
         content = request.form.get('content')
         category_id = request.form.get('category_id')
-        status = request.form.get('status', 'published')
+        published_at_str = request.form.get('published_at')
+        published_at = datetime.strptime(published_at_str, '%Y-%m-%dT%H:%M') if published_at_str else datetime.utcnow()
         
-        post = Post(title=title, content=content, category_id=category_id, status=status, author=current_user)
+        event_date_str = request.form.get('event_date')
+        event_date = datetime.strptime(event_date_str, '%Y-%m-%dT%H:%M') if event_date_str else None
+        
+        # アイキャッチ画像の処理
+        eyecatch_img = None
+        file = request.files.get('eyecatch_img')
+        if file and file.filename != '':
+            filename = secure_filename(file.filename)
+            # ユニークなファイル名を生成
+            ext = os.path.splitext(filename)[1]
+            new_filename = f"{uuid.uuid4().hex}{ext}"
+            upload_path = os.path.join(current_app.root_path, 'static/uploads/eyecatch')
+            if not os.path.exists(upload_path):
+                os.makedirs(upload_path)
+            file.save(os.path.join(upload_path, new_filename))
+            eyecatch_img = new_filename
+        
+        post = Post(title=title, content=content, category_id=category_id, 
+                    published_at=published_at, event_date=event_date, eyecatch_img=eyecatch_img, author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('記事を投稿しました。')
@@ -177,7 +201,30 @@ def edit_post(id):
         post.title = request.form.get('title')
         post.content = request.form.get('content')
         post.category_id = request.form.get('category_id')
-        post.status = request.form.get('status')
+        
+        published_at_str = request.form.get('published_at')
+        if published_at_str:
+            post.published_at = datetime.strptime(published_at_str, '%Y-%m-%dT%H:%M')
+            
+        event_date_str = request.form.get('event_date')
+        if event_date_str:
+            post.event_date = datetime.strptime(event_date_str, '%Y-%m-%dT%H:%M')
+        else:
+            post.event_date = None
+        
+        # アイキャッチ画像の処理
+        file = request.files.get('eyecatch_img')
+        if file and file.filename != '':
+            filename = secure_filename(file.filename)
+            ext = os.path.splitext(filename)[1]
+            new_filename = f"{uuid.uuid4().hex}{ext}"
+            upload_path = os.path.join(current_app.root_path, 'static/uploads/eyecatch')
+            if not os.path.exists(upload_path):
+                os.makedirs(upload_path)
+            file.save(os.path.join(upload_path, new_filename))
+            
+            # 古い画像があれば削除（オプションですが、今回はシンプルに上書き扱いでカラム更新のみ）
+            post.eyecatch_img = new_filename
         
         db.session.commit()
         flash('記事を更新しました。')

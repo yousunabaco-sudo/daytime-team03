@@ -1,334 +1,164 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "main/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新潟心理療法同好会 | 心理療法士たちの活動について知りたくありませんか？</title>
-    <!-- Tailwind Play CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'custom-bg': '#f7f8fc',
-                        'custom-surface': '#ffffff',
-                        'custom-surface-2': '#f2f4f9',
-                        'custom-surface-3': '#e8ebf4',
-                        'custom-border': '#e0e4f0',
-                        'custom-border-light': '#eceef8',
-                        'custom-text-primary': '#1a1d2e',
-                        'custom-text-secondary': '#5a607a',
-                        'custom-text-muted': '#9ba3bf',
-                        'custom-accent': '#4f7c6e',
-                        'custom-accent-light': '#eaf3f0',
-                        'custom-accent-mid': '#c6dfd9',
-                        'custom-accent-2': '#b87a52',
-                        'custom-accent-2-light': '#fdf0e8',
-                        'custom-wireframe-fill': '#eef0f8',
-                        'custom-wireframe-img': '#dde1ef',
-                        'custom-wireframe-dark': '#c8cedf',
-                        'custom-annotation': '#7b6fbd',
-                        'custom-annotation-bg': '#f3f1fc',
-                    },
-                    fontFamily: {
-                        'header-sans': ['"Noto Sans JP"', 'sans-serif'],
-                        'sans-jp': ['"Noto Sans JP"', 'sans-serif'],
-                        'mono-dm': ['"DM Mono"', 'monospace'],
-                    },
-                    borderRadius: {
-                        'custom': '12px',
-                    },
-                    boxShadow: {
-                        'custom-sm': '0 2px 8px rgba(26, 29, 46, 0.06)',
-                        'custom': '0 8px 32px rgba(26, 29, 46, 0.09)',
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-custom-surface text-custom-text-primary font-sans-jp text-sm leading-relaxed;
-            }
-        }
-        @layer components {
-            .inner {
-                @apply max-w-[1200px] mx-auto px-6 md:px-12;
-            }
-            .section-label {
-                @apply text-[10px] font-medium text-custom-annotation uppercase tracking-widest mb-2 flex items-center gap-2 font-mono-dm;
-            }
-            .section-label::after {
-                content: '';
-                @apply flex-1 h-[1px] bg-gradient-to-r from-[#d4ceef] to-transparent;
-            }
-            .ph-tag {
-                @apply inline-block px-3 py-1 bg-custom-accent-light text-custom-accent rounded-md text-[11px] font-semibold tracking-wide font-mono-dm border border-custom-accent-mid;
-            }
-            .ph-btn-primary {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-custom-accent text-white rounded-md text-xs font-semibold tracking-wide;
-            }
-            .ph-btn-outline {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-accent text-custom-accent rounded-md text-xs font-semibold tracking-wide;
-            }
-        }
-    </style>
-</head>
+{% block title %}新潟心理療法同好会 | 心理療法士たちの活動について知りたくありませんか？{% endblock %}
 
-<body>
-    <div class="w-full bg-custom-surface overflow-hidden">
-        <!-- NAVBAR -->
-        <nav class="sticky top-0 z-[100] h-16 border-b border-custom-border bg-white/95 backdrop-blur-md">
-            <div class="inner h-full flex items-center gap-1">
-                <div class="font-header-sans font-bold text-xl text-custom-text-primary mr-auto tracking-tight">
-                    新潟心理療法同好会<span class="text-custom-accent">.</span>
-                </div>
-                <a href="/"
-                    class="text-[13px] text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold">ホーム</a>
-                <a href="#"
-                    class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">ブログ</a>
-                <a href="#"
-                    class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">お問い合わせ</a>
-            </div>
-        </nav>
-
-        <!-- HERO -->
-        <section class="grid grid-cols-1 md:grid-cols-2 min-h-[380px] border-b border-custom-border overflow-hidden">
-            <div
-                class="p-12 md:p-16 md:pl-20 flex flex-col justify-center gap-4 bg-gradient-to-br from-white via-white to-custom-accent-light">
-                <div class="text-[11px] font-semibold text-custom-accent tracking-[0.14em] uppercase font-mono-dm">
-                    Psychology & Community</div>
-                <h2 class="font-header-sans font-bold text-3xl md:text-4xl leading-tight text-custom-text-primary">
-                    心理と医療をつなぐ<br>専門家の交流の場
-                </h2>
-                <div class="flex flex-col gap-2">
-                    <div class="w-[88%]">テキストテキストテキストテキストテキストテキストテキスト</div>
-                    <div class="w-[60%]">テキストテキストテキストテキスト</div>
-                </div>
-                <div class="flex gap-3 mt-2">
-                    <button class="ph-btn-primary">活動を見る →</button>
-                </div>
-                <!--
-                <div class="flex gap-6 mt-4 pt-4 border-t border-custom-border-light">
-                    <div class="flex flex-col">
-                        <div class="font-mono-dm text-xl font-medium text-custom-accent">342</div>
-                        <div class="text-[10px] text-custom-text-muted tracking-wider">記事</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="font-mono-dm text-xl font-medium text-custom-accent">1.2k</div>
-                        <div class="text-[10px] text-custom-text-muted tracking-wider">コメント</div>
-                    </div>
-                </div>
-                -->
-            </div>
-            <div
-                class="bg-white flex items-center justify-center border-l border-custom-border relative overflow-hidden">
-                <img src="/static/img/main_image.png" alt="メインビジュアル" class="w-full h-full object-contain">
-            </div>
-        </section>
-
-        <!-- TOPICS -->
-        <section class="py-12 border-b border-custom-border-light">
-            <div class="inner">
-                <div class="section-label">トピックス / 注目記事</div>
-                <div class="flex items-end justify-between mb-6">
-                    <div>
-                        <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Topics</h3>
-                        <p class="text-xs text-custom-text-muted font-mono-dm mt-1">メンバーが注目するテーマ・話題</p>
-                    </div>
-                    <a href="#"
-                        class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
-                        →</a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Featured -->
-                    <div
-                        class="md:h-60 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm">
-                        <div
-                            class="h-48 md:h-auto border-b md:border-b-0 md:border-r border-custom-border overflow-hidden flex">
-                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
-                                class="w-full h-full object-cover opacity-60">
-                        </div>
-                        <div class="p-6 flex flex-col justify-center gap-3">
-                            <div class="flex flex-row gap-2 items-center">
-                                <span class="ph-tag self-start">認知行動療法</span>
-                                <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.12</span>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
-                                <div class="">あああああ</div>
-                            </div>
-                            <div class="flex items-center gap-2.5 mt-1">
-                                <div
-                                    class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between mt-1">
-                                <button class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px]">続きを読む →</button>
-                                <div class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                                    </svg>
-                                    18
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 1 -->
-                    <div
-                        class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
-                        <div class="h-32 border-b border-custom-border overflow-hidden">
-                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
-                                class="w-full h-full object-cover opacity-60">
-                        </div>
-                        <div class="p-4 flex flex-col gap-2 flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="ph-tag">マインドフルネス</span>
-                                <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.12</span>
-                            </div>
-                            <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
-                            <div class="flex items-center gap-2.5 mt-1">
-                                <div
-                                    class="ml-auto text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                                    </svg>
-                                    7
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div
-                        class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
-                        <div class="h-32 border-b border-custom-border overflow-hidden">
-                            <img src="https://placehold.jp/400x400.png" alt="イメージ"
-                                class="w-full h-full object-cover opacity-60">
-                        </div>
-                        <div class="p-4 flex flex-col gap-2 flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="ph-tag">臨床心理</span>
-                                <span class="text-[10px] text-custom-text-muted font-mono-dm">2025.01.10</span>
-                            </div>
-                            <div class="">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト</div>
-                            <div class="flex items-center gap-2.5 mt-1">
-                                <div
-                                    class="ml-auto text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                                    </svg>
-                                    7
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- EVENTS -->
-        <section class="py-12 bg-custom-surface-2 border-b border-custom-border-light">
-            <div class="inner">
-                <div class="section-label">イベント情報</div>
-                <div class="flex items-end justify-between mb-6">
-                    <div>
-                        <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Events</h3>
-                        <p class="text-xs text-custom-text-muted font-mono-dm mt-1">勉強会・オンライン交流会などの予定</p>
-                    </div>
-                    <a href="#"
-                        class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
-                        →</a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
-                    <!-- Event 1 -->
-                    <div
-                        class="flex gap-4 py-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent">
-                        <div
-                            class="flex flex-col items-center bg-custom-accent-light px-3 py-2 min-w-[54px] rounded-lg border border-custom-accent-mid shrink-0">
-                            <div class="text-[9px] text-custom-accent font-mono-dm font-semibold uppercase">Feb</div>
-                            <div class="font-header-sans font-bold text-2xl leading-none text-custom-text-primary">22
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-2 flex-1">
-                            <div class="text-[10px] font-semibold text-custom-accent font-mono-dm tracking-wider">
-                                オンライン勉強会</div>
-                            <div class="">テキストテキストテキスト</div>
-                        </div>
-                    </div>
-
-                    <!-- Event 2 (Warm) -->
-                    <div
-                        class="flex gap-4 py-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent-2">
-                        <div
-                            class="flex flex-col items-center bg-custom-accent-2-light px-3 py-2 min-w-[54px] rounded-lg border border-[#f0c9a8] shrink-0">
-                            <div class="text-[9px] text-custom-accent-2 font-mono-dm font-semibold uppercase">Mar</div>
-                            <div class="font-header-sans font-bold text-2xl leading-none text-custom-text-primary">08
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-2 flex-1">
-                            <div class="text-[10px] font-semibold text-custom-accent-2 font-mono-dm tracking-wider">交流会
-                            </div>
-                            <div class="">テキストテキストテキストテキストテキストテキストテキスト</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="bg-custom-text-primary text-white pt-12 pb-6">
-            <div class="inner flex flex-col gap-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="md:col-span-2 flex flex-col gap-3">
-                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会<span
-                                class="text-custom-accent">.</span>
-                        </div>
-                        <div class="text-[11px] text-[#9ba3bf] leading-relaxed">
-                            新潟を中心に活動する心理支援の専門家・支援者のための、<br>開かれた対話と学びの場です。
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
-                            Navigation</h4>
-                        <div class="flex flex-col gap-2 text-xs text-[#9ba3bf]">
-                            <a href="/" class="hover:text-white transition-colors">ホーム</a>
-                            <a href="/blog/detail" class="hover:text-white transition-colors">ブログ</a>
-                            <a href="#" class="hover:text-white transition-colors">お問い合わせ</a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
-                            Contact</h4>
-                        <div class="flex flex-col gap-2 text-xs text-[#9ba3bf]">
-                            <div>niigata.psychology@example.com</div>
-                            <div>新潟市中央区...</div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="border-t border-[#282d42] pt-4 flex justify-between items-center text-[10px] text-[#4a5068] font-mono-dm">
-                    <span>© 2026 新潟心理療法同好会</span>
-                </div>
-            </div>
-        </footer>
+{% block main_content %}
+<!-- HERO -->
+<section class="grid grid-cols-1 md:grid-cols-2 min-h-[380px] border-b border-custom-border overflow-hidden">
+    <div
+        class="p-12 md:p-16 md:pl-20 flex flex-col justify-center gap-4 bg-gradient-to-br from-white via-white to-custom-accent-light">
+        <div class="text-[11px] font-semibold text-custom-accent tracking-[0.14em] uppercase font-mono-dm">
+            Psychology & Community</div>
+        <h2 class="font-header-sans font-bold text-3xl md:text-4xl leading-tight text-custom-text-primary">
+            心理と医療をつなぐ<br>専門家の交流の場
+        </h2>
+        <div class="flex flex-col gap-2">
+            <div class="w-[88%]">テキストテキストテキストテキストテキストテキストテキスト</div>
+            <div class="w-[60%]">テキストテキストテキストテキスト</div>
+        </div>
+        <div class="flex gap-3 mt-2">
+            <button class="ph-btn-primary">活動を見る →</button>
+        </div>
     </div>
-</body>
+    <div class="bg-white flex items-center justify-center border-l border-custom-border relative overflow-hidden">
+        <img src="/static/img/main_image.png" alt="メインビジュアル" class="w-full h-full object-contain">
+    </div>
+</section>
 
-</html>
+<!-- TOPICS -->
+<section class="py-12 border-b border-custom-border-light">
+    <div class="inner">
+        <div class="section-label">トピックス / 注目記事</div>
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Topics</h3>
+                <p class="text-xs text-custom-text-muted font-mono-dm mt-1">メンバーが注目するテーマ・話題</p>
+            </div>
+            {% if topics_posts %}
+            <a href="{{ url_for('main.blog_list', category='topics') }}"
+                class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
+                →</a>
+            {% endif %}
+        </div>
+
+        {% if topics_posts %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Featured (Latest 1) -->
+            {% set featured_post = topics_posts[0] %}
+            <div
+                class="md:h-60 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm">
+                <div
+                    class="h-48 md:h-auto border-b md:border-b-0 md:border-r border-custom-border overflow-hidden flex">
+                    {% if featured_post.eyecatch_img %}
+                    <img src="{{ url_for('static', filename='uploads/eyecatch/' + featured_post.eyecatch_img) }}"
+                        alt="{{ featured_post.title }}" class="w-full h-full object-cover opacity-60">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image</div>
+                    {% endif %}
+                </div>
+                <div class="p-6 flex flex-col justify-center gap-3">
+                    <div class="flex flex-row gap-2 items-center">
+                        <span class="ph-tag self-start">{{ featured_post.category.name if featured_post.category else
+                            '未分類' }}</span>
+                        <span class="text-[10px] text-custom-text-muted font-mono-dm">{{
+                            featured_post.published_at.strftime('%Y.%m.%d') }}</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <h4 class="font-bold text-lg leading-tight">{{ featured_post.title }}</h4>
+                        <p class="text-xs text-custom-text-secondary line-clamp-2">{{ featured_post.content | striptags
+                            }}</p>
+                    </div>
+                    <div class="flex items-center gap-2.5 mt-1">
+                        <div class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
+                        </div>
+                        <span class="text-xs">{{ featured_post.author.name }}</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-1">
+                        <a href="{{ url_for('main.blog_detail', id=featured_post.id) }}"
+                            class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px]">続きを読む →</a>
+                        <div class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
+                            <!-- Comments count placeholder -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Cards (up to 4 more) -->
+            {% for post in topics_posts[1:] %}
+            <div
+                class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
+                <div class="h-32 border-b border-custom-border overflow-hidden">
+                    {% if post.eyecatch_img %}
+                    <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}"
+                        alt="{{ post.title }}" class="w-full h-full object-cover opacity-60">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image</div>
+                    {% endif %}
+                </div>
+                <div class="p-4 flex flex-col gap-2 flex-1">
+                    <div class="flex items-center gap-2">
+                        <span class="ph-tag">{{ post.category.name if post.category else '未分類' }}</span>
+                        <span class="text-[10px] text-custom-text-muted font-mono-dm">{{
+                            post.published_at.strftime('%Y.%m.%d') }}</span>
+                    </div>
+                    <h4 class="font-bold text-sm leading-tight flex-1">
+                        <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="hover:underline">{{ post.title
+                            }}</a>
+                    </h4>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-custom-text-muted py-8">記事はまだありません。</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- EVENTS -->
+<section class="py-12 bg-custom-surface-2 border-b border-custom-border-light">
+    <div class="inner">
+        <div class="section-label">イベント情報</div>
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary">Events</h3>
+                <p class="text-xs text-custom-text-muted font-mono-dm mt-1">勉強会・オンライン交流会などの予定</p>
+            </div>
+            {% if event_posts %}
+            <a href="{{ url_for('main.blog_list', category='event') }}"
+                class="text-xs text-custom-accent font-semibold font-mono-dm tracking-wide flex items-center gap-1 hover:underline">すべて見る
+                →</a>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
+            {% if event_posts %}
+            {% for event in event_posts %}
+            <div
+                class="flex gap-4 py-4 p-4.5 bg-white border border-custom-border rounded-custom shadow-custom-sm relative pl-6 overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-custom-accent">
+                <div
+                    class="flex flex-col items-center bg-custom-accent-light px-3 py-2 min-w-[54px] rounded-lg border border-custom-accent-mid shrink-0">
+                    {% set event_day = event.event_date if event.event_date else event.published_at %}
+                    <div class="text-[9px] text-custom-accent font-mono-dm font-semibold uppercase">{{
+                        event_day.strftime('%b') }}</div>
+                    <div class="font-header-sans font-bold text-2xl leading-none text-custom-text-primary">{{
+                        event_day.strftime('%d') }}</div>
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <div class="text-[10px] font-semibold text-custom-accent font-mono-dm tracking-wider">
+                        {{ event.title }}</div>
+                    <div class="text-xs leading-relaxed line-clamp-2">
+                        {{ event.content | striptags }}
+                    </div>
+                    <a href="{{ url_for('main.blog_detail', id=event.id) }}"
+                        class="text-[10px] text-custom-accent font-bold hover:underline self-end">詳細を見る →</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-span-2 text-center text-custom-text-muted py-8">イベント情報はまだありません。</div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
