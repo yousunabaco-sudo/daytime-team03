@@ -62,7 +62,7 @@
                     カテゴリー</th>
                 <th
                     class="px-4 py-3 text-[11px] font-bold text-custom-accent font-mono-dm uppercase tracking-widest text-center">
-                    投稿日 <span class="text-[9px]">↓</span></th>
+                    公開日時 <span class="text-[9px]">↓</span></th>
                 <th
                     class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest text-center">
                     状態</th>
@@ -85,20 +85,20 @@
                     </span>
                 </td>
                 <td class="px-4 py-4 text-center text-[11px] font-mono-dm text-custom-text-muted">
-                    {{ post.created_at.strftime('%Y.%m.%d') }}
+                    {{ post.published_at.strftime('%Y.%m.%d %H:%M') }}
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {% if post.status == 'published' %}
-                    <span class="status-badge-active">
+                    {% if post.published_at <= now %} <span class="status-badge-active">
                         <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
                         公開中
-                    </span>
-                    {% else %}
-                    <span class="status-badge-inactive">
-                        <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                        下書き
-                    </span>
-                    {% endif %}
+                        </span>
+                        {% else %}
+                        <span
+                            class="status-badge-inactive text-custom-accent bg-custom-accent/10 border-custom-accent/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                            予約済
+                        </span>
+                        {% endif %}
                 </td>
                 <td class="px-4 py-4">
                     <div class="flex justify-end gap-2 text-right">

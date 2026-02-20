@@ -27,7 +27,9 @@ CREATE TABLE posts (
     category_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    event_date DATETIME,
+    eyecatch_img TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -60,3 +62,12 @@ VALUES (
     'scrypt:32768:8:1$3CzU4IjTBdTUDs8r$ddf6c98ae307af19f639a61035ac6bf4f711b6000a9ef6054a2c61f0a70328892ef657546e175a9daf8733ebebaf4961fc485a88b7da86bc7319917b19f03bd6',
     'admin'
 );
+
+-- 2. categories
+INSERT INTO categories (name, slug)
+VALUES 
+    ('トピックス', 'topics'),
+    ('エッセー・書評', 'essay'),
+    ('イベント', 'event'),
+    ('研究会', 'study'),
+    ('その他', 'other');

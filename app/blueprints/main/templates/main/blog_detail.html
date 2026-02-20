@@ -1,406 +1,226 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "main/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ブログ詳細 | 新潟心理療法同好会</title>
-    <!-- Tailwind Play CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'custom-bg': '#f7f8fc',
-                        'custom-surface': '#ffffff',
-                        'custom-surface-2': '#f2f4f9',
-                        'custom-surface-3': '#e8ebf4',
-                        'custom-border': '#e0e4f0',
-                        'custom-border-light': '#eceef8',
-                        'custom-text-primary': '#1a1d2e',
-                        'custom-text-secondary': '#5a607a',
-                        'custom-text-muted': '#9ba3bf',
-                        'custom-accent': '#4f7c6e',
-                        'custom-accent-light': '#eaf3f0',
-                        'custom-accent-mid': '#c6dfd9',
-                        'custom-accent-2': '#b87a52',
-                        'custom-accent-2-light': '#fdf0e8',
-                        'custom-wireframe-fill': '#eef0f8',
-                        'custom-wireframe-img': '#dde1ef',
-                        'custom-wireframe-dark': '#c8cedf',
-                        'custom-annotation': '#7b6fbd',
-                        'custom-annotation-bg': '#f3f1fc',
-                    },
-                    fontFamily: {
-                        'header-sans': ['"Noto Sans JP"', 'sans-serif'],
-                        'sans-jp': ['"Noto Sans JP"', 'sans-serif'],
-                        'mono-dm': ['"DM Mono"', 'monospace'],
-                    },
-                    borderRadius: {
-                        'custom': '12px',
-                    },
-                    boxShadow: {
-                        'custom-sm': '0 2px 8px rgba(26, 29, 46, 0.06)',
-                        'custom': '0 8px 32px rgba(26, 29, 46, 0.09)',
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply bg-custom-surface text-custom-text-primary font-sans-jp text-sm leading-relaxed;
-            }
-        }
-        @layer components {
-            .inner {
-                @apply max-w-[1200px] mx-auto px-6 md:px-12;
-            }
-            .section-label {
-                @apply text-[10px] font-medium text-custom-annotation uppercase tracking-widest mb-2 flex items-center gap-2 font-mono-dm;
-            }
-            .section-label::after {
-                content: '';
-                @apply flex-1 h-[1px] bg-gradient-to-r from-[#d4ceef] to-transparent;
-            }
-            .ph-tag {
-                @apply inline-block px-3 py-1 bg-custom-accent-light text-custom-accent rounded-md text-[11px] font-semibold tracking-wide font-mono-dm border border-custom-accent-mid;
-            }
-            .ph-btn-primary {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-custom-accent text-white rounded-md text-xs font-semibold tracking-wide;
-            }
-            .ph-btn-outline {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-accent text-custom-accent rounded-md text-xs font-semibold tracking-wide;
-            }
-        }
-    </style>
-</head>
+{% block title %}{{ post.title }} | 新潟心理療法同好会{% endblock %}
 
-<body>
-    <div class="w-full bg-custom-surface overflow-hidden">
-        <!-- NAVBAR -->
-        <nav class="sticky top-0 z-[100] h-16 border-b border-custom-border bg-white/95 backdrop-blur-md">
-            <div class="inner h-full flex items-center gap-1">
-                <div class="font-header-sans font-bold text-xl text-custom-text-primary mr-auto tracking-tight">
-                    新潟心理療法同好会<span class="text-custom-accent">.</span>
-                </div>
-                <a href="/"
-                    class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">ホーム</a>
-                <a href="/blog/detail"
-                    class="text-[13px] text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold">ブログ</a>
-                <a href="#"
-                    class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">お問い合わせ</a>
-            </div>
-        </nav>
-
-        <!-- BREADCRUMB -->
-        <div
-            class="bg-custom-surface-2 border-b border-custom-border-light text-[11px] text-custom-text-muted font-mono-dm py-3">
-            <div class="inner flex items-center gap-2">
-                <a href="/" class="hover:text-custom-accent transition-colors">HOME</a>
-                <span>/</span>
-                <a href="#" class="hover:text-custom-accent transition-colors">BLOG</a>
-                <span>/</span>
-                <span class="text-custom-accent font-medium">ARTICLE_TITLE</span>
-            </div>
-        </div>
-
-        <!-- ARTICLE HERO -->
-        <section class="border-b border-custom-border">
-            <div
-                class="relative h-64 md:h-80 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center overflow-hidden">
-                <img src="https://placehold.jp/1200x400.png" alt="イメージ" class="w-full h-full object-cover opacity-60">
-            </div>
-            <div class="inner py-10 md:py-14">
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="ph-tag">認知行動療法</span>
-                    <span class="ph-tag">臨床心理</span>
-                </div>
-                <h1
-                    class="font-header-sans font-bold text-3xl md:text-4xl text-custom-text-primary leading-tight max-w-3xl mb-6">
-                    心理療法におけるナラティブの重要性と実践的なアプローチについての考察
-                </h1>
-                <div class="flex flex-wrap items-center gap-4">
-                    <div
-                        class="flex items-center gap-3 bg-white border border-custom-border rounded-full pr-4 pl-1 py-1 shadow-custom-sm">
-                        <div
-                            class="w-10 h-10 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs text-custom-text-muted overflow-hidden">
-                            👤
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">山田 太郎</span>
-                            <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">CLINICAL
-                                PSYCHOLOGIST</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
-                        <span>2025.02.19</span>
-                        <div class="w-1 h-1 bg-custom-border rounded-full"></div>
-                        <span>5 MIN READ</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- MAIN LAYOUT -->
-        <div class="inner grid grid-cols-1 md:grid-cols-3 gap-0">
-            <!-- ARTICLE CONTENT -->
-            <article
-                class="md:col-span-2 py-10 md:py-16 md:pr-12 md:border-r border-custom-border-light flex flex-col gap-8">
-                <div class="flex flex-col gap-6 text-base leading-loose text-custom-text-secondary">
-                    <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。
-                    </p>
-
-                    <h2
-                        class="font-header-sans font-bold text-xl text-custom-text-primary mt-4 border-l-4 border-custom-accent pl-4">
-                        1. 現代における課題と展望
-                    </h2>
-                    <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。
-                    </p>
-
-                    <div class="bg-custom-surface-2 border border-custom-border rounded-custom p-6 my-4 flex gap-4">
-                        <div
-                            class="w-10 h-10 bg-custom-accent-light text-custom-accent rounded-lg flex items-center justify-center text-xl shrink-0">
-                            💡</div>
-                        <div class="flex flex-col gap-2">
-                            <h4 class="font-bold text-custom-text-primary">実践のポイント</h4>
-                            <p class="text-sm">テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。</p>
-                        </div>
-                    </div>
-
-                    <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。</p>
-
-                    <blockquote
-                        class="border-l-4 border-custom-accent-2 bg-custom-accent-2-light p-6 rounded-r-custom italic text-custom-text-primary">
-                        「心理療法は、単なる対話の技術ではなく、クライエントの物語を共同で再構築するプロセスである。」
-                    </blockquote>
-
-                    <p>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。</p>
-                </div>
-
-                <!-- SHARE -->
-                <div
-                    class="mt-8 p-6 bg-custom-surface-2 border border-custom-border rounded-custom flex items-center gap-4">
-                    <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this
-                        article</span>
-                    <div class="flex gap-2">
-                        <button
-                            class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">X
-                            (Twitter)</button>
-                        <button
-                            class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">Facebook</button>
-                    </div>
-                </div>
-
-                <!-- NEXT/PREV -->
-                <div class="grid grid-cols-2 gap-4 mt-8">
-                    <a href="#"
-                        class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 hover:border-custom-accent transition-colors">
-                        <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
-                        <span
-                            class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">認知行動療法の基礎...</span>
-                    </a>
-                    <a href="#"
-                        class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right hover:border-custom-accent transition-colors">
-                        <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
-                        <span
-                            class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">マインドフルネスの実践...</span>
-                    </a>
-                </div>
-
-                <!-- COMMENTS -->
-                <div class="mt-16 border-t border-custom-border-light pt-12 flex flex-col gap-10">
-                    <div class="flex items-center gap-4">
-                        <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments
-                        </h3>
-                        <span
-                            class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">3</span>
-                    </div>
-
-                    <div class="flex flex-col">
-                        <!-- Comment 1 -->
-                        <div class="py-6 border-b border-custom-border-light flex flex-col gap-4">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs">
-                                    👤</div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm font-bold text-custom-text-primary">佐藤 健</span>
-                                    <span
-                                        class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">2025.02.19</span>
-                                </div>
-                            </div>
-                            <div class="pl-11 text-sm text-custom-text-secondary">
-                                テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。
-                            </div>
-                            <div class="pl-11 flex gap-2">
-                                <button
-                                    class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors">REPLY</button>
-                                <button
-                                    class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                                    </svg>
-                                    1
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Comment Form -->
-                        <div
-                            class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
-                            <h4 class="font-header-sans font-bold text-xl text-custom-text-primary">Leave a Comment</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="flex flex-col gap-2">
-                                    <label
-                                        class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Name</label>
-                                    <input type="text"
-                                        class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
-                                </div>
-                                <div class="flex flex-col gap-2">
-                                    <label
-                                        class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Email</label>
-                                    <input type="email"
-                                        class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label
-                                    class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Message</label>
-                                <textarea
-                                    class="h-32 p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"></textarea>
-                            </div>
-                            <button class="ph-btn-primary self-start px-8">Post Comment</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SIDEBAR -->
-            <aside class="py-10 md:py-16 md:pl-10 flex flex-col gap-10">
-                <!-- Profile Widget -->
-                <div
-                    class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
-                    <div
-                        class="w-20 h-20 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-3xl mb-2">
-                        👤</div>
-                    <div class="flex flex-col gap-1">
-                        <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">山田
-                            太郎</span>
-                        <span
-                            class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">Clinical
-                            Psychologist</span>
-                    </div>
-                    <p class="text-xs text-custom-text-secondary leading-normal">
-                        新潟を中心に活動する臨床心理士です。専門は認知行動療法で、日々クライエントの皆さんと共に対話を行っています。
-                    </p>
-                </div>
-
-                <!-- Recent Articles Widget -->
-                <div class="flex flex-col gap-6">
-                    <div class="section-label">RECENT ARTICLES</div>
-                    <div class="flex flex-col gap-6">
-                        <!-- Article 1 -->
-                        <a href="#" class="group flex gap-4 items-start">
-                            <div
-                                class="w-16 h-16 bg-custom-wireframe-img border border-custom-border rounded-lg shrink-0 overflow-hidden">
-                                <img src="https://placehold.jp/100x100.png" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[9px] text-custom-text-muted font-mono-dm">2025.01.22</span>
-                                <span
-                                    class="text-xs font-bold text-custom-text-primary group-hover:text-custom-accent transition-colors line-clamp-2 leading-tight">コミュニティにおける心理支援の可能性</span>
-                            </div>
-                        </a>
-                        <!-- Article 2 -->
-                        <a href="#" class="group flex gap-4 items-start">
-                            <div
-                                class="w-16 h-16 bg-custom-wireframe-img border border-custom-border rounded-lg shrink-0 overflow-hidden">
-                                <img src="https://placehold.jp/100x100.png" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[9px] text-custom-text-muted font-mono-dm">2025.01.12</span>
-                                <span
-                                    class="text-xs font-bold text-custom-text-primary group-hover:text-custom-accent transition-colors line-clamp-2 leading-tight">セルフケアの技術：マインドフルネスの活用法</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Categories Widget -->
-                <div class="flex flex-col gap-6">
-                    <div class="section-label">CATEGORIES</div>
-                    <div class="flex flex-col border border-custom-border rounded-custom overflow-hidden bg-white">
-                        <a href="#"
-                            class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
-                            <span>認知行動療法</span>
-                            <span class="text-[10px] text-custom-text-muted font-mono-dm">12</span>
-                        </a>
-                        <a href="#"
-                            class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
-                            <span>マインドフルネス</span>
-                            <span class="text-[10px] text-custom-text-muted font-mono-dm">8</span>
-                        </a>
-                        <a href="#"
-                            class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
-                            <span>臨床心理</span>
-                            <span class="text-[10px] text-custom-text-muted font-mono-dm">5</span>
-                        </a>
-                        <a href="#"
-                            class="px-5 py-3 text-xs font-bold text-custom-text-primary flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
-                            <span>活動レポート</span>
-                            <span class="text-[10px] text-custom-text-muted font-mono-dm">3</span>
-                        </a>
-                    </div>
-                </div>
-            </aside>
-        </div>
-
-        <!-- FOOTER -->
-        <footer class="bg-custom-text-primary text-white pt-12 pb-6">
-            <div class="inner flex flex-col gap-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="md:col-span-2 flex flex-col gap-3">
-                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会<span
-                                class="text-custom-accent">.</span>
-                        </div>
-                        <div class="text-[11px] text-[#9ba3bf] leading-relaxed">
-                            新潟を中心に活動する心理支援の専門家・支援者のための、<br>開かれた対話と学びの場です。
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
-                            Navigation</h4>
-                        <div class="flex flex-col gap-2 text-xs text-[#9ba3bf]">
-                            <a href="/" class="hover:text-white transition-colors">ホーム</a>
-                            <a href="/blog/detail" class="hover:text-white transition-colors">ブログ</a>
-                            <a href="#" class="hover:text-white transition-colors">お問い合わせ</a>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
-                            Contact</h4>
-                        <div class="flex flex-col gap-2 text-xs text-[#9ba3bf]">
-                            <div>niigata.psychology@example.com</div>
-                            <div>新潟市中央区...</div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="border-t border-[#282d42] pt-4 flex justify-between items-center text-[10px] text-[#4a5068] font-mono-dm">
-                    <span>© 2026 新潟心理療法同好会</span>
-                </div>
-            </div>
-        </footer>
+{% block main_content %}
+<!-- BREADCRUMB -->
+<div
+    class="bg-custom-surface-2 border-b border-custom-border-light text-[11px] text-custom-text-muted font-mono-dm py-3">
+    <div class="inner flex items-center gap-2">
+        <a href="/" class="hover:text-custom-accent transition-colors">HOME</a>
+        <span>/</span>
+        <a href="{{ url_for('main.blog_list') }}" class="hover:text-custom-accent transition-colors">BLOG</a>
+        <span>/</span>
+        <span class="text-custom-accent font-medium truncate max-w-[200px]">{{ post.title }}</span>
     </div>
-</body>
+</div>
 
-</html>
+<!-- ARTICLE HERO -->
+<section class="border-b border-custom-border">
+    <div
+        class="relative h-64 md:h-80 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center overflow-hidden">
+        {% if post.eyecatch_img %}
+        <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}" alt="{{ post.title }}"
+            class="w-full h-full object-cover opacity-60">
+        {% else %}
+        <div class="text-custom-text-muted font-mono-dm text-2xl">No Image</div>
+        {% endif %}
+    </div>
+    <div class="inner py-10 md:py-14">
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span class="ph-tag">{{ post.category.name }}</span>
+        </div>
+        <h1
+            class="font-header-sans font-bold text-3xl md:text-4xl text-custom-text-primary leading-tight max-w-3xl mb-6">
+            {{ post.title }}
+        </h1>
+        <div class="flex flex-wrap items-center gap-4">
+            <div
+                class="flex items-center gap-3 bg-white border border-custom-border rounded-full pr-4 pl-1 py-1 shadow-custom-sm">
+                <div
+                    class="w-10 h-10 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs text-custom-text-muted overflow-hidden">
+                    👤
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{
+                        post.author.name }}</span>
+                    <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
+                <span>{{ post.published_at.strftime('%Y.%m.%d') }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="inner grid grid-cols-1 md:grid-cols-3 gap-0">
+    <!-- ARTICLE CONTENT -->
+    <article class="md:col-span-2 py-10 md:py-16 md:pr-12 md:border-r border-custom-border-light flex flex-col gap-8">
+        <div class="flex flex-col gap-6 text-base leading-loose text-custom-text-secondary">
+            {{ post.content | safe }}
+        </div>
+
+        <!-- SHARE -->
+        <div class="mt-8 p-6 bg-custom-surface-2 border border-custom-border rounded-custom flex items-center gap-4">
+            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this
+                article</span>
+            <div class="flex gap-2">
+                <button
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">X
+                    (Twitter)</button>
+                <button
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">Facebook</button>
+            </div>
+        </div>
+
+        <!-- NEXT/PREV -->
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="#"
+                class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 hover:border-custom-accent transition-colors">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
+                <span
+                    class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">認知行動療法の基礎...</span>
+            </a>
+            <a href="#"
+                class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right hover:border-custom-accent transition-colors">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
+                <span
+                    class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">マインドフルネスの実践...</span>
+            </a>
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="mt-16 border-t border-custom-border-light pt-12 flex flex-col gap-10">
+            <div class="flex items-center gap-4">
+                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments
+                </h3>
+                <span
+                    class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">3</span>
+            </div>
+
+            <div class="flex flex-col">
+                <!-- Comment 1 -->
+                <div class="py-6 border-b border-custom-border-light flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs">
+                            👤</div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-custom-text-primary">佐藤 健</span>
+                            <span
+                                class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">2025.02.19</span>
+                        </div>
+                    </div>
+                    <div class="pl-11 text-sm text-custom-text-secondary">
+                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。
+                    </div>
+                    <div class="pl-11 flex gap-2">
+                        <button
+                            class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors">REPLY</button>
+                        <button
+                            class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-3 h-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                            </svg>
+                            1
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comment Form -->
+                <div
+                    class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
+                    <h4 class="font-header-sans font-bold text-xl text-custom-text-primary">Leave a Comment</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-2">
+                            <label
+                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Name</label>
+                            <input type="text"
+                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label
+                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Email</label>
+                            <input type="email"
+                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label
+                            class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Message</label>
+                        <textarea
+                            class="h-32 p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"></textarea>
+                    </div>
+                    <button class="ph-btn-primary self-start px-8">Post Comment</button>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="py-10 md:py-16 md:pl-10 flex flex-col gap-10">
+        <!-- Profile Widget -->
+        <div
+            class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
+            <div
+                class="w-20 h-20 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-3xl mb-2">
+                👤</div>
+            <div class="flex flex-col gap-1">
+                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">山田
+                    太郎</span>
+                <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">Clinical
+                    Psychologist</span>
+            </div>
+            <p class="text-xs text-custom-text-secondary leading-normal">
+                新潟を中心に活動する臨床心理士です。専門は認知行動療法で、日々クライエントの皆さんと共に対話を行っています。
+            </p>
+        </div>
+
+        <!-- Recent Articles Widget -->
+        <div class="flex flex-col gap-6">
+            <div class="section-label">RECENT ARTICLES</div>
+            <div class="flex flex-col gap-6">
+                {% for recent_post in recent_posts %}
+                <a href="{{ url_for('main.blog_detail', id=recent_post.id) }}" class="group flex gap-4 items-start">
+                    <div
+                        class="w-16 h-16 bg-custom-wireframe-img border border-custom-border rounded-lg shrink-0 overflow-hidden">
+                        {% if recent_post.eyecatch_img %}
+                        <img src="{{ url_for('static', filename='uploads/eyecatch/' + recent_post.eyecatch_img) }}"
+                            class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-[9px] text-custom-text-muted">
+                            No Img</div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[9px] text-custom-text-muted font-mono-dm">{{
+                            recent_post.published_at.strftime('%Y.%m.%d') }}</span>
+                        <span
+                            class="text-xs font-bold text-custom-text-primary group-hover:text-custom-accent transition-colors line-clamp-2 leading-tight">{{
+                            recent_post.title }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="flex flex-col gap-6">
+            <div class="section-label">CATEGORIES</div>
+            <div class="flex flex-col border border-custom-border rounded-custom overflow-hidden bg-white">
+                {% for category in categories %}
+                <a href="{{ url_for('main.blog_list', category=category.slug) }}"
+                    class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
+                    <span>{{ category.name }}</span>
+                    <!-- <span class="text-[10px] text-custom-text-muted font-mono-dm">0</span> -->
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
