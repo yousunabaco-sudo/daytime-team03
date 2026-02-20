@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 
-{% block title %}新潟心理療法同好会 | 心理療法士たちの活動について知りたくありませんか？{% endblock %}
+{% block title %}新潟心理療法同好会presents『ものの怪の杜(もり)』 | 心理療法士たちの活動について知りたくありませんか？{% endblock %}
 
 {% block main_content %}
 <!-- HERO -->
@@ -10,14 +10,14 @@
         <div class="text-[11px] font-semibold text-custom-accent tracking-[0.14em] uppercase font-mono-dm">
             Psychology & Community</div>
         <h2 class="font-header-sans font-bold text-3xl md:text-4xl leading-tight text-custom-text-primary">
-            心理と医療をつなぐ<br>専門家の交流の場
+            新潟心理療法同好会presents<br>『ものの怪の杜』
         </h2>
         <div class="flex flex-col gap-2">
-            <div class="w-[88%]">テキストテキストテキストテキストテキストテキストテキスト</div>
-            <div class="w-[60%]">テキストテキストテキストテキスト</div>
+            <div class="">日常の中ではめったに出会うことのない心理臨床の専門家たちが</div>
+            <div class="">目に見えない「こころ」についてもの語る処</div>
         </div>
         <div class="flex gap-3 mt-2">
-            <button class="ph-btn-primary">活動を見る →</button>
+            <a href="{{ url_for('main.blog_list') }}" class="ph-btn-primary">活動を見る →</a>
         </div>
     </div>
     <div class="bg-white flex items-center justify-center border-l border-custom-border relative overflow-hidden">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}新潟心理療法同好会{% endblock %}</title>
+    <title>{% block title %}新潟心理療法同好会presents『ものの怪の杜』{% endblock %}</title>
     <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -87,18 +87,81 @@
     <div class="w-full bg-custom-surface overflow-hidden">
         <!-- NAVBAR -->
         <nav class="sticky top-0 z-[100] h-16 border-b border-custom-border bg-white/95 backdrop-blur-md">
-            <div class="inner h-full flex items-center gap-1">
+            <div class="inner h-full flex items-center gap-1 relative">
                 <div class="font-header-sans font-bold text-xl text-custom-text-primary mr-auto tracking-tight">
-                    新潟心理療法同好会<span class="text-custom-accent">.</span>
+                    『ものの怪の杜』
                 </div>
-                <a href="/"
-                    class="text-[13px] {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ホーム</a>
-                <a href="{{ url_for('main.blog_list') }}"
-                    class="text-[13px] {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ブログ</a>
-                <a href="#"
-                    class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">お問い合わせ</a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="/"
+                        class="text-[13px] {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ホーム</a>
+                    <a href="{{ url_for('main.blog_list') }}"
+                        class="text-[13px] {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ブログ</a>
+                    <a href="#"
+                        class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">お問い合わせ</a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-toggle" class="md:hidden p-2 text-custom-text-primary hover:text-custom-accent transition-colors" aria-label="メニューを開く">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden absolute top-16 left-0 right-0 bg-white border-b border-custom-border shadow-lg md:hidden">
+                    <div class="inner py-4 flex flex-col gap-2">
+                        <a href="/"
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors{% endif %}">ホーム</a>
+                        <a href="{{ url_for('main.blog_list') }}"
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors{% endif %}">ブログ</a>
+                        <a href="#"
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors">お問い合わせ</a>
+                    </div>
+                </div>
             </div>
         </nav>
+
+        <script>
+            // Mobile menu toggle
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggle = document.getElementById('mobile-menu-toggle');
+                const menu = document.getElementById('mobile-menu');
+                
+                if (toggle && menu) {
+                    toggle.addEventListener('click', function() {
+                        menu.classList.toggle('hidden');
+                        const isOpen = !menu.classList.contains('hidden');
+                        toggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+                        
+                        // Update icon
+                        const svg = toggle.querySelector('svg');
+                        if (svg) {
+                            if (isOpen) {
+                                // Close icon (X)
+                                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />';
+                            } else {
+                                // Hamburger icon
+                                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />';
+                            }
+                        }
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', function(event) {
+                        if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+                            menu.classList.add('hidden');
+                            const svg = toggle.querySelector('svg');
+                            if (svg) {
+                                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />';
+                            }
+                            toggle.setAttribute('aria-label', 'メニューを開く');
+                        }
+                    });
+                }
+            });
+        </script>
 
         {% block main_content %}
         {% endblock %}
@@ -108,11 +171,10 @@
             <div class="inner flex flex-col gap-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="md:col-span-2 flex flex-col gap-3">
-                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会<span
-                                class="text-custom-accent">.</span>
-                        </div>
+                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会presents『ものの怪の杜』</div>
                         <div class="text-[11px] text-[#9ba3bf] leading-relaxed">
-                            新潟を中心に活動する心理支援の専門家・支援者のための、<br>開かれた対話と学びの場です。
+                            日常の中ではめったに出会うことのない心理臨床の専門家たちが、<br>
+                            目に見えない「こころ」についてもの語る処
                         </div>
                     </div>
                     <div class="flex flex-col gap-4">
