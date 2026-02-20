@@ -1,6 +1,6 @@
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, redirect, flash
 from app.blueprints.main import main_bp
-from app.models import Post, Category
+from app.models import Post, Category, Comment, db
 from datetime import datetime, timedelta
 try:
     from zoneinfo import ZoneInfo
@@ -70,14 +70,47 @@ def blog_list():
 def blog_detail(id):
     post = Post.query.get_or_404(id)
     now_jst = _now_jst()
-    # サイドバー用データ
-    categories = Category.query.all()
-    recent_posts = Post.query.filter(Post.published_at <= now_jst).order_by(Post.published_at.desc()).limit(5).all()
+    base_query = Post.query.filter(Post.published_at <= now_jst)
 
-    return render_template('main/blog_detail.html', 
+    # 前の記事（より新しい公開記事）
+    prev_post = base_query.filter(Post.published_at > post.published_at).order_by(Post.published_at.asc()).first()
+    # 次の記事（より古い公開記事）
+    next_post = base_query.filter(Post.published_at < post.published_at).order_by(Post.published_at.desc()).first()
+
+    categories = Category.query.all()
+    recent_posts = base_query.filter(Post.id != post.id).order_by(Post.published_at.desc()).limit(5).all()
+
+    return render_template('main/blog_detail.html',
                          post=post,
                          categories=categories,
-                         recent_posts=recent_posts)
+                         recent_posts=recent_posts,
+                         prev_post=prev_post,
+                         next_post=next_post)
+
+
+@main_bp.route('/blog/detail/<int:id>/comment', methods=['POST'])
+def post_comment(id):
+    post = Post.query.get_or_404(id)
+    name = (request.form.get('name') or '').strip()
+    content = (request.form.get('content') or '').strip()
+
+    errors = []
+    if not name:
+        errors.append('名前を入力してください。')
+    if not content:
+        errors.append('コメントを入力してください。')
+
+    if errors:
+        for msg in errors:
+            flash(msg, 'error')
+        return redirect(url_for('main.blog_detail', id=post.id))
+
+    comment = Comment(post_id=post.id, user_id=None, name=name, content=content)
+    db.session.add(comment)
+    db.session.commit()
+    flash('コメントを投稿しました。')
+    return redirect(url_for('main.blog_detail', id=post.id))
+
 
 @main_bp.route('/essay')
 def essay_list():

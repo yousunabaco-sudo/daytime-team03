@@ -58,11 +58,12 @@
                         {{ post.content | striptags | truncate(120) }}
                     </p>
                     <div class="mt-auto pt-2 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-full bg-custom-wireframe-img border border-custom-border"></div>
-                            <span class="text-xs font-bold text-custom-text-primary">{{ post.author.name }}</span>
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="font-bold text-custom-text-primary">{{ post.author.name }}</span>
+                            <span class="text-custom-text-muted font-mono-dm flex items-center gap-1">
+                                <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ post.comments|length }}
+                            </span>
                         </div>
-                        <!-- <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="text-xs font-bold text-custom-accent hover:underline flex items-center gap-1">READ MORE →</a> -->
                     </div>
                 </div>
             </article>

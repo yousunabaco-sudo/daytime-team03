@@ -35,17 +35,9 @@
             {{ post.title }}
         </h1>
         <div class="flex flex-wrap items-center gap-4">
-            <div
-                class="flex items-center gap-3 bg-white border border-custom-border rounded-full pr-4 pl-1 py-1 shadow-custom-sm">
-                <div
-                    class="w-10 h-10 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs text-custom-text-muted overflow-hidden">
-                    👤
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{
-                        post.author.name }}</span>
-                    <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
-                </div>
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{ post.author.name }}</span>
+                <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
             </div>
             <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
                 <span>{{ post.published_at.strftime('%Y.%m.%d') }}</span>
@@ -77,85 +69,82 @@
 
         <!-- NEXT/PREV -->
         <div class="grid grid-cols-2 gap-4 mt-8">
-            <a href="#"
+            {% if prev_post %}
+            <a href="{{ url_for('main.blog_detail', id=prev_post.id) }}"
                 class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 hover:border-custom-accent transition-colors">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
-                <span
-                    class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">認知行動療法の基礎...</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ prev_post.title }}</span>
             </a>
-            <a href="#"
+            {% else %}
+            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 opacity-60">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
+                <span class="text-sm text-custom-text-muted line-clamp-1">前の記事はありません</span>
+            </div>
+            {% endif %}
+            {% if next_post %}
+            <a href="{{ url_for('main.blog_detail', id=next_post.id) }}"
                 class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right hover:border-custom-accent transition-colors">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
-                <span
-                    class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">マインドフルネスの実践...</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ next_post.title }}</span>
             </a>
+            {% else %}
+            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right opacity-60">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
+                <span class="text-sm text-custom-text-muted line-clamp-1">次の記事はありません</span>
+            </div>
+            {% endif %}
         </div>
 
         <!-- COMMENTS -->
         <div class="mt-16 border-t border-custom-border-light pt-12 flex flex-col gap-10">
             <div class="flex items-center gap-4">
-                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments
-                </h3>
-                <span
-                    class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">3</span>
+                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments</h3>
+                <span class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">{{ post.comments|length }}</span>
             </div>
 
             <div class="flex flex-col">
-                <!-- Comment 1 -->
+                {% for comment in post.comments|sort(attribute='created_at') %}
                 <div class="py-6 border-b border-custom-border-light flex flex-col gap-4">
                     <div class="flex items-center gap-3">
-                        <div
-                            class="w-8 h-8 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-xs">
-                            👤</div>
                         <div class="flex flex-col">
-                            <span class="text-sm font-bold text-custom-text-primary">佐藤 健</span>
-                            <span
-                                class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">2025.02.19</span>
+                            <span class="text-sm font-bold text-custom-text-primary">{{ comment.name }}</span>
+                            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">{{ comment.created_at.strftime('%Y.%m.%d') }}</span>
                         </div>
                     </div>
-                    <div class="pl-11 text-sm text-custom-text-secondary">
-                        テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト。
-                    </div>
-                    <div class="pl-11 flex gap-2">
-                        <button
-                            class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors">REPLY</button>
-                        <button
-                            class="text-[10px] py-1.5 px-3 bg-white border border-custom-border rounded-lg font-mono-dm hover:border-custom-accent transition-colors flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                            </svg>
-                            1
-                        </button>
-                    </div>
+                    <div class="text-sm text-custom-text-secondary leading-relaxed whitespace-pre-line">{{ comment.content }}</div>
                 </div>
+                {% else %}
+                <p class="text-sm text-custom-text-muted py-4">まだコメントはありません。</p>
+                {% endfor %}
 
                 <!-- Comment Form -->
-                <div
-                    class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
+                <div class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
                     <h4 class="font-header-sans font-bold text-xl text-custom-text-primary">Leave a Comment</h4>
-                    <div class="grid grid-cols-2 gap-4">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class="flex flex-col gap-2">
+                        {% for category, message in messages %}
+                        <li class="text-sm {{ 'text-red-600' if category == 'error' else 'text-custom-accent' }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('main.post_comment', id=post.id) }}" class="flex flex-col gap-6">
                         <div class="flex flex-col gap-2">
-                            <label
-                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Name</label>
-                            <input type="text"
-                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
+                            <label for="comment_name" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">名前 <span class="text-red-500">*</span></label>
+                            <input type="text" id="comment_name" name="name" required
+                                value="{{ request.form.name if request.form else '' }}"
+                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors"
+                                placeholder="お名前を入力">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label
-                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Email</label>
-                            <input type="email"
-                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors">
+                            <label for="comment_content" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">コメント <span class="text-red-500">*</span></label>
+                            <textarea id="comment_content" name="content" rows="5" required
+                                class="p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"
+                                placeholder="コメントを入力">{{ request.form.content if request.form else '' }}</textarea>
                         </div>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label
-                            class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">Message</label>
-                        <textarea
-                            class="h-32 p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"></textarea>
-                    </div>
-                    <button class="ph-btn-primary self-start px-8">Post Comment</button>
+                        <button type="submit" class="ph-btn-primary self-start px-8">Post Comment</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -163,21 +152,22 @@
 
     <!-- SIDEBAR -->
     <aside class="py-10 md:py-16 md:pl-10 flex flex-col gap-10">
-        <!-- Profile Widget -->
+        <!-- Profile Widget（記事の投稿者） -->
         <div
             class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
-            <div
-                class="w-20 h-20 bg-custom-wireframe-img rounded-full border border-custom-border flex items-center justify-center text-3xl mb-2">
-                👤</div>
             <div class="flex flex-col gap-1">
-                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">山田
-                    太郎</span>
-                <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">Clinical
-                    Psychologist</span>
+                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{ post.author.name }}</span>
+                <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">AUTHOR</span>
             </div>
+            {% if post.author.profile %}
             <p class="text-xs text-custom-text-secondary leading-normal">
-                新潟を中心に活動する臨床心理士です。専門は認知行動療法で、日々クライエントの皆さんと共に対話を行っています。
+                {{ post.author.profile }}
             </p>
+            {% else %}
+            <p class="text-xs text-custom-text-muted leading-normal">
+                プロフィールは未設定です。
+            </p>
+            {% endif %}
         </div>
 
         <!-- Recent Articles Widget -->
