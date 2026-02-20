@@ -76,9 +76,9 @@
                     <div class="flex items-center justify-between mt-1">
                         <a href="{{ url_for('main.blog_detail', id=featured_post.id) }}"
                             class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px]">続きを読む →</a>
-                        <div class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                            <!-- Comments count placeholder -->
-                        </div>
+                        <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
+                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ featured_post.comments|length }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -102,9 +102,11 @@
                             post.published_at.strftime('%Y.%m.%d') }}</span>
                     </div>
                     <h4 class="font-bold text-sm leading-tight flex-1">
-                        <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="hover:underline">{{ post.title
-                            }}</a>
+                        <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="hover:underline">{{ post.title }}</a>
                     </h4>
+                    <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
+                        <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ post.comments|length }}
+                    </span>
                 </div>
             </div>
             {% endfor %}
@@ -150,8 +152,13 @@
                     <div class="text-xs leading-relaxed line-clamp-2">
                         {{ event.content | striptags }}
                     </div>
-                    <a href="{{ url_for('main.blog_detail', id=event.id) }}"
-                        class="text-[10px] text-custom-accent font-bold hover:underline self-end">詳細を見る →</a>
+                    <div class="flex items-center justify-between gap-2 mt-1">
+                        <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
+                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ event.comments|length }}
+                        </span>
+                        <a href="{{ url_for('main.blog_detail', id=event.id) }}"
+                            class="text-[10px] text-custom-accent font-bold hover:underline">詳細を見る →</a>
+                    </div>
                 </div>
             </div>
             {% endfor %}
