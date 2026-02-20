@@ -114,7 +114,7 @@
     <form method="POST" enctype="multipart/form-data" class="p-6 md:p-8 flex flex-col gap-6">
         <!-- 見出し -->
         <div>
-            <label for="title" class="label-admin">見出し</label>
+            <label for="title" class="label-admin">見出し <span class="text-red-500 ml-1">*</span></label>
             <input type="text" id="title" name="title" value="{{ post.title if post else '' }}" placeholder="記事のタイトルを入力"
                 class="input-admin text-base font-bold" required>
         </div>
@@ -122,7 +122,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- カテゴリー -->
             <div>
-                <label for="category_id" class="label-admin">カテゴリー</label>
+                <label for="category_id" class="label-admin">カテゴリー <span class="text-red-500 ml-1">*</span></label>
                 <div class="relative">
                     <select id="category_id" name="category_id" class="input-admin appearance-none cursor-pointer pr-10"
                         required>
@@ -138,7 +138,7 @@
 
             <!-- 投稿者 (Author) -->
             <div>
-                <label for="user_id" class="label-admin">投稿者</label>
+                <label for="user_id" class="label-admin">投稿者 <span class="text-red-500 ml-1">*</span></label>
                 <div class="relative">
                     <select id="user_id" name="user_id" class="input-admin appearance-none cursor-pointer pr-10"
                         required>
@@ -156,7 +156,7 @@
 
             <!-- 公開日時 -->
             <div>
-                <label for="published_at" class="label-admin">公開日時</label>
+                <label for="published_at" class="label-admin">公開日時 <span class="text-red-500 ml-1">*</span></label>
                 <input type="datetime-local" id="published_at" name="published_at"
                     value="{{ post.published_at.strftime('%Y-%m-%dT%H:%M') if post and post.published_at else '' }}"
                     class="input-admin" required>
@@ -203,10 +203,9 @@
 
         <!-- 本文 -->
         <div>
-            <label for="content" class="label-admin">本文</label>
+            <label for="content" class="label-admin">本文 <span class="text-red-500 ml-1">*</span></label>
             <textarea id="content" name="content" rows="15" placeholder="記事の内容を記述してください（Markdown対応予定）"
-                class="input-admin h-auto py-3 resize-none font-sans text-sm leading-relaxed"
-                required>{{ post.content if post else '' }}</textarea>
+                class="input-admin h-auto py-3 resize-none font-sans text-sm leading-relaxed">{{ post.content if post else '' }}</textarea>
         </div>
 
         <!-- ACTIONS -->

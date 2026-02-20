@@ -2,8 +2,12 @@ from flask import render_template, redirect, url_for, flash, request, current_ap
 from app.blueprints.admin import admin_bp
 from flask_login import login_required, current_user
 from app.models import Post, Category, User, db
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    ZoneInfo = None  # Python 3.8
 import uuid
 from werkzeug.utils import secure_filename
 
@@ -24,13 +28,19 @@ def post_list():
     
     pagination = query.order_by(Post.published_at.desc()).paginate(page=page, per_page=10, error_out=False)
     posts = pagination.items
-    
-    return render_template('admin/post_list.html', 
-                         title='記事管理', 
-                         posts=posts, 
-                         pagination=pagination, 
+
+    # 状態の判定は日本時間で行う（published_at はフォームで JST として入力されている想定）
+    if ZoneInfo:
+        now_jst = datetime.now(ZoneInfo('Asia/Tokyo')).replace(tzinfo=None)
+    else:
+        now_jst = datetime.utcnow() + timedelta(hours=9)
+
+    return render_template('admin/post_list.html',
+                         title='記事管理',
+                         posts=posts,
+                         pagination=pagination,
                          q=q,
-                         now=datetime.utcnow())
+                         now=now_jst)
 
 @admin_bp.route('/posts/new', methods=['GET', 'POST'])
 @login_required
@@ -38,21 +48,21 @@ def create_post():
     categories = Category.query.all()
     users = User.query.all()
     if request.method == 'POST':
-        title = request.form.get('title')
-        content = request.form.get('content')
+        title = request.form.get('title', '').strip()
+        content = request.form.get('content', '').strip()
         category_id = request.form.get('category_id')
+        user_id = request.form.get('user_id') or current_user.id
         published_at_str = request.form.get('published_at')
         published_at = datetime.strptime(published_at_str, '%Y-%m-%dT%H:%M') if published_at_str else datetime.utcnow()
-        
+
         event_date_str = request.form.get('event_date')
         event_date = datetime.strptime(event_date_str, '%Y-%m-%dT%H:%M') if event_date_str else None
-        
+
         # アイキャッチ画像の処理
         eyecatch_img = None
         file = request.files.get('eyecatch_img')
         if file and file.filename != '':
             filename = secure_filename(file.filename)
-            # ユニークなファイル名を生成
             ext = os.path.splitext(filename)[1]
             new_filename = f"{uuid.uuid4().hex}{ext}"
             upload_path = os.path.join(current_app.root_path, 'static/uploads/eyecatch')
@@ -60,7 +70,7 @@ def create_post():
                 os.makedirs(upload_path)
             file.save(os.path.join(upload_path, new_filename))
             eyecatch_img = new_filename
-        
+
         # バリデーション
         errors = []
         if not title:
@@ -69,21 +79,30 @@ def create_post():
             errors.append('本文を入力してください。')
         if not category_id:
             errors.append('カテゴリーを選択してください。')
-        if not published_at:
+        if not user_id:
+            errors.append('投稿者を選択してください。')
+        if not published_at_str:
             errors.append('公開日時を入力してください。')
-            
+
         # イベントカテゴリの場合、開催日は必須
         category = Category.query.get(category_id)
         if category and category.slug == 'event' and not event_date:
             errors.append('カテゴリーが「イベント」の場合は、イベント開催日を入力してください。')
-            
+
         if errors:
             for error in errors:
                 flash(error, 'error')
             return render_template('admin/post_form.html', title='新規記事投稿', categories=categories, users=users, post=None, values=request.form)
 
-        post = Post(title=title, content=content, category_id=category_id, 
-                    published_at=published_at, event_date=event_date, eyecatch_img=eyecatch_img, author=author)
+        post = Post(
+            title=title,
+            content=content,
+            category_id=int(category_id),
+            user_id=int(user_id),
+            published_at=published_at,
+            event_date=event_date,
+            eyecatch_img=eyecatch_img
+        )
         db.session.add(post)
         db.session.commit()
         flash('記事を投稿しました。')

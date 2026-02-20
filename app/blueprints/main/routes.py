@@ -1,18 +1,31 @@
 from flask import render_template, request, url_for
 from app.blueprints.main import main_bp
 from app.models import Post, Category
-from datetime import datetime
+from datetime import datetime, timedelta
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    ZoneInfo = None
+
+
+def _now_jst():
+    """日本時間の現在時刻（naive、published_at と比較用）"""
+    if ZoneInfo:
+        return datetime.now(ZoneInfo('Asia/Tokyo')).replace(tzinfo=None)
+    return datetime.utcnow() + timedelta(hours=9)
+
 
 @main_bp.route('/')
 @main_bp.route('/index')
 def index():
+    now_jst = _now_jst()
     # Topics (Category: topics)
     topics_category = Category.query.filter_by(slug='topics').first()
     topics_posts = []
     if topics_category:
         topics_posts = Post.query.filter(
             Post.category_id == topics_category.id,
-            Post.published_at <= datetime.utcnow()
+            Post.published_at <= now_jst
         ).order_by(Post.published_at.desc()).limit(5).all()
 
     # Events (Category: event)
@@ -21,7 +34,7 @@ def index():
     if event_category:
         event_posts = Post.query.filter(
             Post.category_id == event_category.id,
-            Post.published_at <= datetime.utcnow()
+            Post.published_at <= now_jst
         ).order_by(Post.published_at.desc()).limit(2).all()
 
     return render_template('main/index.html', title='ホーム', 
@@ -33,8 +46,8 @@ def index():
 def blog_list():
     page = request.args.get('page', 1, type=int)
     category_slug = request.args.get('category')
-    
-    query = Post.query.filter(Post.published_at <= datetime.utcnow())
+    now_jst = _now_jst()
+    query = Post.query.filter(Post.published_at <= now_jst)
     current_category = None
     
     if category_slug:
@@ -56,10 +69,10 @@ def blog_list():
 @main_bp.route('/blog/detail/<int:id>')
 def blog_detail(id):
     post = Post.query.get_or_404(id)
-    
+    now_jst = _now_jst()
     # サイドバー用データ
     categories = Category.query.all()
-    recent_posts = Post.query.filter(Post.published_at <= datetime.utcnow()).order_by(Post.published_at.desc()).limit(5).all()
+    recent_posts = Post.query.filter(Post.published_at <= now_jst).order_by(Post.published_at.desc()).limit(5).all()
 
     return render_template('main/blog_detail.html', 
                          post=post,
