@@ -1,5 +1,5 @@
 .env
-app.db
+#app.db
 .DS_Store
 
 __pycache__/*

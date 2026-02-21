@@ -1,0 +1,8 @@
+# Render 用設定
+# 本プロジェクトは Flask アプリを create_app() で生成しているため、
+# 起動時は wsgi モジュールの app を指定してください（app:app ではない）
+services:
+  - type: web
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
