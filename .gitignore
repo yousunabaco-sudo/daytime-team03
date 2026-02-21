@@ -1,2 +1,16 @@
 .env
 app.db
+.DS_Store
+
+__pycache__/*
+app/__pycache__/*
+app/blueprints/__pycache__/*
+app/blueprints/admin/__pycache__/*
+app/blueprints/auth/__pycache__/*
+app/blueprints/main/__pycache__/*
+app/models/__pycache__/*
+app/routes/__pycache__/*
+app/templates/__pycache__/*
+app/templates/admin/__pycache__/*
+app/templates/auth/__pycache__/*
+app/templates/main/__pycache__/*

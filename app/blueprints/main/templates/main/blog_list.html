@@ -1,0 +1,132 @@
+{% extends "main/base.html" %}
+
+{% block title %}ブログ記事一覧 | 新潟心理療法同好会{% endblock %}
+
+{% block main_content %}
+<!-- PAGE HEADER -->
+<div class="bg-custom-surface-2 border-b border-custom-border-light py-8 md:py-12">
+    <div class="inner flex flex-col gap-2">
+        <h1 class="font-header-sans font-bold text-3xl md:text-4xl text-custom-text-primary">
+            {% if current_category %}
+            {{ current_category.name }}
+            {% else %}
+            Blog
+            {% endif %}
+        </h1>
+        <p class="text-sm text-custom-text-secondary">
+            {% if current_category %}
+            「{{ current_category.name }}」カテゴリーの記事一覧
+            {% else %}
+            心理療法に関する最新の記事をお届けします。
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="inner grid grid-cols-1 md:grid-cols-3 gap-0 border-b border-custom-border-light">
+    <!-- POST LIST -->
+    <div class="md:col-span-2 py-10 md:py-16 md:pr-12 md:border-r border-custom-border-light flex flex-col gap-10">
+
+        {% if posts %}
+        <div class="flex flex-col gap-8">
+            {% for post in posts %}
+            <article class="flex flex-col md:flex-row gap-6 group">
+                <a href="{{ url_for('main.blog_detail', id=post.id) }}"
+                    class="w-full md:w-1/3 aspect-video md:aspect-[4/3] rounded-custom border border-custom-border overflow-hidden bg-custom-surface-2 shrink-0">
+                    {% if post.eyecatch_img %}
+                    <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}"
+                        alt="{{ post.title }}"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    {% else %}
+                    <div
+                        class="w-full h-full flex items-center justify-center bg-custom-wireframe-img text-custom-text-muted">
+                        No Image</div>
+                    {% endif %}
+                </a>
+                <div class="flex flex-col gap-2 flex-1">
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="ph-tag">{{ post.category.name if post.category else '未分類' }}</span>
+                        <span class="text-custom-text-muted font-mono-dm">{{ post.published_at.strftime('%Y.%m.%d')
+                            }}</span>
+                    </div>
+                    <h2
+                        class="font-header-sans font-bold text-xl text-custom-text-primary leading-tight group-hover:text-custom-accent transition-colors">
+                        <a href="{{ url_for('main.blog_detail', id=post.id) }}">{{ post.title }}</a>
+                    </h2>
+                    <p class="text-sm text-custom-text-secondary line-clamp-2 md:line-clamp-3 leading-relaxed">
+                        {{ post.content | striptags | truncate(120) }}
+                    </p>
+                    <div class="mt-auto pt-2 flex items-center justify-between">
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="font-bold text-custom-text-primary">{{ post.author.name }}</span>
+                            <span class="text-custom-text-muted font-mono-dm flex items-center gap-1">
+                                <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ post.comments|length }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- PAGINATION -->
+        {% if pagination.pages > 1 %}
+        <div class="flex justify-center mt-8 gap-2">
+            {% if pagination.has_prev %}
+            <a href="{{ url_for('main.blog_list', page=pagination.prev_num, category=current_category.slug if current_category else None) }}"
+                class="w-10 h-10 rounded-lg border border-custom-border flex items-center justify-center hover:bg-custom-surface-2 transition-colors text-custom-text-secondary">←</a>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+            {% if page_num == pagination.page %}
+            <span class="w-10 h-10 rounded-lg bg-custom-accent text-white font-bold flex items-center justify-center">{{
+                page_num }}</span>
+            {% else %}
+            <a href="{{ url_for('main.blog_list', page=page_num, category=current_category.slug if current_category else None) }}"
+                class="w-10 h-10 rounded-lg border border-custom-border flex items-center justify-center hover:bg-custom-surface-2 transition-colors text-custom-text-secondary">{{
+                page_num }}</a>
+            {% endif %}
+            {% else %}
+            <span class="w-10 h-10 flex items-center justify-center text-custom-text-muted">...</span>
+            {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <a href="{{ url_for('main.blog_list', page=pagination.next_num, category=current_category.slug if current_category else None) }}"
+                class="w-10 h-10 rounded-lg border border-custom-border flex items-center justify-center hover:bg-custom-surface-2 transition-colors text-custom-text-secondary">→</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="py-20 text-center text-custom-text-muted">
+            <p>記事が見つかりませんでした。</p>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="py-10 md:py-16 md:pl-10 flex flex-col gap-10">
+        <!-- Categories Widget -->
+        <div class="flex flex-col gap-6">
+            <div class="section-label">CATEGORIES</div>
+            <div class="flex flex-col border border-custom-border rounded-custom overflow-hidden bg-white">
+                <a href="{{ url_for('main.blog_list') }}"
+                    class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors {% if not current_category %}bg-custom-surface-2{% endif %}">
+                    <span>すべての記事</span>
+                </a>
+                {% for category in categories %}
+                <a href="{{ url_for('main.blog_list', category=category.slug) }}"
+                    class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors {% if current_category and current_category.id == category.id %}bg-custom-surface-2{% endif %}">
+                    <span>{{ category.name }}</span>
+                    <!-- <span class="text-[10px] text-custom-text-muted font-mono-dm">{{ category.posts|length }}</span> -->
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}

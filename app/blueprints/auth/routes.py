@@ -18,12 +18,12 @@ def login():
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or urlparse(next_page).netloc != '':
-            next_page = url_for('admin.dashboard')
+            next_page = url_for('admin.post_list')
         return redirect(next_page)
         
-    return render_template('auth/login.html', title='ログイン')
+    return render_template('auth/admin_login.html', title='ログイン')
 
 @auth_bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('auth.login'))

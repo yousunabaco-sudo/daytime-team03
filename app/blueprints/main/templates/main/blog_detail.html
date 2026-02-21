@@ -1,0 +1,216 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{ post.title }} | 新潟心理療法同好会{% endblock %}
+
+{% block main_content %}
+<!-- BREADCRUMB -->
+<div
+    class="bg-custom-surface-2 border-b border-custom-border-light text-[11px] text-custom-text-muted font-mono-dm py-3">
+    <div class="inner flex items-center gap-2">
+        <a href="/" class="hover:text-custom-accent transition-colors">HOME</a>
+        <span>/</span>
+        <a href="{{ url_for('main.blog_list') }}" class="hover:text-custom-accent transition-colors">BLOG</a>
+        <span>/</span>
+        <span class="text-custom-accent font-medium truncate max-w-[200px]">{{ post.title }}</span>
+    </div>
+</div>
+
+<!-- ARTICLE HERO -->
+<section class="border-b border-custom-border">
+    <div
+        class="relative h-64 md:h-80 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center overflow-hidden">
+        {% if post.eyecatch_img %}
+        <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}" alt="{{ post.title }}"
+            class="w-full h-full object-cover opacity-60">
+        {% else %}
+        <div class="text-custom-text-muted font-mono-dm text-2xl">No Image</div>
+        {% endif %}
+    </div>
+    <div class="inner py-10 md:py-14">
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span class="ph-tag">{{ post.category.name }}</span>
+        </div>
+        <h1
+            class="font-header-sans font-bold text-3xl md:text-4xl text-custom-text-primary leading-tight max-w-3xl mb-6">
+            {{ post.title }}
+        </h1>
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{ post.author.name }}</span>
+                <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
+                <span>{{ post.published_at.strftime('%Y.%m.%d') }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="inner grid grid-cols-1 md:grid-cols-3 gap-0">
+    <!-- ARTICLE CONTENT -->
+    <article class="md:col-span-2 py-10 md:py-16 md:pr-12 md:border-r border-custom-border-light flex flex-col gap-8">
+        <div class="flex flex-col gap-6 text-base leading-loose text-custom-text-secondary">
+            {{ post.content | safe }}
+        </div>
+
+        <!-- SHARE -->
+        <div class="mt-8 p-6 bg-custom-surface-2 border border-custom-border rounded-custom flex items-center gap-4">
+            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this
+                article</span>
+            <div class="flex gap-2">
+                <button
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">X
+                    (Twitter)</button>
+                <button
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">Facebook</button>
+            </div>
+        </div>
+
+        <!-- NEXT/PREV -->
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            {% if prev_post %}
+            <a href="{{ url_for('main.blog_detail', id=prev_post.id) }}"
+                class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 hover:border-custom-accent transition-colors">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ prev_post.title }}</span>
+            </a>
+            {% else %}
+            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 opacity-60">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
+                <span class="text-sm text-custom-text-muted line-clamp-1">前の記事はありません</span>
+            </div>
+            {% endif %}
+            {% if next_post %}
+            <a href="{{ url_for('main.blog_detail', id=next_post.id) }}"
+                class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right hover:border-custom-accent transition-colors">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ next_post.title }}</span>
+            </a>
+            {% else %}
+            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right opacity-60">
+                <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
+                <span class="text-sm text-custom-text-muted line-clamp-1">次の記事はありません</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="mt-16 border-t border-custom-border-light pt-12 flex flex-col gap-10">
+            <div class="flex items-center gap-4">
+                <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments</h3>
+                <span class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">{{ post.comments|length }}</span>
+            </div>
+
+            <div class="flex flex-col">
+                {% for comment in post.comments|sort(attribute='created_at') %}
+                <div class="py-6 border-b border-custom-border-light flex flex-col gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-custom-text-primary">{{ comment.name }}</span>
+                            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">{{ comment.created_at.strftime('%Y.%m.%d') }}</span>
+                        </div>
+                    </div>
+                    <div class="text-sm text-custom-text-secondary leading-relaxed whitespace-pre-line">{{ comment.content }}</div>
+                </div>
+                {% else %}
+                <p class="text-sm text-custom-text-muted py-4">まだコメントはありません。</p>
+                {% endfor %}
+
+                <!-- Comment Form -->
+                <div class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
+                    <h4 class="font-header-sans font-bold text-xl text-custom-text-primary">Leave a Comment</h4>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class="flex flex-col gap-2">
+                        {% for category, message in messages %}
+                        <li class="text-sm {{ 'text-red-600' if category == 'error' else 'text-custom-accent' }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('main.post_comment', id=post.id) }}" class="flex flex-col gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label for="comment_name" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">名前 <span class="text-red-500">*</span></label>
+                            <input type="text" id="comment_name" name="name" required
+                                value="{{ request.form.name if request.form else '' }}"
+                                class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors"
+                                placeholder="お名前を入力">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="comment_content" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">コメント <span class="text-red-500">*</span></label>
+                            <textarea id="comment_content" name="content" rows="5" required
+                                class="p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"
+                                placeholder="コメントを入力">{{ request.form.content if request.form else '' }}</textarea>
+                        </div>
+                        <button type="submit" class="ph-btn-primary self-start px-8">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="py-10 md:py-16 md:pl-10 flex flex-col gap-10">
+        <!-- Profile Widget（記事の投稿者） -->
+        <div
+            class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
+            <div class="flex flex-col gap-1">
+                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{ post.author.name }}</span>
+                <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">AUTHOR</span>
+            </div>
+            {% if post.author.profile %}
+            <p class="text-xs text-custom-text-secondary leading-normal">
+                {{ post.author.profile }}
+            </p>
+            {% else %}
+            <p class="text-xs text-custom-text-muted leading-normal">
+                プロフィールは未設定です。
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Recent Articles Widget -->
+        <div class="flex flex-col gap-6">
+            <div class="section-label">RECENT ARTICLES</div>
+            <div class="flex flex-col gap-6">
+                {% for recent_post in recent_posts %}
+                <a href="{{ url_for('main.blog_detail', id=recent_post.id) }}" class="group flex gap-4 items-start">
+                    <div
+                        class="w-16 h-16 bg-custom-wireframe-img border border-custom-border rounded-lg shrink-0 overflow-hidden">
+                        {% if recent_post.eyecatch_img %}
+                        <img src="{{ url_for('static', filename='uploads/eyecatch/' + recent_post.eyecatch_img) }}"
+                            class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-[9px] text-custom-text-muted">
+                            No Img</div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[9px] text-custom-text-muted font-mono-dm">{{
+                            recent_post.published_at.strftime('%Y.%m.%d') }}</span>
+                        <span
+                            class="text-xs font-bold text-custom-text-primary group-hover:text-custom-accent transition-colors line-clamp-2 leading-tight">{{
+                            recent_post.title }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="flex flex-col gap-6">
+            <div class="section-label">CATEGORIES</div>
+            <div class="flex flex-col border border-custom-border rounded-custom overflow-hidden bg-white">
+                {% for category in categories %}
+                <a href="{{ url_for('main.blog_list', category=category.slug) }}"
+                    class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
+                    <span>{{ category.name }}</span>
+                    <!-- <span class="text-[10px] text-custom-text-muted font-mono-dm">0</span> -->
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
