@@ -128,6 +128,21 @@ python wsgi.py
 
 ---
 
+## Render でのデプロイ
+
+本アプリは Flask のアプリケーション工場パターン（`create_app()`）を使っているため、Gunicorn の起動時は **`wsgi:app`** を指定してください。
+
+- ❌ `gunicorn app:app` → `app` パッケージには `app` 属性がないためエラーになります。
+- ✅ `gunicorn wsgi:app` → `wsgi.py` 内の `app = create_app()` が使われます。
+
+リポジトリに `render.yaml` を用意している場合は、Render が自動で上記の start command を利用します。ダッシュボードで Start Command を手動設定する場合は次のように指定してください。
+
+```bash
+gunicorn wsgi:app --bind 0.0.0.0:$PORT
+```
+
+---
+
 ## その他
 
 - **ブログ一覧**: http://127.0.0.1:5000/blog  
