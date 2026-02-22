@@ -145,7 +145,7 @@
                         {% for user in users %}
                         <option value="{{ user.id }}" {{ 'selected' if (post and post.user_id==user.id) or (not post and
                             current_user.id==user.id) else '' }}>
-                            {{ user.name }}
+                            {{ user.display_name_or_name }}
                         </option>
                         {% endfor %}
                     </select>

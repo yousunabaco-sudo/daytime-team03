@@ -85,7 +85,7 @@
             {% for user in users %}
             <tr class="hover:bg-custom-surface-2 transition-colors group">
                 <td class="px-4 py-4">
-                    <div class="font-bold text-custom-text-primary text-[13px]">{{ user.name }}</div>
+                    <div class="font-bold text-custom-text-primary text-[13px]">{{ user.display_name_or_name }}</div>
                     <div class="text-[10px] font-mono-dm text-custom-text-muted">#{{ "%03d"|format(user.id) }}</div>
                 </td>
                 <td class="px-4 py-4 text-xs font-mono-dm text-custom-text-secondary lowercase">

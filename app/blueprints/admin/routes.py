@@ -150,6 +150,7 @@ def admin_users():
 def admin_user_new():
     if request.method == 'POST':
         name = request.form.get('name')
+        display_name = (request.form.get('display_name') or '').strip() or None
         email = request.form.get('email')
         password = request.form.get('password')
         password_confirm = request.form.get('password_confirm')
@@ -175,7 +176,7 @@ def admin_user_new():
                                  errors=errors,
                                  values=request.form)
         
-        user = User(name=name, email=email, role=role, profile=profile)
+        user = User(name=name, display_name=display_name, email=email, role=role, profile=profile)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
@@ -191,6 +192,7 @@ def admin_user_edit(id):
     user = User.query.get_or_404(id)
     if request.method == 'POST':
         name = request.form.get('name')
+        display_name = (request.form.get('display_name') or '').strip() or None
         email = request.form.get('email')
         password = request.form.get('password')
         password_confirm = request.form.get('password_confirm')
@@ -219,6 +221,7 @@ def admin_user_edit(id):
                                  values=request.form)
         
         user.name = name
+        user.display_name = display_name
         user.email = email
         user.role = role
         user.profile = profile

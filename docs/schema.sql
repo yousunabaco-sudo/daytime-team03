@@ -4,6 +4,7 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    display_name TEXT,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('admin', 'member')),
@@ -55,9 +56,10 @@ CREATE INDEX idx_comments_post_id ON comments (post_id);
 
 -- 初期データ
 -- 1. admin ユーザー (パスワード: password)
-INSERT INTO users (name, email, password_hash, role)
+INSERT INTO users (name, display_name, email, password_hash, role)
 VALUES (
     '管理者',
+    NULL,
     'admin@example.com',
     'scrypt:32768:8:1$3CzU4IjTBdTUDs8r$ddf6c98ae307af19f639a61035ac6bf4f711b6000a9ef6054a2c61f0a70328892ef657546e175a9daf8733ebebaf4961fc485a88b7da86bc7319917b19f03bd6',
     'admin'

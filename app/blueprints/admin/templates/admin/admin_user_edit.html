@@ -40,6 +40,13 @@
             {% endif %}
         </div>
 
+        <!-- 表示用名前 -->
+        <div>
+            <label for="display_name" class="label-admin">表示用名前</label>
+            <input type="text" id="display_name" name="display_name" value="{{ values.display_name if values else user.display_name or '' }}"
+                placeholder="記事・ブログで表示する名前（未入力の場合は名前を使用）" class="input-admin">
+        </div>
+
         <!-- メールアドレス -->
         <div>
             <label for="email" class="label-admin">メールアドレス <span class="text-red-500">*</span></label>

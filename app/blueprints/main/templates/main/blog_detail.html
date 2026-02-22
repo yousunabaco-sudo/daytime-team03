@@ -36,7 +36,7 @@
         </h1>
         <div class="flex flex-wrap items-center gap-4">
             <div class="flex flex-col">
-                <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{ post.author.name }}</span>
+                <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{ post.author.display_name_or_name }}</span>
                 <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
             </div>
             <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
@@ -156,7 +156,7 @@
         <div
             class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
             <div class="flex flex-col gap-1">
-                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{ post.author.name }}</span>
+                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{ post.author.display_name_or_name }}</span>
                 <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">AUTHOR</span>
             </div>
             {% if post.author.profile %}

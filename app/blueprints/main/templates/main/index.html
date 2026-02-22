@@ -78,7 +78,7 @@
                     <div class="flex items-center gap-2.5 mt-1">
                         <div class="w-5.5 h-5.5 bg-custom-wireframe-img rounded-full border border-custom-border">
                         </div>
-                        <span class="text-xs">{{ featured_post.author.name }}</span>
+                        <span class="text-xs">{{ featured_post.author.display_name_or_name }}</span>
                     </div>
                     <div class="flex items-center justify-between mt-1">
                         <a href="{{ url_for('main.blog_detail', id=featured_post.id) }}"

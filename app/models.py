@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False)
+    display_name = db.Column(db.Text, nullable=True)
     email = db.Column(db.Text, nullable=False, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
     role = db.Column(db.Text, nullable=False, default='member')
@@ -26,6 +27,13 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @property
+    def display_name_or_name(self):
+        """表示用の名前。display_name が設定されていればそれを使い、なければ name を返す。"""
+        if self.display_name and self.display_name.strip():
+            return self.display_name.strip()
+        return self.name
 
     def __repr__(self):
         return f'<User {self.name}>'
