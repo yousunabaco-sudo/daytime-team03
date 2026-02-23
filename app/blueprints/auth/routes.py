@@ -15,7 +15,8 @@ def login():
             flash('メールアドレスまたはパスワードが正しくありません。')
             return redirect(url_for('auth.login'))
         
-        login_user(user)
+        remember = request.form.get('remember') == 'on'
+        login_user(user, remember=remember)
         next_page = request.args.get('next')
         if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('admin.post_list')

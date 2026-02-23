@@ -11,8 +11,14 @@
         </div>
         <div>
             <label for="password" class="block text-sm font-medium text-slate-700">パスワード</label>
-            <input type="password" name="password" id="password" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-                focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+            <div class="relative mt-1">
+                <input type="password" name="password" id="password" required class="block w-full px-3 py-2 pr-14 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                    focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                <button type="button" id="password-toggle" aria-label="パスワードを表示"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase text-slate-500 hover:text-slate-700 cursor-pointer">
+                    SHOW
+                </button>
+            </div>
         </div>
         <div>
             <button type="submit"
@@ -22,4 +28,23 @@
         </div>
     </form>
 </div>
+<script>
+    (function () {
+        var btn = document.getElementById('password-toggle');
+        var input = document.getElementById('password');
+        if (btn && input) {
+            btn.addEventListener('click', function () {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    btn.textContent = 'HIDE';
+                    btn.setAttribute('aria-label', 'パスワードを隠す');
+                } else {
+                    input.type = 'password';
+                    btn.textContent = 'SHOW';
+                    btn.setAttribute('aria-label', 'パスワードを表示');
+                }
+            });
+        }
+    })();
+</script>
 {% endblock %}
