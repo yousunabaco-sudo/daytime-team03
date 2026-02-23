@@ -21,13 +21,17 @@ def index():
 def post_list():
     page = request.args.get('page', 1, type=int)
     q = request.args.get('q', '')
-    
+    category_id = request.args.get('category', type=int)
+
     query = Post.query
     if q:
         query = query.filter(Post.title.contains(q))
-    
+    if category_id:
+        query = query.filter(Post.category_id == category_id)
+
     pagination = query.order_by(Post.published_at.desc()).paginate(page=page, per_page=10, error_out=False)
     posts = pagination.items
+    categories = Category.query.order_by(Category.name).all()
 
     # 状態の判定は日本時間で行う（published_at はフォームで JST として入力されている想定）
     if ZoneInfo:
@@ -39,7 +43,9 @@ def post_list():
                          title='記事管理',
                          posts=posts,
                          pagination=pagination,
+                         categories=categories,
                          q=q,
+                         category_id=category_id,
                          now=now_jst)
 
 @admin_bp.route('/posts/new', methods=['GET', 'POST'])
