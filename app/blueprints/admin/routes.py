@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, current_app
 from app.blueprints.admin import admin_bp
 from flask_login import login_required, current_user
-from app.models import Post, Category, User, db
+from app.models import Post, Category, User, Comment, db
 from datetime import datetime, timedelta
 import os
 try:
@@ -314,3 +314,21 @@ def delete_post(id):
     db.session.commit()
     flash('記事を削除しました。')
     return redirect(url_for('admin.post_list'))
+
+
+@admin_bp.route('/posts/<int:id>/comments')
+@login_required
+def post_comment_list(id):
+    post = Post.query.get_or_404(id)
+    comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.created_at.desc()).all()
+    return render_template('admin/post_comment_list.html', post=post, comments=comments)
+
+
+@admin_bp.route('/posts/<int:post_id>/comments/<int:comment_id>/delete', methods=['POST'])
+@login_required
+def delete_comment(post_id, comment_id):
+    comment = Comment.query.filter_by(id=comment_id, post_id=post_id).first_or_404()
+    db.session.delete(comment)
+    db.session.commit()
+    flash('コメントを削除しました。')
+    return redirect(url_for('admin.post_comment_list', id=post_id))

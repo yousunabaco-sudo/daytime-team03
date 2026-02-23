@@ -1,0 +1,88 @@
+{% extends "admin/admin_base.html" %}
+{% set active_menu = 'post_list' %}
+
+{% block title %}コメント一覧 — {{ post.title }}{% endblock %}
+
+{% block main_content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="mb-4 flex flex-col gap-2">
+    {% for category, message in messages %}
+    <div class="px-4 py-3 rounded-lg text-sm {{ 'bg-custom-accent-light text-custom-accent border border-custom-accent-mid' if category != 'error' else 'bg-custom-danger-light text-custom-danger border border-red-200' }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<!-- PAGE HEADER -->
+<div class="flex flex-col gap-2">
+    <div class="flex items-center gap-1.5 text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-wider">
+        <span class="text-custom-accent font-bold">Admin</span>
+        <span class="opacity-40">/</span>
+        <span class="text-custom-accent font-bold">Posts</span>
+        <span class="opacity-40">/</span>
+        <a href="{{ url_for('admin.post_list') }}" class="hover:text-custom-accent transition-colors">List</a>
+        <span class="opacity-40">/</span>
+        <span class="truncate max-w-[200px]">{{ post.title }}</span>
+        <span class="opacity-40">/</span>
+        <span>コメント</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <a href="{{ url_for('admin.post_list') }}" class="text-custom-text-muted hover:text-custom-accent transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+        <h1 class="text-2xl md:text-3xl font-header-sans font-bold text-custom-text-primary tracking-tight">コメント一覧</h1>
+    </div>
+    <div class="text-[11px] font-mono-dm text-custom-text-muted uppercase tracking-widest mt-0.5">
+        記事: {{ post.title }}（{{ comments|length }}件）
+    </div>
+</div>
+
+<!-- TABLE CONTAINER -->
+<div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-x-auto w-full mt-6">
+    <table class="w-full text-left border-collapse min-w-[600px]">
+        <thead class="bg-custom-surface-2 border-b border-custom-border">
+            <tr>
+                <th class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest w-40">名前</th>
+                <th class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest">内容</th>
+                <th class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest text-center w-32">投稿日時</th>
+                <th class="px-4 py-3 text-[11px] font-bold text-custom-text-muted font-mono-dm uppercase tracking-widest text-right w-24">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-custom-border-light">
+            {% for comment in comments %}
+            <tr class="hover:bg-custom-surface-2 transition-colors">
+                <td class="px-4 py-4">
+                    <span class="font-semibold text-custom-text-primary text-[13px]">{{ comment.name }}</span>
+                    <div class="text-[10px] font-mono-dm text-custom-text-muted">ID: #{{ "%03d"|format(comment.id) }}</div>
+                </td>
+                <td class="px-4 py-4 text-[13px] text-custom-text-secondary whitespace-pre-line">{{ comment.content }}</td>
+                <td class="px-4 py-4 text-center text-[11px] font-mono-dm text-custom-text-muted">
+                    {{ comment.created_at.strftime('%Y.%m.%d %H:%M') }}
+                </td>
+                <td class="px-4 py-4 text-right">
+                    <form action="{{ url_for('admin.delete_comment', post_id=post.id, comment_id=comment.id) }}" method="POST" class="inline"
+                        onsubmit="return confirm('このコメントを削除しますか？');">
+                        <button type="submit" class="btn-admin-danger py-1 text-[11px]">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-12 text-center text-custom-text-muted font-mono-dm text-xs">
+                    この記事にはまだコメントがありません。
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-6">
+    <a href="{{ url_for('admin.post_list') }}" class="btn-admin-ghost text-[12px]">← 投稿一覧に戻る</a>
+</div>
+{% endblock %}

@@ -110,7 +110,7 @@
 </div>
 
 <!-- FORM CARD -->
-<div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden max-w-4xl">
+<div class="bg-white border border-custom-border rounded-custom shadow-custom-sm overflow-hidden w-full">
     <form method="POST" enctype="multipart/form-data" class="p-6 md:p-8 flex flex-col gap-6">
         <!-- 見出し -->
         <div>
@@ -204,7 +204,7 @@
         <!-- 本文 -->
         <div>
             <label for="content" class="label-admin">本文 <span class="text-red-500 ml-1">*</span></label>
-            <textarea id="content" name="content" rows="15" placeholder="記事の内容を記述してください（Markdown対応予定）"
+            <textarea id="content" name="content" rows="15" placeholder="記事の内容を記述してください"
                 class="input-admin h-auto py-3 resize-none font-sans text-sm leading-relaxed">{{ post.content if post else '' }}</textarea>
         </div>
 
