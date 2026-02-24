@@ -57,14 +57,19 @@ def blog_list():
             
     pagination = query.order_by(Post.published_at.desc()).paginate(page=page, per_page=10, error_out=False)
     posts = pagination.items
-    categories = Category.query.all()
-    
-    return render_template('main/blog_list.html', 
-                         title='ブログ記事一覧', 
-                         posts=posts, 
-                         pagination=pagination, 
+    categories = Category.query.order_by(Category.name).all()
+    # サイドバー用：カテゴリーごとの公開済み投稿数
+    category_counts = {c.id: Post.query.filter(Post.category_id == c.id, Post.published_at <= now_jst).count() for c in categories}
+    total_published = Post.query.filter(Post.published_at <= now_jst).count()
+
+    return render_template('main/blog_list.html',
+                         title='ブログ記事一覧',
+                         posts=posts,
+                         pagination=pagination,
                          categories=categories,
-                         current_category=current_category)
+                         current_category=current_category,
+                         category_counts=category_counts,
+                         total_published=total_published)
 
 @main_bp.route('/blog/detail/<int:id>')
 def blog_detail(id):
@@ -77,12 +82,14 @@ def blog_detail(id):
     # 次の記事（より古い公開記事）
     next_post = base_query.filter(Post.published_at < post.published_at).order_by(Post.published_at.desc()).first()
 
-    categories = Category.query.all()
+    categories = Category.query.order_by(Category.name).all()
+    category_counts = {c.id: base_query.filter(Post.category_id == c.id).count() for c in categories}
     recent_posts = base_query.filter(Post.id != post.id).order_by(Post.published_at.desc()).limit(5).all()
 
     return render_template('main/blog_detail.html',
                          post=post,
                          categories=categories,
+                         category_counts=category_counts,
                          recent_posts=recent_posts,
                          prev_post=prev_post,
                          next_post=next_post)

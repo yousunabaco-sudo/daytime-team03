@@ -210,7 +210,7 @@
                 <a href="{{ url_for('main.blog_list', category=category.slug) }}"
                     class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
                     <span>{{ category.name }}</span>
-                    <!-- <span class="text-[10px] text-custom-text-muted font-mono-dm">0</span> -->
+                    <span class="text-[10px] text-custom-text-muted font-mono-dm">{{ category_counts.get(category.id, 0) }}</span>
                 </a>
                 {% endfor %}
             </div>
