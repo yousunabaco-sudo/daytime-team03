@@ -56,14 +56,18 @@
 
         <!-- SHARE -->
         <div class="mt-8 p-6 bg-custom-surface-2 border border-custom-border rounded-custom flex items-center gap-4">
-            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this
-                article</span>
+            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this article</span>
             <div class="flex gap-2">
-                <button
-                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">X
-                    (Twitter)</button>
-                <button
-                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors">Facebook</button>
+                <a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ post.title | urlencode }}"
+                    target="_blank" rel="noopener noreferrer"
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors inline-flex items-center justify-center">
+                    X (Twitter)
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
+                    target="_blank" rel="noopener noreferrer"
+                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors inline-flex items-center justify-center">
+                    Facebook
+                </a>
             </div>
         </div>
 
