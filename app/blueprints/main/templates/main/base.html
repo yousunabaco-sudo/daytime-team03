@@ -16,15 +16,15 @@
             theme: {
                 extend: {
                     colors: {
-                        'custom-bg': '#f7f8fc',
+                        'custom-bg': '#faf9ff',
                         'custom-surface': '#ffffff',
-                        'custom-surface-2': '#f2f4f9',
-                        'custom-surface-3': '#e8ebf4',
-                        'custom-border': '#e0e4f0',
-                        'custom-border-light': '#eceef8',
+                        'custom-surface-2': '#f5f3fc',
+                        'custom-surface-3': '#ede9f8',
+                        'custom-border': '#e4e0f0',
+                        'custom-border-light': '#edeaf8',
                         'custom-text-primary': '#1a1d2e',
-                        'custom-text-secondary': '#5a607a',
-                        'custom-text-muted': '#9ba3bf',
+                        'custom-text-secondary': '#4a4870',
+                        'custom-text-muted': '#9896b8',
                         'custom-accent': '#4f7c6e',
                         'custom-accent-light': '#eaf3f0',
                         'custom-accent-mid': '#c6dfd9',
@@ -33,8 +33,8 @@
                         'custom-wireframe-fill': '#eef0f8',
                         'custom-wireframe-img': '#dde1ef',
                         'custom-wireframe-dark': '#c8cedf',
-                        'custom-annotation': '#7b6fbd',
-                        'custom-annotation-bg': '#f3f1fc',
+                        'custom-annotation': '#8b7ae0',
+                        'custom-annotation-bg': '#f3f0fc',
                     },
                     fontFamily: {
                         'header-sans': ['"Noto Sans JP"', 'sans-serif'],
@@ -55,7 +55,7 @@
     <style type="text/tailwindcss">
         @layer base {
             body {
-                @apply bg-custom-surface text-custom-text-primary font-sans-jp text-sm leading-relaxed;
+                @apply bg-custom-bg text-custom-text-primary font-sans-jp text-sm leading-relaxed;
             }
         }
         @layer components {
@@ -73,10 +73,10 @@
                 @apply inline-block px-3 py-1 bg-custom-accent-light text-custom-accent rounded-md text-[11px] font-semibold tracking-wide font-mono-dm border border-custom-accent-mid;
             }
             .ph-btn-primary {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-custom-accent text-white rounded-md text-xs font-semibold tracking-wide;
+                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-custom-accent text-white rounded-md text-xs font-semibold tracking-wide transition-all duration-300;
             }
             .ph-btn-outline {
-                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-accent text-custom-accent rounded-md text-xs font-semibold tracking-wide;
+                @apply inline-flex items-center gap-1.5 px-6 py-2.5 bg-transparent border-[1.5px] border-custom-accent text-custom-accent rounded-md text-xs font-semibold tracking-wide transition-all duration-300 hover:bg-custom-accent hover:text-white;
             }
         }
     </style>
@@ -88,36 +88,42 @@
         <!-- NAVBAR -->
         <nav class="sticky top-0 z-[100] h-16 border-b border-custom-border bg-white/95 backdrop-blur-md">
             <div class="inner h-full flex items-center gap-1 relative">
-                <div class="font-header-sans font-bold text-xl text-custom-text-primary mr-auto tracking-tight">
-                    『ものの怪の杜』
+                <div class="font-header-sans font-bold text-xl mr-auto tracking-tight">
+                    <span class="text-custom-accent">『</span><span class="text-custom-text-primary">ものの怪の杜</span><span
+                        class="text-custom-accent">』</span>
                 </div>
-                
+
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-1">
                     <a href="/"
-                        class="text-[13px] {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ホーム</a>
+                        class="text-[13px] {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-primary transition-colors{% endif %}">ホーム</a>
                     <a href="{{ url_for('main.blog_list') }}"
-                        class="text-[13px] {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors{% endif %}">ブログ</a>
+                        class="text-[13px] {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light px-4 py-1.5 rounded-lg tracking-wide font-semibold{% else %}text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-primary transition-colors{% endif %}">ブログ</a>
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYXm3NNCJyuTrROKq4hry-g9voM29ZbJJkLJZALcpxXrsQmA/viewform?usp=header"
-                        class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-secondary transition-colors">お問い合わせ</a>
+                        class="text-[13px] text-custom-text-muted px-4 py-1.5 rounded-lg tracking-wide font-medium hover:text-custom-text-primary transition-colors">お問い合わせ</a>
                 </div>
 
                 <!-- Mobile Hamburger Button -->
-                <button id="mobile-menu-toggle" class="md:hidden p-2 text-custom-text-primary hover:text-custom-accent transition-colors" aria-label="メニューを開く">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <button id="mobile-menu-toggle"
+                    class="md:hidden p-2 text-custom-text-primary hover:text-custom-accent transition-colors"
+                    aria-label="メニューを開く">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
 
                 <!-- Mobile Menu -->
-                <div id="mobile-menu" class="hidden absolute top-16 left-0 right-0 bg-white border-b border-custom-border shadow-lg md:hidden">
+                <div id="mobile-menu"
+                    class="hidden absolute top-16 left-0 right-0 bg-custom-surface border-b border-custom-border shadow-lg md:hidden">
                     <div class="inner py-4 flex flex-col gap-2">
                         <a href="/"
-                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors{% endif %}">ホーム</a>
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint == 'main.index' %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-primary hover:bg-custom-surface-2 transition-colors{% endif %}">ホーム</a>
                         <a href="{{ url_for('main.blog_list') }}"
-                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors{% endif %}">ブログ</a>
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium {% if request.endpoint and 'blog' in request.endpoint %}text-custom-accent bg-custom-accent-light font-semibold{% else %}text-custom-text-muted hover:text-custom-text-primary hover:bg-custom-surface-2 transition-colors{% endif %}">ブログ</a>
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYXm3NNCJyuTrROKq4hry-g9voM29ZbJJkLJZALcpxXrsQmA/viewform?usp=header"
-                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium text-custom-text-muted hover:text-custom-text-secondary hover:bg-custom-surface-2 transition-colors">お問い合わせ</a>
+                            class="text-[13px] px-4 py-2 rounded-lg tracking-wide font-medium text-custom-text-muted hover:text-custom-text-primary hover:bg-custom-surface-2 transition-colors">お問い合わせ</a>
                     </div>
                 </div>
             </div>
@@ -125,16 +131,16 @@
 
         <script>
             // Mobile menu toggle
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 const toggle = document.getElementById('mobile-menu-toggle');
                 const menu = document.getElementById('mobile-menu');
-                
+
                 if (toggle && menu) {
-                    toggle.addEventListener('click', function() {
+                    toggle.addEventListener('click', function () {
                         menu.classList.toggle('hidden');
                         const isOpen = !menu.classList.contains('hidden');
                         toggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
-                        
+
                         // Update icon
                         const svg = toggle.querySelector('svg');
                         if (svg) {
@@ -147,9 +153,9 @@
                             }
                         }
                     });
-                    
+
                     // Close menu when clicking outside
-                    document.addEventListener('click', function(event) {
+                    document.addEventListener('click', function (event) {
                         if (!toggle.contains(event.target) && !menu.contains(event.target)) {
                             menu.classList.add('hidden');
                             const svg = toggle.querySelector('svg');
@@ -168,10 +174,16 @@
 
         <!-- FOOTER -->
         <footer class="bg-custom-text-primary text-white pt-12 pb-6">
-            <div class="inner flex flex-col gap-6">
+            <!-- 背景装飾 -->
+            <div
+                class="absolute top-0 left-1/4 w-96 h-32 bg-custom-accent opacity-5 rounded-full blur-3xl pointer-events-none">
+            </div>
+            <div class="inner flex flex-col gap-6 relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="md:col-span-2 flex flex-col gap-3">
-                        <div class="font-header-sans font-bold text-xl">新潟心理療法同好会presents『ものの怪の杜』</div>
+                        <div class="font-header-sans font-bold text-xl text-white">
+                            新潟心理療法同好会presents『ものの怪の杜』
+                        </div>
                         <div class="text-[11px] text-[#9ba3bf] leading-relaxed">
                             日常の中ではめったに出会うことのない心理臨床の専門家たちが、<br>
                             目に見えない「こころ」についてもの語る処
@@ -181,9 +193,11 @@
                         <h4 class="text-[11px] font-semibold text-[#6e7590] uppercase tracking-widest font-mono-dm">
                             Navigation</h4>
                         <div class="flex flex-col gap-2 text-xs text-[#9ba3bf]">
-                            <a href="/" class="hover:text-white transition-colors">ホーム</a>
-                            <a href="{{ url_for('main.blog_list') }}" class="hover:text-white transition-colors">ブログ</a>
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYXm3NNCJyuTrROKq4hry-g9voM29ZbJJkLJZALcpxXrsQmA/viewform?usp=header" class="hover:text-white transition-colors">お問い合わせ</a>
+                            <a href="/" class="hover:text-custom-accent transition-colors">ホーム</a>
+                            <a href="{{ url_for('main.blog_list') }}"
+                                class="hover:text-custom-accent transition-colors">ブログ</a>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYXm3NNCJyuTrROKq4hry-g9voM29ZbJJkLJZALcpxXrsQmA/viewform?usp=header"
+                                class="hover:text-custom-accent transition-colors">お問い合わせ</a>
                         </div>
                     </div>
                     <div class="flex flex-col gap-4">

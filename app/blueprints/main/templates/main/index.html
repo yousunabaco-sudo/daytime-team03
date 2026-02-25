@@ -7,29 +7,162 @@
         <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">知見を共有し、共に歩む。</h1>
         <p class="mt-4 text-xl text-slate-500">臨床心理士の専門性を高め、交流を深めるための同好会プラットフォームです。</p>
     </header>
-{% endblock %}
+    {% endblock %}
 
-{% block main_content %}
-<!-- HERO -->
-<section class="grid grid-cols-1 md:grid-cols-2 min-h-[380px] border-b border-custom-border overflow-hidden">
-    <div
-        class="p-12 md:p-16 md:pl-20 flex flex-col justify-center gap-4 bg-gradient-to-br from-white via-white to-custom-accent-light">
-        <div class="text-[11px] font-semibold text-custom-accent tracking-[0.14em] uppercase font-mono-dm">
-            Psychology & Community</div>
-        <h2 class="font-header-sans font-bold text-3xl md:text-4xl leading-tight text-custom-text-primary">
-            新潟心理療法同好会presents<br>『ものの怪の杜』
-        </h2>
-        <div class="flex flex-col gap-2">
-            <div class="">日常の中ではめったに出会うことのない心理臨床の専門家たちが</div>
-            <div class="">目に見えない「こころ」についてもの語る処</div>
+    {% block main_content %}
+    <!-- HERO -->
+    <section
+        class="relative min-h-[520px] md:min-h-[560px] flex items-center overflow-hidden border-b border-custom-border">
+        <!-- 背景グラデーション -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#0a0a14] via-[#12102a] to-[#0f0f1a]"></div>
+
+        <!-- 光のオーブ装飾 -->
+        <div
+            class="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#a78bfa] opacity-10 rounded-full blur-[80px] pointer-events-none animate-pulse">
         </div>
-        <div class="flex gap-3 mt-2">
-            <a href="{{ url_for('main.blog_list') }}" class="ph-btn-primary">活動を見る →</a>
+        <div
+            class="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-[#7c3aed] opacity-10 rounded-full blur-[60px] pointer-events-none">
         </div>
-    </div>
-    <div class="bg-white flex items-center justify-center border-l border-custom-border relative overflow-hidden">
-        <img src="/static/img/main_image.png" alt="メインビジュアル" class="w-full h-full object-contain">
-    </div>
+
+
+
+
+        <!-- 星のような小さな装飾 -->
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <span class="absolute top-[15%] left-[5%] text-[#a78bfa] opacity-30 text-xs font-mono-dm">✦</span>
+            <span class="absolute top-[25%] left-[40%] text-[#fbbf24] opacity-20 text-[8px] font-mono-dm">✦</span>
+            <span class="absolute bottom-[30%] left-[15%] text-[#a78bfa] opacity-20 text-[6px] font-mono-dm">★</span>
+            <span class="absolute top-[10%] left-[55%] text-[#fbbf24] opacity-15 text-[10px] font-mono-dm">★</span>
+        </div>
+
+        <!-- コンテンツ（横並び） -->
+        <div
+            class="relative z-10 inner w-full flex flex-col md:flex-row items-center gap-8 py-16 md:py-20 hero-content">
+            <!-- 左：テキスト -->
+            <div class="flex-1 flex flex-col items-start gap-5">
+                <div
+                    class="text-[11px] font-semibold text-[#a78bfa] tracking-[0.3em] uppercase font-mono-dm opacity-80 flex items-center gap-3">
+                    <span class="w-8 h-[1px] bg-[#a78bfa] opacity-60 inline-block"></span>
+                    Psychology &amp; Community
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="text-sm text-[#c4b8f0] font-mono-dm tracking-widest opacity-80">新潟心理療法同好会 presents</div>
+                    <h2 class="font-header-sans font-bold text-5xl md:text-6xl leading-none tracking-tight hero-title">
+                        <span class="text-[#fbbf24]">『</span><span class="text-[#f0eeff]">ものの怪</span><span
+                            class="text-[#a78bfa]">の</span><span class="text-[#f0eeff]">杜</span><span
+                            class="text-[#fbbf24]">』</span>
+                    </h2>
+                </div>
+                <div class="flex flex-col gap-1 text-[#c4b8f0] text-sm leading-relaxed">
+                    <p>日常の中ではめったに出会うことのない心理臨床の専門家たちが</p>
+                    <p>目に見えない「こころ」について、<span class="text-[#a78bfa] font-semibold">もの語る処</span></p>
+                </div>
+                <div class="flex gap-4 mt-2">
+                    <a href="{{ url_for('main.blog_list') }}" class="ph-btn-primary px-8 py-3 text-sm">活動を見る →</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYXm3NNCJyuTrROKq4hry-g9voM29ZbJJkLJZALcpxXrsQmA/viewform?usp=header"
+                        class="ph-btn-outline px-8 py-3 text-sm">お問い合わせ</a>
+                </div>
+
+                <!-- 妖怪キャラクター群（常に同じ高さ、画像被り防止） -->
+                <div class="mt-12 flex items-center justify-between w-full pointer-events-auto">
+                    <!-- 左：ゴースト -->
+                    <div id="yokai-ghost"
+                        class="yokai-float-fast group relative opacity-0 translate-y-4 transition-all duration-1000">
+                        <img src="/static/img/yokai_ghost.png" alt="ゴースト"
+                            class="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_0_15px_rgba(167,139,250,0.4)]">
+                        <div
+                            class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[#1a1d2e] text-[10px] font-bold px-2.5 py-1 rounded-2xl shadow-lg whitespace-nowrap border border-[#e4e0f0] z-20">
+                            ようこそ！
+                        </div>
+                    </div>
+
+                    <!-- 右：ちょうちん（テキストエリアの右端に配置） -->
+                    <div id="yokai-lantern"
+                        class="yokai-float-slow group relative opacity-0 translate-y-4 transition-all duration-1000 delay-150">
+                        <div
+                            class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[#1a1d2e] text-[10px] font-bold px-2.5 py-1 rounded-2xl shadow-lg whitespace-nowrap border border-[#e4e0f0] z-20">
+                            見つけてくれてありがとう！
+                        </div>
+                        <img src="/static/img/yokai_lantern.png" alt="ちょうちん妖怪"
+                            class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右：メインビジュアル -->
+            <div class="flex-1 flex items-center justify-center md:justify-end relative">
+                <img src="/static/img/main_image.png" alt="メインビジュアル"
+                    class="w-full max-w-[360px] md:max-w-[420px] object-contain drop-shadow-[0_0_40px_rgba(167,139,250,0.25)]">
+            </div>
+        </div>
+
+        <script>
+            // スクロールで妖怪を表示させる演出
+            (function () {
+                const ghost = document.getElementById('yokai-ghost');
+                const lantern = document.getElementById('yokai-lantern');
+                const initialScrollY = window.scrollY;
+                let revealed = false;
+
+                window.addEventListener('scroll', function () {
+                    if (revealed) return;
+
+                    // 最初の位置から一定量(10px)以上動いたら表示
+                    if (Math.abs(window.scrollY - initialScrollY) > 10) {
+                        ghost.classList.remove('opacity-0', 'translate-y-4');
+                        ghost.classList.add('opacity-100', 'translate-y-0');
+
+                        lantern.classList.remove('opacity-0', 'translate-y-4');
+                        lantern.classList.add('opacity-100', 'translate-y-0');
+                        revealed = true;
+                    }
+                });
+            })();
+        </script>
+</div>
+
+<style>
+    .hero-content {
+        animation: heroFadeIn 1.2s ease-out both;
+    }
+
+    .hero-title {
+        text-shadow: 0 0 60px rgba(167, 139, 250, 0.4), 0 0 120px rgba(167, 139, 250, 0.15);
+    }
+
+    @keyframes heroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .yokai-float-slow {
+        animation: yokaiFloat 4s ease-in-out infinite;
+    }
+
+    .yokai-float-fast {
+        animation: yokaiFloat 3s ease-in-out infinite reverse;
+        animation-delay: -1.5s;
+    }
+
+    @keyframes yokaiFloat {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+</style>
 </section>
 
 <!-- TOPICS -->
@@ -60,28 +193,34 @@
                     <img src="{{ url_for('static', filename='uploads/eyecatch/' + featured_post.eyecatch_img) }}"
                         alt="{{ featured_post.title }}" class="w-full h-full object-cover opacity-60">
                     {% else %}
-                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image</div>
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image
+                    </div>
                     {% endif %}
                 </a>
                 <div class="p-6 flex flex-col justify-center gap-3">
                     <div class="flex flex-row gap-2 items-center">
-                        <span class="ph-tag self-start">{{ featured_post.category.name if featured_post.category else
+                        <span class="ph-tag self-start">{{ featured_post.category.name if featured_post.category
+                            else
                             '未分類' }}</span>
                         <span class="text-[10px] text-custom-text-muted font-mono-dm">{{
                             featured_post.published_at.strftime('%Y.%m.%d') }}</span>
                     </div>
                     <div class="flex flex-col gap-2">
                         <h4 class="font-bold text-lg leading-tight">{{ featured_post.title }}</h4>
-                        <p class="text-xs text-custom-text-secondary line-clamp-2">{{ featured_post.content | striptags
+                        <p class="text-xs text-custom-text-secondary line-clamp-2">{{ featured_post.content |
+                            striptags
                             }}</p>
                     </div>
                     <div class="flex items-center justify-between mt-6">
                         <a href="{{ url_for('main.blog_detail', id=featured_post.id) }}"
                             class="ph-btn-outline self-start px-4.5 py-1.5 text-[11px]">続きを読む →</a>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs text-custom-text-secondary">{{ featured_post.author.display_name_or_name }}</span>
+                            <span class="text-xs text-custom-text-secondary">{{
+                                featured_post.author.display_name_or_name }}</span>
                             <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                                <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ featured_post.comments|length }}
+                                <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt=""
+                                    class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{
+                                featured_post.comments|length }}
                             </span>
                         </div>
                     </div>
@@ -92,12 +231,14 @@
             {% for post in topics_posts[1:] %}
             <div
                 class="border border-custom-border rounded-custom overflow-hidden bg-white shadow-custom-sm flex flex-col">
-                <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="h-32 border-b border-custom-border overflow-hidden block">
+                <a href="{{ url_for('main.blog_detail', id=post.id) }}"
+                    class="h-32 border-b border-custom-border overflow-hidden block">
                     {% if post.eyecatch_img %}
                     <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}"
                         alt="{{ post.title }}" class="w-full h-full object-cover opacity-60">
                     {% else %}
-                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image</div>
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">No Image
+                    </div>
                     {% endif %}
                 </a>
                 <div class="p-4 flex flex-col gap-2 flex-1">
@@ -107,12 +248,15 @@
                             post.published_at.strftime('%Y.%m.%d') }}</span>
                     </div>
                     <h4 class="font-bold text-sm leading-tight flex-1">
-                        <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="hover:underline">{{ post.title }}</a>
+                        <a href="{{ url_for('main.blog_detail', id=post.id) }}" class="hover:underline">{{
+                            post.title }}</a>
                     </h4>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-custom-text-secondary">{{ post.author.display_name_or_name }}</span>
+                        <span class="text-xs text-custom-text-secondary">{{ post.author.display_name_or_name
+                            }}</span>
                         <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ post.comments|length }}
+                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt=""
+                                class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ post.comments|length }}
                         </span>
                     </div>
                 </div>
@@ -162,7 +306,8 @@
                     </div>
                     <div class="flex items-center justify-between gap-2 mt-1">
                         <span class="text-[10px] text-custom-text-muted font-mono-dm flex items-center gap-1">
-                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt="" class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ event.comments|length }}
+                            <img src="{{ url_for('static', filename='img/icon_comment.svg') }}" alt=""
+                                class="w-3.5 h-3.5 opacity-70" aria-hidden="true">{{ event.comments|length }}
                         </span>
                         <a href="{{ url_for('main.blog_detail', id=event.id) }}"
                             class="text-[10px] text-custom-accent font-bold hover:underline">詳細を見る →</a>
