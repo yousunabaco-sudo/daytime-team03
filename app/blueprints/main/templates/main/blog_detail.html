@@ -16,31 +16,52 @@
 </div>
 
 <!-- ARTICLE HERO -->
-<section class="border-b border-custom-border">
-    <div
-        class="relative h-64 md:h-80 bg-gradient-to-br from-custom-wireframe-img to-custom-surface-3 flex items-center justify-center overflow-hidden">
+<section class="border-b border-custom-border bg-white overflow-hidden">
+    <div class="relative h-72 md:h-[450px]">
         {% if post.eyecatch_img %}
         <img src="{{ url_for('static', filename='uploads/eyecatch/' + post.eyecatch_img) }}" alt="{{ post.title }}"
-            class="w-full h-full object-cover opacity-60">
-        {% else %}
-        <div class="text-custom-text-muted font-mono-dm text-2xl">No Image</div>
-        {% endif %}
-    </div>
-    <div class="inner py-10 md:py-14">
-        <div class="flex flex-wrap gap-2 mb-4">
-            <span class="ph-tag">{{ post.category.name }}</span>
+            class="w-full h-full object-cover">
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-custom-text-primary/80 via-custom-text-primary/20 to-transparent">
         </div>
-        <h1
-            class="font-header-sans font-bold text-3xl md:text-4xl text-custom-text-primary leading-tight max-w-3xl mb-6">
-            {{ post.title }}
-        </h1>
-        <div class="flex flex-wrap items-center gap-4">
-            <div class="flex flex-col">
-                <span class="text-xs font-bold text-custom-text-primary leading-none mb-1">{{ post.author.display_name_or_name }}</span>
-                <span class="text-[9px] text-custom-text-muted font-mono-dm leading-none">AUTHOR</span>
-            </div>
-            <div class="flex items-center gap-2 text-[11px] text-custom-text-muted font-mono-dm">
-                <span>{{ post.published_at.strftime('%Y.%m.%d') }}</span>
+        {% else %}
+        <div
+            class="w-full h-full bg-gradient-to-br from-custom-surface-3 to-custom-wireframe-img flex items-center justify-center">
+            <span
+                class="text-custom-text-muted font-mono-dm text-4xl opacity-20 tracking-tighter uppercase italic">Atmosphere</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-custom-text-primary/60 to-transparent"></div>
+        {% endif %}
+
+        <!-- タイトルオーバーレイ -->
+        <div class="absolute inset-0 flex flex-col justify-end">
+            <div class="inner pb-12">
+                <div class="flex flex-col gap-6">
+                    <span class="ph-tag !bg-white/10 !text-white !border-white/20 backdrop-blur-md self-start">{{
+                        post.category.name }}</span>
+                    <h1
+                        class="font-header-sans font-bold text-3xl md:text-5xl text-white leading-[1.15] max-w-4xl tracking-tight drop-shadow-sm">
+                        {{ post.title }}
+                    </h1>
+                    <div class="flex items-center gap-6 text-white/80">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-sm">
+                                <span class="font-bold">{{ post.author.display_name_or_name[0] }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-white">{{ post.author.display_name_or_name }}</span>
+                                <span class="text-[9px] font-mono-dm tracking-widest opacity-60">AUTHOR</span>
+                            </div>
+                        </div>
+                        <div class="h-8 w-[1px] bg-white/20"></div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-white">{{ post.published_at.strftime('%Y.%m.%d')
+                                }}</span>
+                            <span class="text-[9px] font-mono-dm tracking-widest opacity-60">PUBLISHED</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,23 +70,31 @@
 <!-- MAIN LAYOUT -->
 <div class="inner grid grid-cols-1 md:grid-cols-3 gap-0">
     <!-- ARTICLE CONTENT -->
-    <article class="md:col-span-2 py-10 md:py-16 md:pr-12 md:border-r border-custom-border-light flex flex-col gap-8">
-        <div class="flex flex-col gap-6 text-base leading-loose text-custom-text-secondary">
+    <article class="md:col-span-2 py-12 md:py-20 md:pr-16 md:border-r border-custom-border-light flex flex-col gap-12">
+        <div class="flex flex-col gap-8 text-[17px] leading-[1.85] text-custom-text-secondary blog-content">
             {{ post.content | safe }}
         </div>
 
         <!-- SHARE -->
-        <div class="mt-8 p-6 bg-custom-surface-2 border border-custom-border rounded-custom flex items-center gap-4">
-            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-widest">Share this article</span>
-            <div class="flex gap-2">
+        <div
+            class="mt-12 p-10 bg-custom-surface-2 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-custom-border-light relative overflow-hidden group">
+            <div
+                class="absolute top-0 right-0 w-32 h-32 bg-custom-accent opacity-[0.03] rounded-full blur-2xl transition-transform duration-700 group-hover:scale-150">
+            </div>
+            <div class="flex flex-col gap-1 z-10">
+                <span class="text-[10px] text-custom-accent font-bold font-mono-dm uppercase tracking-[0.2em]">Empower
+                    through sharing</span>
+                <h4 class="font-header-sans font-bold text-lg text-custom-text-primary">この記事を大切な人と共有する</h4>
+            </div>
+            <div class="flex gap-3 z-10 w-full md:w-auto">
                 <a href="https://twitter.com/intent/tweet?url={{ request.url | urlencode }}&text={{ post.title | urlencode }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors inline-flex items-center justify-center">
-                    X (Twitter)
+                    class="flex-1 md:flex-none h-12 px-6 bg-[#1a1d2e] text-white rounded-xl text-[13px] font-bold hover:bg-black transition-colors flex items-center justify-center gap-2">
+                    X
                 </a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}"
-                    target="_blank" rel="noopener noreferrer"
-                    class="bg-white border border-custom-border rounded-lg px-4 py-2 text-xs font-semibold hover:border-custom-accent transition-colors inline-flex items-center justify-center">
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}" target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 md:flex-none h-12 px-6 bg-white border border-custom-border rounded-xl text-[13px] font-bold text-[#1a1d2e] hover:border-custom-accent transition-colors flex items-center justify-center gap-2">
                     Facebook
                 </a>
             </div>
@@ -77,10 +106,12 @@
             <a href="{{ url_for('main.blog_detail', id=prev_post.id) }}"
                 class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 hover:border-custom-accent transition-colors">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
-                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ prev_post.title }}</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{
+                    prev_post.title }}</span>
             </a>
             {% else %}
-            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 opacity-60">
+            <div
+                class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 opacity-60">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">PREVIOUS</span>
                 <span class="text-sm text-custom-text-muted line-clamp-1">前の記事はありません</span>
             </div>
@@ -89,10 +120,12 @@
             <a href="{{ url_for('main.blog_detail', id=next_post.id) }}"
                 class="group p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right hover:border-custom-accent transition-colors">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
-                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{ next_post.title }}</span>
+                <span class="text-sm font-bold group-hover:text-custom-accent transition-colors line-clamp-1">{{
+                    next_post.title }}</span>
             </a>
             {% else %}
-            <div class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right opacity-60">
+            <div
+                class="p-4 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-2 text-right opacity-60">
                 <span class="text-[9px] text-custom-text-muted font-mono-dm">NEXT</span>
                 <span class="text-sm text-custom-text-muted line-clamp-1">次の記事はありません</span>
             </div>
@@ -103,7 +136,8 @@
         <div class="mt-16 border-t border-custom-border-light pt-12 flex flex-col gap-10">
             <div class="flex items-center gap-4">
                 <h3 class="font-header-sans font-bold text-2xl text-custom-text-primary leading-none">Comments</h3>
-                <span class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">{{ post.comments|length }}</span>
+                <span class="bg-custom-accent text-white rounded-full px-3 py-1 text-[11px] font-mono-dm font-bold">{{
+                    post.comments|length }}</span>
             </div>
 
             <div class="flex flex-col">
@@ -112,37 +146,46 @@
                     <div class="flex items-center gap-3">
                         <div class="flex flex-col">
                             <span class="text-sm font-bold text-custom-text-primary">{{ comment.name }}</span>
-                            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">{{ comment.created_at.strftime('%Y.%m.%d') }}</span>
+                            <span class="text-[10px] text-custom-text-muted font-mono-dm uppercase tracking-wider">{{
+                                comment.created_at.strftime('%Y.%m.%d') }}</span>
                         </div>
                     </div>
-                    <div class="text-sm text-custom-text-secondary leading-relaxed whitespace-pre-line">{{ comment.content }}</div>
+                    <div class="text-sm text-custom-text-secondary leading-relaxed whitespace-pre-line">{{
+                        comment.content }}</div>
                 </div>
                 {% else %}
                 <p class="text-sm text-custom-text-muted py-4">まだコメントはありません。</p>
                 {% endfor %}
 
                 <!-- Comment Form -->
-                <div class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
+                <div
+                    class="mt-12 p-8 bg-custom-surface-2 border border-custom-border rounded-custom flex flex-col gap-6">
                     <h4 class="font-header-sans font-bold text-xl text-custom-text-primary">Leave a Comment</h4>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                     <ul class="flex flex-col gap-2">
                         {% for category, message in messages %}
-                        <li class="text-sm {{ 'text-red-600' if category == 'error' else 'text-custom-accent' }}">{{ message }}</li>
+                        <li class="text-sm {{ 'text-red-600' if category == 'error' else 'text-custom-accent' }}">{{
+                            message }}</li>
                         {% endfor %}
                     </ul>
                     {% endif %}
                     {% endwith %}
-                    <form method="POST" action="{{ url_for('main.post_comment', id=post.id) }}" class="flex flex-col gap-6">
+                    <form method="POST" action="{{ url_for('main.post_comment', id=post.id) }}"
+                        class="flex flex-col gap-6">
                         <div class="flex flex-col gap-2">
-                            <label for="comment_name" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">名前 <span class="text-red-500">*</span></label>
+                            <label for="comment_name"
+                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">名前
+                                <span class="text-red-500">*</span></label>
                             <input type="text" id="comment_name" name="name" required
                                 value="{{ request.form.name if request.form else '' }}"
                                 class="h-10 px-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors"
                                 placeholder="お名前を入力">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="comment_content" class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">コメント <span class="text-red-500">*</span></label>
+                            <label for="comment_content"
+                                class="text-[11px] font-bold text-custom-text-secondary uppercase tracking-widest font-mono-dm">コメント
+                                <span class="text-red-500">*</span></label>
                             <textarea id="comment_content" name="content" rows="5" required
                                 class="p-4 bg-white border border-custom-border rounded-lg focus:outline-none focus:border-custom-accent transition-colors resize-none"
                                 placeholder="コメントを入力">{{ request.form.content if request.form else '' }}</textarea>
@@ -160,8 +203,10 @@
         <div
             class="p-6 bg-white border border-custom-border rounded-custom shadow-custom-sm flex flex-col gap-4 text-center items-center">
             <div class="flex flex-col gap-1">
-                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{ post.author.display_name_or_name }}</span>
-                <span class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">AUTHOR</span>
+                <span class="font-header-sans font-bold text-lg text-custom-text-primary leading-none">{{
+                    post.author.display_name_or_name }}</span>
+                <span
+                    class="text-[10px] text-custom-accent font-mono-dm font-bold uppercase tracking-widest">AUTHOR</span>
             </div>
             {% if post.author.profile %}
             <p class="text-xs text-custom-text-secondary leading-normal">
@@ -210,7 +255,8 @@
                 <a href="{{ url_for('main.blog_list', category=category.slug) }}"
                     class="px-5 py-3 text-xs font-bold text-custom-text-primary border-b border-custom-border-light flex items-center justify-between hover:bg-custom-surface-2 transition-colors">
                     <span>{{ category.name }}</span>
-                    <span class="text-[10px] text-custom-text-muted font-mono-dm">{{ category_counts.get(category.id, 0) }}</span>
+                    <span class="text-[10px] text-custom-text-muted font-mono-dm">{{ category_counts.get(category.id, 0)
+                        }}</span>
                 </a>
                 {% endfor %}
             </div>

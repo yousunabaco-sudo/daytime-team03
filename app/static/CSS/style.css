@@ -1,41 +1,22 @@
 /* =========================================
-   style.css - ものの怪の杜 用（ダークパープルテーマ）
+   style.css - ものの怪の杜 用（ラベンダー背景×緑ボタンテーマ）
    場所: app/static/css/style.css
 ========================================= */
 
 /* --- Body & Global --- */
 body {
-    background-color: #0f0f1a;
-    color: #f0eeff;
+    background-color: #faf9ff;
+    color: #1a1d2e;
     font-family: 'Noto Sans JP', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
 }
 
-/* --- ヘッダー --- */
-header {
-    text-align: center;
-    padding: 4rem 1rem;
-    background: linear-gradient(to bottom, #13131f, #1a1a2e);
-}
-
-header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    color: #f0eeff;
-}
-
-header p {
-    font-size: 1.125rem;
-    color: #c4b8f0;
-}
-
 /* --- ボタン --- */
 .ph-btn-primary {
-    background-color: #a78bfa;
-    color: #0f0f1a;
+    background-color: #4f7c6e;
+    color: white;
     padding: 0.625rem 1.5rem;
     border-radius: 0.75rem;
     font-size: 0.75rem;
@@ -48,14 +29,14 @@ header p {
 }
 
 .ph-btn-primary:hover {
-    background-color: #fbbf24;
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+    background-color: #3d6358;
+    box-shadow: 0 4px 16px rgba(79, 124, 110, 0.3);
 }
 
 .ph-btn-outline {
     background: transparent;
-    border: 1.5px solid #a78bfa;
-    color: #a78bfa;
+    border: 1.5px solid #4f7c6e;
+    color: #4f7c6e;
     padding: 0.625rem 1.5rem;
     border-radius: 0.75rem;
     font-size: 0.75rem;
@@ -65,32 +46,32 @@ header p {
 }
 
 .ph-btn-outline:hover {
-    background-color: #a78bfa;
-    color: #0f0f1a;
+    background-color: #4f7c6e;
+    color: white;
 }
 
 /* --- カード --- */
 .card {
-    background-color: #13131f;
-    border: 1px solid #2e2e50;
+    background-color: #ffffff;
+    border: 1px solid #e4e0f0;
     border-radius: 0.75rem;
-    box-shadow: 0 2px 16px rgba(167, 139, 250, 0.08);
+    box-shadow: 0 2px 8px rgba(139, 122, 224, 0.05);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 40px rgba(167, 139, 250, 0.2);
+    box-shadow: 0 8px 32px rgba(139, 122, 224, 0.1);
 }
 
-/* --- トピックス・イベント セクション --- */
+/* --- セクションラベル --- */
 .section-label {
     font-size: 0.625rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: #c4b5fd;
+    color: #8b7ae0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -101,7 +82,7 @@ header p {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, #4c3d8a, transparent);
+    background: linear-gradient(to right, #c4b5fd, transparent);
 }
 
 /* --- カテゴリタグ --- */
@@ -109,28 +90,22 @@ header p {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     border-radius: 0.5rem;
-    background-color: #1e1a3a;
-    color: #a78bfa;
+    background-color: #eaf3f0;
+    color: #4f7c6e;
     font-size: 0.6875rem;
     font-weight: 600;
-    border: 1px solid #4c3d8a;
+    border: 1px solid #c6dfd9;
     letter-spacing: 0.02em;
-}
-
-/* --- リスト・サイドバー --- */
-aside a:hover {
-    color: #a78bfa;
 }
 
 /* --- フッター --- */
 footer {
-    background-color: #0a0a14;
-    color: #f0eeff;
+    background-color: #1a1d2e;
+    color: #ffffff;
     padding: 3rem 1rem;
     font-size: 0.75rem;
-    border-top: 1px solid #2e2e50;
 }
 
 footer a:hover {
-    color: #a78bfa;
+    color: #c4b5fd;
 }
